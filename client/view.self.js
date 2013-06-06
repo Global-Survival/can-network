@@ -213,7 +213,7 @@ s
             var url = search ? '/wiki/search/' + t : '/wiki/' + t + '/html';
 
             function newPopupButton(target) {
-                var p = $('<a href="#" title="Popup">+</a>');
+                var p = $('<a href="#" title="Tag">+</a>');
                 p.click(function() {
                     var d = newPopup(target, {width: 550});
                     var tagBar = newTagBar(s, target);

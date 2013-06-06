@@ -7,7 +7,7 @@ var configuration = {
     defaultAvatarIcon: '/icon/netention-160.jpg',
     includeCanNeedNot: true,
     wikiStartPage: 'Portal:Contents',
-    showPlanOnSelfPage: false
+    showPlanOnSelfPage: true
 };
 
 

@@ -478,6 +478,10 @@ function deleteFocus() {
 function setTheme(t) {
     if (!t)
         t = '_cybernetic';
+    
+    if (!_.contains(_.keys(themes), t)) {
+        t = '_cybernetic';
+    }
 
     var oldTheme = window.self.get('theme');
     if (oldTheme !== t) {
