@@ -1437,7 +1437,14 @@ exports.start = function(host, port, dbURL, init) {
                 whenFinished(null);
             }
             else {
-                whenFinished('Unable to delete user profile');
+                var os = getClientSelves(session);
+                if (_.contains(os, objectID)) {
+                    deleteObject(objectID, whenFinished);
+                    whenFinished(null);                    
+                }
+                else {
+                    whenFinished('Unable to delete user profile');
+                }
             }
         });
 

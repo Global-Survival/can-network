@@ -123,6 +123,26 @@ function netention(f) {
             
             //self
             getSelf : function(clientID) { return this.objects()['Self-' + clientID]; }, 
+            deleteSelf : function(clientID) {
+                var os = this.get('otherSelves');
+                if (os.length < 2) {
+                    $.pnotify( {
+                       title: 'Can not delete self: ' + clientID.substring(6) + '...' ,
+                       text: 'Must have one extra self to become after deleting',
+                       type: 'Error'
+                    });
+                    return;
+                }
+                var sclientID = 'Self-' + clientID;
+                if (_.contains(os, sclientID)) {
+                    os = _.without(os, sclientID);
+                    this.set('otherSelves', os);
+                    this.saveLocal();
+                    
+                    this.deleteObject(this.object('Self-'+ clientID));
+                }
+        
+            },
             
             //->tag
             getTag : function(t) { return this.tags()[t]; },
@@ -153,14 +173,16 @@ function netention(f) {
                 if (!o) {
                     o = objNew('Self-' + this.id(), 'Anonymous');
                     objAddTag(o, 'Human');
-                    objAddTag(o, 'User');
-                    
+                    objAddTag(o, 'User');                    
                     this.setObject(o);
                 }
                 return o;
             },
             
             become: function(target) {
+                if (!target)
+                    return;
+                
                 var s = this;
                 if (typeof(target)!=="string") {
                     this.notice(target);
@@ -177,6 +199,7 @@ function netention(f) {
                             
                             s.connect(target, function() {
                                 var os = self.get('otherSelves');
+                                os.push('Self-' + self.id());
                                 os.push('Self-' + nextID);
                                 self.set('otherSelves', _.unique(os));
                                 self.saveLocal();
@@ -196,6 +219,8 @@ function netention(f) {
                 });
 
             },
+            
+            
                     
             connect: function(targetID, whenConnected) {
                 var suppliedObject = null;

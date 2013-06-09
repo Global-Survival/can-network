@@ -282,15 +282,15 @@ function initUI() {
                 if (s.indexOf('Self-')==0)
                     s = s.substring(5);
                 var o = self.getSelf(s);
-                var n = s;
                 if (o) {                    
-                    n = o.name;
+                    var n = o.name;
+                    var selString = (o.id.substring(5) === self.id()) ? 'selected' : '';
+                    selector.append('<option value="' + s + '" ' + selString + '>' + n + '</option>');
                 }
                 else {
                     //console.log('unknown self: ' + s);
                 }
                 
-                selector.append('<option value="' + s + '">' + n + '</option>');
             }
         }
         
@@ -302,7 +302,12 @@ function initUI() {
             become(self.getSelf(id));
             closeDialog();
         });
+        
         d.append(deleteButton);
+        deleteButton.click(function() {
+            self.deleteSelf(selector.val());
+            closeDialog();
+        });
         
         
         d.append('<hr/>');
