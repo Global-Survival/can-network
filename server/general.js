@@ -149,6 +149,8 @@ var generalTags = [
             'knowledge': { name: 'Knowledge', type: 'object' }
     }}, 
         
+        /* 0 – No Knowledge, 1- Training / Knowledge Only, 2 – Ability to work with support of seniors, 
+                3 – Can independently work, 4 – Confidently Lead and Guide others, 5 – Professional Expert / Certified. */
         { uri: 'BeginnerStudent', name: 'Student', tag: ['Skill'] },
         { uri: 'IntermediateStudent', name: 'Student Collaborator', tag: ['Skill'] },
         { uri: 'CollaboratingStudent', name: 'Collaborator Student', tag: ['Skill'] },

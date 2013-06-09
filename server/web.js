@@ -19,7 +19,7 @@ var _ = require('underscore');
 /**
  * init - callback function that is invoked after the server is created but before it runs
  */
-exports.start = function(host, port, database, init) {
+exports.start = function(host, port, dbURL, init) {
 
     console.log('Starting');
 
@@ -32,9 +32,8 @@ exports.start = function(host, port, database, init) {
     };
 
     Server.host = host;
-    Server.port = port;
-    Server.database = database;
-
+    Server.port = port;  
+    Server.databaseURL = dbURL;
 
     var plugins = {};
 
@@ -49,7 +48,10 @@ exports.start = function(host, port, database, init) {
     Server.interestTime = {};	//accumualted time per interest, indexed by tag URI
     Server.clientState = {};	//current state of all clients, indexed by their clientID DEPRECATED
 
-    var databaseUrl = Server.database || process.env['MongoURL']; //"mydb"; // "username:password@example.com/mydb"
+    function getDatabaseURL() {
+        //"mydb"; // "username:password@example.com/mydb"
+        return Server.databaseURL || process.env['MongoURL'];
+    }
     var collections = ["obj"];
 
     
@@ -68,7 +70,7 @@ exports.start = function(host, port, database, init) {
                 }     
                 //whenFinished()
                 else {
-                    getPlan(function(p) {            
+                    getPlans(function(p) {            
 
                         if (p.length < 2)
                             return;
@@ -158,7 +160,7 @@ exports.start = function(host, port, database, init) {
     }
 
     function loadState(f) {
-        var db = mongo.connect(databaseUrl, collections);
+        var db = mongo.connect(getDatabaseURL(), collections);
 
         db.obj.find({tag: {$in: ['ServerState']}}).limit(1).sort({when: -1}, function(err, objs) {
             db.close();
@@ -171,6 +173,8 @@ exports.start = function(host, port, database, init) {
                     nlog('Resuming from ' + (now - x.when) / 1000.0 + ' seconds downtime');
                     Server.interestTime = x.interestTime;
                     Server.clientState = x.clientState;
+                    Server.users = x.users || { };
+                    Server.currentClientID = x.currentClientID || { };
 
                     if (x.plugins) {
                         for (var pl in x.plugins) {
@@ -210,7 +214,7 @@ exports.start = function(host, port, database, init) {
 
         //TODO move to 'removed' db collection
 
-        var db = mongo.connect(databaseUrl, collections);
+        var db = mongo.connect(getDatabaseURL(), collections);
         db.obj.remove({id: objectID}, function(err, docs) {
             db.close();
 
@@ -224,7 +228,7 @@ exports.start = function(host, port, database, init) {
                 pub(objectRemoved(objectID));
 
                 //remove replies                
-                var db2 = mongo.connect(databaseUrl, collections);
+                var db2 = mongo.connect(getDatabaseURL(), collections);
                 db2.obj.remove({replyTo: objectID}, function(err, docs) {
                     db2.close();
                     
@@ -264,12 +268,12 @@ exports.start = function(host, port, database, init) {
         if (o._id)
             delete o._id;
 
-        if (o.modifiedAt == undefined)
+        if (o.modifiedAt === undefined)
             o.modifiedAt = o.createdAt;
 
         attention.notice(o, 0.1);
 
-        var db = mongo.connect(databaseUrl, collections);
+        var db = mongo.connect(getDatabaseURL(), collections);
         db.obj.update({id: o.id}, o, {upsert: true}, function(err) {
             if (err) {
                 nlog('notice: ' + err);
@@ -328,7 +332,7 @@ exports.start = function(host, port, database, init) {
             whenFinished(tags[uri]);
         }
         else {
-            var db = mongo.connect(databaseUrl, collections);
+            var db = mongo.connect(getDatabaseURL(), collections);
             db.obj.find({'id': uri}, function(err, docs) {
                 db.close();
                 if (err) {
@@ -344,7 +348,7 @@ exports.start = function(host, port, database, init) {
     }
 
     function getObjectsByAuthor(a, withObjects) {
-        var db = mongo.connect(databaseUrl, collections);
+        var db = mongo.connect(getDatabaseURL(), collections);
         db.obj.find({author: a}, function(err, docs) {
             if (err) {
                 nlog('getObjectsByAuthor: ' + err);
@@ -362,7 +366,7 @@ exports.start = function(host, port, database, init) {
     function getObjectsByTag(t, withObject, whenFinished) {
         //t can be a single string, or an array of strings
         
-        var db = mongo.connect(databaseUrl, collections);
+        var db = mongo.connect(getDatabaseURL(), collections);
         
         var oldClose = db.close;
         db.close = function() {
@@ -394,7 +398,7 @@ exports.start = function(host, port, database, init) {
 
     /*
      function getObjectsByTags(tags, withObjects) {
-     var db = mongo.connect(databaseUrl, collections);
+     var db = mongo.connect(getDatabaseURL(), collections);
      db.obj.find({ tag: { $in: tags } }, function(err, docs) {
      
      db.close();
@@ -411,7 +415,7 @@ exports.start = function(host, port, database, init) {
      */
 
     function getReport(lat, lon, whenStart, whenStop, withReport) {
-        var db = mongo.connect(databaseUrl, collections);
+        var db = mongo.connect(getDatabaseURL(), collections);
 
         var histogram = {};
         var numBins = 38;
@@ -469,7 +473,7 @@ exports.start = function(host, port, database, init) {
 
     function getTagCounts(whenFinished) {
 
-        var db = mongo.connect(databaseUrl, collections);
+        var db = mongo.connect(getDatabaseURL(), collections);
         db.obj.find(function(err, docs) {
             if (err) {
                 nlog('getTagCounts: ' + err);
@@ -506,7 +510,7 @@ exports.start = function(host, port, database, init) {
         Server.when = t;
 
 
-        var db = mongo.connect(databaseUrl, collections);
+        var db = mongo.connect(getDatabaseURL(), collections);
 
         db.obj.save(Server, function(err, saved) {
             db.close();
@@ -604,12 +608,12 @@ exports.start = function(host, port, database, init) {
     io.set('log level', 1);                    // reduce logging
     io.set('transports', [// enable all transports (optional if you want flashsocket)
         'websocket'
-                //  , 'flashsocket'
+                , 'flashsocket'
                 , 'htmlfile'
                 , 'xhr-polling'
                 , 'jsonp-polling'
     ]);
-    io.set("polling duration", 10);
+    io.set("polling duration", 5);
 
     var cookieParser = expressm.cookieParser('netention0')
             , sessionStore = new connect.middleware.session.MemoryStore();
@@ -661,32 +665,32 @@ exports.start = function(host, port, database, init) {
     });
 
     passport.use(new OpenIDStrategy({
-        returnURL: 'http://' + Server.host + '/auth/openid/return',
-        realm: 'http://' + Server.host + '/'
-    },
-    function(identifier, done) {
+            returnURL: 'http://' + Server.host + '/auth/openid/return',
+            realm: 'http://' + Server.host + '/'
+        },
+        function(identifier, done) {
         //console.log(identifier);
         //console.log(done);
-        done(null, {id: identifier});
+             done(null, {id: identifier});
         // User.findOrCreate({ openId: identifier }, function(err, user) {
         // done(err, user);
         // });
-    }
+        }
     ));
 
     passport.use(new GoogleStrategy({
-        returnURL: 'http://' + Server.host + '/auth/google/return',
-        realm: 'http://' + Server.host + '/'
-    },
-    function(identifier, profile, done) {
-        //console.log(identifier);
-        //console.log(done);
-        //console.log('google', profile);
-        done(null, {id: identifier, email: profile.emails[0].value});
-        // User.findOrCreate({ openId: identifier }, function(err, user) {
-        // done(err, user);
-        // });
-    }
+            returnURL: 'http://' + Server.host + '/auth/google/return',
+            realm: 'http://' + Server.host + '/'
+        },
+        function(identifier, profile, done) {
+            //console.log(identifier);
+            //console.log(done);
+            //console.log('google', profile);
+            done(null, {id: identifier, email: profile.emails[0].value});
+            // User.findOrCreate({ openId: identifier }, function(err, user) {
+            // done(err, user);
+            // });
+        }
     ));
         
     express.get('/anonymous', function(req,res) {
@@ -696,6 +700,9 @@ exports.start = function(host, port, database, init) {
         //res.redirect('/');  
         
         res.sendfile('./client/index.html');
+    });
+    express.get('/client_configuration.js', function(req, res) {        
+        res.sendfile("./client.js");        
     });
 
     // Accept the OpenID identifier and redirect the user to their OpenID
@@ -732,7 +739,7 @@ exports.start = function(host, port, database, init) {
     
     var staticContentConfig = {
         //PRODUCTION: oneYear
-        maxAge: oneYear
+        maxAge: 0
     };
     
     //Gzip compression
@@ -763,7 +770,45 @@ exports.start = function(host, port, database, init) {
         });
     });
     
-   function getClientID(session) {
+    function getSessionKey(session) {
+        var key;
+        if (session)
+            if (session.passport)
+                if (session.passport.user) {
+                    key = session.passport.user;
+               }
+       if (key) {
+           return key;
+       }
+       return null;        
+    }
+    
+    function getCurrentClientID(session) {
+        var key = getSessionKey(session);
+        var cid;
+        if (key) {
+            cid = Server.currentClientID[key];
+            if (!cid) {
+                cid = util.uuid();
+                Server.users[key] = [ cid ];
+                Server.currentClientID[key] = cid;
+            }
+        }
+        else {
+            return '';
+        }
+    }
+    function getClientSelves(session) {
+        var key = getSessionKey(session);
+        if (key) {
+            var selves = Server.users[key];
+            return selves;
+        }
+        else {
+            return [];
+        }
+    }
+   /*function getClientID(session) {
         var cid = '';
         var key;
         if (session)
@@ -774,7 +819,7 @@ exports.start = function(host, port, database, init) {
        if (key)
            cid = util.MD5(key);
        return cid;
-    }                
+    } */               
     
 
     express.get('/', function(req, res) {
@@ -788,7 +833,7 @@ exports.start = function(host, port, database, init) {
         if (!anonymous)
             res.cookie('authenticated', isAuthenticated(req.session));
         
-        res.cookie('clientID', getClientID(req.session));
+        res.cookie('clientID', getCurrentClientID(req.session));
         res.sendfile('./client/index.html');
     });
     
@@ -818,7 +863,7 @@ exports.start = function(host, port, database, init) {
     });
     express.get('/object/latest/:num/json', function(req, res) {
         var n = parseInt(req.params.num);
-        var db = mongo.connect(databaseUrl, collections);
+        var db = mongo.connect(getDatabaseURL(), collections);
         db.obj.find().limit(n).sort({modifiedAt: -1}, function(err, objs) {
             removeMongoID(objs);
             sendJSON(res, objs);
@@ -826,7 +871,7 @@ exports.start = function(host, port, database, init) {
         });
     });
     
-    function getPlan(withPlan) {
+    function getPlans(withPlan) {
         var allPlan = [];
         var now = Date.now();
         getObjectsByTag('User', function(x) {
@@ -852,7 +897,7 @@ exports.start = function(host, port, database, init) {
     }
     
     express.get('/users/plan', function(req, res) {
-        getPlan(function(p) {
+        getPlans(function(p) {
            sendJSON(res, p); 
         });
     });
@@ -983,7 +1028,7 @@ exports.start = function(host, port, database, init) {
     });
 
     express.get('/state', function(req, res) {
-        sendJSON(res, Server);
+        sendJSON(res, _.omit(Server, ['users','currentClientID']));
     });
     express.get('/attention', function(req, res) {
         getTagCounts(function(x) {
@@ -1103,13 +1148,11 @@ exports.start = function(host, port, database, init) {
                         targets[i] = '';
             }
         }
+        targets['*'] = ''; //the global channel
 
         for (var t in targets) {
             io.sockets.socket(t).emit('notice', message);
         }
-
-
-        io.sockets.in('*').emit('notice', message);
 
         for (var p in plugins) {
             var pp = plugins[p];
@@ -1202,31 +1245,43 @@ exports.start = function(host, port, database, init) {
 
         });
 
-
-        socket.on('connectSelf', function(cid) {
+        socket.on('become', function(targetID, onSuccess, onFail) {
+           onFail(); 
+        });
+        socket.on('connect', function(cid, callback) {
             var key = null, email = null;
-            if (session)
-                if (session.passport)
+            if (session) {
+                if (session.passport) {
                     if (session.passport.user) {
                         key = session.passport.user.id;
                         email = session.passport.user.email;
-                        /*if (session.passport.user.clientID)
-                         cid = session.passport.user.clientID;
-                         else {
-                         session.passport.user.clientID
-                         }*/
                     }
-
-            if (key)
-                cid = util.MD5(key);
-            else if (!cid) {
+                }
+            }
+            if (!key) {
                 cid = util.uuid();
             }
-            cid = getClientID(session);
+            else {
+                if (!cid) {
+                    //Authenticated but no clientID specified
+                    cid = getCurrentClientID(session);
+                }    
+                else {
+                    //Authenticated and clientID specified, check that the user actually owns that clientID
+                    var possibleClients = getClientIDs(session);
+                    if (_.contains(possibleClients, cid)) {
+                        setClientID(session, cid);
+                    }
+                    else {
+                        cid = getCurrentClientID(session);
+                    }
+                }                
+            }
+            
 
             nlog('connect: ' + cid + ', ' + key);
             socket.set('clientID', cid);
-            socket.emit('setClientID', cid, key);
+            socket.emit('setClientID', cid, key, getClientSelves(session));
 
             //share server information
             socket.emit('setServer', Server.name, Server.description);
@@ -1243,6 +1298,7 @@ exports.start = function(host, port, database, init) {
             getObjectsByAuthor(cid, function(uo) {
                 socket.emit('notice', uo);
             });
+            
         });
 
         socket.on('updateSelf', function(s, getObjects) {
@@ -1271,7 +1327,7 @@ exports.start = function(host, port, database, init) {
          */
 
         socket.on('getObjects', function(query, withObjects) {
-            var db = mongo.connect(databaseUrl, collections);
+            var db = mongo.connect(getDatabaseURL(), collections);
             db.obj.find(function(err, docs) {
                 removeMongoID(docs);
                 withObjects(docs);

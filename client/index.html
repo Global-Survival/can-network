@@ -72,7 +72,9 @@
                 <!-- <li><button id="FocusToggleButton" title="Toggle Fullsize" ><i class="icon-resize-full"></i></button></li> -->
                 <!-- <li><button id='slides'  title="Slides"><i class="icon-play"></i></button></li> -->
 
-                <div id="identity" class="ui-widget-content ui-corner-all shadow"><span id="welcome">Now:<a class="brand" href="#"></a></span> <a id="logout" class="logout ui-widget-content ui-corner-all" href="logout">Logout</a></div>
+                <div id="identity" class="ui-widget-content ui-corner-all shadow">
+                    <span id="welcome"><button id="SelectProfileButton" title="Select Profile">Now</button>:<a class="brand" href="#"></a></span>
+                    <a id="logout" class="logout ui-widget-content ui-corner-all" href="logout">Logout</a></div>
 
                 <div id="ViewControls">
                     <form>
@@ -185,15 +187,13 @@
     <script src="lib/jqtree/tree.jquery.js"></script>
     
     <script src="util.js" type="text/javascript"></script> 
-    <script src="object.js" type="text/javascript"></script> 
-    <script src="map.js" type="text/javascript"></script> 
-    <script src="icons.js" type="text/javascript"></script> 
-    <script src="ontosearch.js" type="text/javascript"></script> 
+    <script src="widget.object.js" type="text/javascript"></script> 
+    <script src="widget.map.js" type="text/javascript"></script> 
+    <script src="search.js" type="text/javascript"></script> 
     
-    <!-- <script src="example_object.js" type="text/javascript"></script>  -->
     <!-- <script src="lib/masonry/jquery.masonry.min.js" type="text/javascript"></script>  -->
     
-    <script src="config.js" type="text/javascript"></script> 
+    <script src="client_configuration.js" type="text/javascript"></script> 
     <script src="view.map.js" type="text/javascript"></script> 
     <script src="view.grid.js" type="text/javascript"></script> 
     <script src="view.list.js" type="text/javascript"></script> 

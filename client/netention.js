@@ -142,11 +142,11 @@ function netention(f) {
             
             focus : function() { 
                 return this.get('focus');
-            },            
+            },
+
             layer : function() { 
                 return this.get('layer');
             },            
-            
             
             myself: function() { 
                 var o = this.getSelf(this.id()); 
@@ -160,30 +160,41 @@ function netention(f) {
                 return o;
             },
             
-            connect: function() {
+            become: function(targetID, success, failure) {
+                this.socket.emit('become', targetID, success, failure);
+                
+                //if failure:                 self.deleteObject(o);
+
+            },
+                    
+            connect: function(targetID) {
+                if (!targetID)
+                    targetID = this.get('clientID');
+                
                 var socket = io.connect('/', {
-                    transports: [ 'websocket', 'htmlfile', 'xhr-multipart', 'xhr-polling', 'jsonp-polling' ],
-                    reconnect: true,
+                    'transports': [ 'websocket', 'flashsocket', 'htmlfile', 'xhr-multipart', 'xhr-polling', 'jsonp-polling' ],
+                    'reconnect': true,
                     'try multiple transports': true                    
                 });
                     
                 var that = this;
 
                 function init() {
-                    socket.emit('connectSelf', that.get('clientID'));
+                    socket.emit('connect', targetID);
                     socket.emit('subscribe', 'User', true);                    
                 }
                 
                 socket.on('reconnect', function() {
                      /*$.pnotify({
-                        title: 'Reconnected'
+                                title: 'Reconnected'
 
-                     }); */
+                             }); */
                      init();
                 });                
                 
-                socket.on('setClientID', function (cid, key) {
+                socket.on('setClientID', function (cid, key, otherSelves) {
                      that.set('authorized', key);
+                     that.set('otherSelves', otherSelves);
                      that.saveLocal();
                      /*$.pnotify({
                                 title: 'Connected',
@@ -191,19 +202,15 @@ function netention(f) {
                             });*/
                 });
                 
-                /*socket.on('reconnect', function () {
-                     //that.connectSelf();
-                });*/
-                
                 socket.on('notice', function(n) {
                     that.notice(n);   
                 });
+                
             	socket.on('addTags', function(t, p) {
                     that.addProperties(p);
                     that.addTags(t);                                  
             	});
-                
-                
+                                
                 init();
                 
                 this.socket = socket;
@@ -237,8 +244,8 @@ function netention(f) {
                 var tt = t;
                 var xx = t.properties;
                 /*if (ty[t.uri]!=undefined) {
-                    tt = _.extend(ty[t.uri], t);
-                }*/
+                         tt = _.extend(ty[t.uri], t);
+                      }*/
                 ty[t.uri] = tt;
 	
 	        if (xx) {
@@ -248,9 +255,9 @@ function netention(f) {
                         propertyIDs = [];
                         for (var tp in xx) {
                             var c = ty[t.uri].properties[tp];
-    			            p[tp] = c;
+    			    p[tp] = c;
                             propertyIDs.push(tp);
-    		            }
+    		        }
                     }
                     
                     t.properties = propertyIDs;

@@ -26,7 +26,7 @@ function getTagIcon(t) {
 function newPopupObjectView(_x) {
     var x;
     if (typeof(_x) == "string") 
-        x = window.self.getObject(_x);
+        x = self.getObject(_x);
     else
         x = _x;    
     
@@ -60,7 +60,7 @@ function getAvatarURL(email) {
 function newTagButton(t) {
     var ti = null;
     if (!t.uri) {
-        var tagObject = window.self.getTag(t);
+        var tagObject = self.getTag(t);
         if (tagObject)        
             t = tagObject;
     }
@@ -299,8 +299,8 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
         tagLabel.hide();    
         type = tag;
     }
-    else if (window.self.properties()[tag]!=undefined) {
-        var prop = window.self.properties()[tag];
+    else if (self.properties()[tag]!=undefined) {
+        var prop = self.properties()[tag];
         type = prop.type;
         tagLabel.html( prop.name );
     }
@@ -495,8 +495,8 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
             //http://jqueryui.com/autocomplete/#default
             //http://jqueryui.com/autocomplete/#categories
             var data = [ ];
-            for (var k in window.self.objects()) {
-                var v = window.self.object(k);
+            for (var k in self.objects()) {
+                var v = self.showObject(k);
                 if (value == k) {
                     ts.val(v.name);
                     ts.result = value;
@@ -524,7 +524,7 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
             });
             
             //TODO handle specific tag restriction
-            /*window.self.objectsWithTag(t) {
+            /*self.objectsWithTag(t) {
                 
             }*/
             
@@ -544,13 +544,13 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
         }
     }    
     else if (tag) {        
-        var TAG = window.self.tags()[tag];
+        var TAG = self.tags()[tag];
         if (!TAG) {
             d.append('Unknown tag: ' + tag);            
         }
         else {
             var ti = getTagIcon(tag);
-            if (window.self.tags()[tag]!=undefined) {
+            if (self.tags()[tag]!=undefined) {
                 tagLabel.html( TAG.name );        
             }
             if (ti) {
@@ -564,7 +564,7 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
                 tagLabel.append(pb);*/
                 
                 function getTagProperties(t) {
-                    var TT = window.self.tags()[t];
+                    var TT = self.tags()[t];
                     if (!TT) return [];
                     if (!TT.properties) return [];
                     return TT.properties;
@@ -576,7 +576,7 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
                 for (var i = 0; i < pp.length; i++) {
                     (function() {
                         var ppv = pp[i];
-                        var PP = window.self.getProperty(ppv);
+                        var PP = self.getProperty(ppv);
                         var appv = $('<a href="#" title="' + PP.type +'">' + PP.name + '</a>');
                         var defaultValue = '';
                         appv.click(function() {
@@ -595,7 +595,7 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
             if (t.value) {
                 for (var v = 0; v < t.value.length; v++) {
                     var vv = t.value[v];
-                    var pv = window.self.getProperty(vv.id);
+                    var pv = self.getProperty(vv.id);
                     //var pe = newPropertyEdit(vv, pv);
                     var pe = renderTagSection(t, v, vv, editable);
                     //this.propertyEdits.push(pe);
@@ -614,7 +614,7 @@ function newPropertyView(vv) {
         return ('<li>' + vv.id + ': ' + vv.value + '</li>');
         
     if (p.type == 'object') {
-        var o = self.object(vv.value) || { name: vv.value };
+        var o = self.showObject(vv.value) || { name: vv.value };
         
         return ('<li>' + p.name + ': <a href="javascript:newPopupObjectView(\'' + vv.value + '\')">' + o.name + '</a></li>');
     }
@@ -941,8 +941,6 @@ function newTagTree(param) {
     var onSelectionChange = param.onSelectionChange;
     var addToTree = param.addtoTree;
     var newTagLayerDiv = param.newTagDiv;
-    
-    var self = window.self;
     
     a.html('');    
     
