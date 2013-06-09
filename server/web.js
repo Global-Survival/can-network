@@ -788,14 +788,20 @@ exports.start = function(host, port, dbURL, init) {
         var key = getSessionKey(session);
         var cid;
         if (key) {
-            if (Server.currentClientID)
+            if (Server.currentClientID) {
                 cid = Server.currentClientID[key];
-            else
+            }
+            else {
+                Server.currentClientID = { };
+                Server.users = { };
                 cid = null
+            }
+            
             if (!cid) {
                 cid = util.uuid();
                 Server.users[key] = [ cid ];
                 Server.currentClientID[key] = cid;
+                saveState();
             }
         }
         else {
