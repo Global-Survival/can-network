@@ -177,7 +177,7 @@ function netention(f) {
                             
                             s.connect(target, function() {
                                 var os = self.get('otherSelves');
-                                os.push(nextID);
+                                os.push('Self-' + nextID);
                                 self.set('otherSelves', _.unique(os));
                                 self.saveLocal();
                                 
@@ -242,7 +242,7 @@ function netention(f) {
                 socket.on('setClientID', function (cid, key, otherSelves) {
                      that.set('clientID', cid.substring(5));
                      that.set('authorized', key);
-                     that.set('otherSelves', _.unique(otherSelves));
+                     that.set('otherSelves', otherSelves);
                      that.saveLocal();
                      /*$.pnotify({
                                 title: 'Connected',

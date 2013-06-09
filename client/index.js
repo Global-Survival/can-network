@@ -277,7 +277,9 @@ function initUI() {
             deleteButton.attr('disabled', 'disabled');
         }
         else {
-            _.each(otherSelves, function(s) {
+            console.log(otherSelves);
+            for (var i = 0; i < otherSelves.length; i++) {
+                var s = otherSelves[i];
                 if (s.indexOf('Self-')==0)
                     s = s.substring(5);
                 var o = self.getSelf(s);
@@ -290,7 +292,7 @@ function initUI() {
                 }
                 
                 selector.append('<option value="' + s + '">' + n + '</option>');
-            });
+            }
         }
         
         d.append(selector);
