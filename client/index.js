@@ -255,42 +255,40 @@ function initUI() {
         });
     });
     $('#SelectProfileButton').click(function() {
-        var d = newPopup('Select Proflie');
+        var d = newPopup('Profiles', {width: '450px' });
                 
-        function closeDialgog() {
+        function closeDialog() {
             d.dialog('close');            
         }
         
         function become(u) {
-            self.become(u, function() {
-                //success
-                $.pnotify( {
-                    title: 'Switched profile',
-                    text: u
-                });
-            }, function() {
-                //failure
-                $.pnotify( {
-                    title: 'Unable to switched profile',
-                    text: u,
-                    type: 'Error'
-                });
-                closeDialog();
-            });                            
+            self.become(u);             
         }
         
         var selector = $('<select/>');
-        var okButton = $('<button>Become</button>');
+        var okButton = $('<button><b>Become</b></button>');
+        var deleteButton = $('<button>Delete</button>');
         
         var otherSelves = self.get('otherSelves');
-        if (otherSelves.length == 0) {
+        if (!otherSelves) {
             selector.append('<option>' + self.myself().name + '</option>');
             selector.attr('disabled', 'disabled');
-            //okButton.attr('disabled', 'disabled');
+            okButton.attr('disabled', 'disabled');
+            deleteButton.attr('disabled', 'disabled');
         }
         else {
-            selector.append('<option>a</option>');
-            selector.append('<option>b</option>');
+            _.each(otherSelves, function(s) {
+                var o = self.getSelf(s);
+                var n = s;
+                if (o) {                    
+                    n = o.name;
+                }
+                else {
+                    console.log('unknown self: ' + s);
+                }
+                
+                selector.append('<option value="' + s + '">' + n + '</option>');
+            });
         }
         
         d.append(selector);
@@ -299,6 +297,7 @@ function initUI() {
         okButton.click(function() {
             closeDialog();
         });
+        d.append(deleteButton);
         
         
         d.append('<hr/>');
@@ -309,13 +308,10 @@ function initUI() {
             var u = uuid();
             var uo = 'Self-' + u;
             var o = objNew(uo, name);
-            o.author = self.id();
-            self.pub(o, function() {
-                closeDialog();
-                alert('Unable to create new profile.');
-            }, function() {
-                become(u);
-            });
+            objAddTag(o, 'Human');
+            objAddTag(o, 'User');
+            become(o);
+            closeDialog();
         });
         d.append(newButton);        
     });
@@ -423,14 +419,18 @@ function initUI() {
 var lastView = null;
 var currentView = null;
 
+function updateBrand() {
+    $('.brand').html(self.myself().name);
+
+    var avatarURL = getAvatarURL(self.myself().email);
+    $('#avatar-img').attr('src', avatarURL);
+    $('#toggle-img').attr('src', avatarURL);    
+}
+
 function _updateView(force) {
     var s = window.self;
 
-    $('.brand').html(s.myself().name);
-
-    var avatarURL = getAvatarURL(s.myself().email);
-    $('#avatar-img').attr('src', avatarURL);
-    $('#toggle-img').attr('src', avatarURL);
+    updateBrand();
 
     s.saveLocal();
 

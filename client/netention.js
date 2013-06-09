@@ -160,28 +160,76 @@ function netention(f) {
                 return o;
             },
             
-            become: function(targetID, success, failure) {
-                this.socket.emit('become', targetID, success, failure);
-                
-                //if failure:                 self.deleteObject(o);
+            become: function(target) {
+                var s = this;
+                if (typeof(target)!=="string") {
+                    this.notice(target);
+                }
+                this.socket.emit('become', target, function(nextID) {
+                    if (nextID) {
+                        $.pnotify( {
+                            title: 'Switched profile',
+                            text: nextID
+                        });
+                        later(function() {
+                            if (nextID.indexOf('Self-') === 0)
+                                nextID = nextID.substring(5);
+                            
+                            s.connect(target, function() {
+                                var os = self.get('otherSelves');
+                                os.push(nextID);
+                                os = _.unique(os);
+                                self.set('otherSelves', os);
+                                self.saveLocal();
+                                
+                                updateBrand(); //TODO use backbone Model instead of global fucntion                                
+                            });                        
+                        });
+                    }
+                    else {
+                        $.pnotify( {
+                            title: 'Unable to switch profile',
+                            text: err + ' ' + (typeof(target)==="string" ? target : target.id),
+                            type: 'Error'
+                        });
+                        
+                    }
+                });
 
             },
                     
-            connect: function(targetID) {
-                if (!targetID)
-                    targetID = this.get('clientID');
+            connect: function(targetID, whenConnected) {
+                var suppliedObject = null;
+                if (targetID) {
+                    if (typeof(targetID)!=="string") {
+                        suppliedObject = targetID;
+                        targetID = suppliedObject.id;
+                    }
+                }
                 
-                var socket = io.connect('/', {
-                    'transports': [ 'websocket', 'flashsocket', 'htmlfile', 'xhr-multipart', 'xhr-polling', 'jsonp-polling' ],
-                    'reconnect': true,
-                    'try multiple transports': true                    
-                });
+                if (!targetID) {
+                    targetID = this.get('clientID');
+                }
+                else {                
+                    self.set('clientID', targetID);
+                }
+                
+                    
+                var socket = this.socket
+                if (!socket) {
+                    socket = io.connect('/', {
+                        'transports': [ 'websocket', 'flashsocket', 'htmlfile', 'xhr-multipart', 'xhr-polling', 'jsonp-polling' ],
+                        'reconnect': true,
+                        'try multiple transports': true                    
+                    });
+                }
+                
                     
                 var that = this;
 
                 function init() {
                     socket.emit('connect', targetID);
-                    socket.emit('subscribe', 'User', true);                    
+                    socket.emit('subscribe', 'User', true);     
                 }
                 
                 socket.on('reconnect', function() {
@@ -193,6 +241,7 @@ function netention(f) {
                 });                
                 
                 socket.on('setClientID', function (cid, key, otherSelves) {
+                     that.set('clientID', cid.substring(5));
                      that.set('authorized', key);
                      that.set('otherSelves', otherSelves);
                      that.saveLocal();
@@ -200,6 +249,9 @@ function netention(f) {
                                 title: 'Connected',
                                 text: that.myself().name + ' (' + that.get('clientID').substring(0,4) + ')'
                             });*/
+                    if (whenConnected) {
+                        whenConnected();
+                    }
                 });
                 
                 socket.on('notice', function(n) {
@@ -214,7 +266,7 @@ function netention(f) {
                 init();
                 
                 this.socket = socket;
-                
+                                
                 return socket;    
             },
             

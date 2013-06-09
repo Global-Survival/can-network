@@ -275,11 +275,11 @@ exports.start = function(host, port, dbURL, init) {
 
         var db = mongo.connect(getDatabaseURL(), collections);
         db.obj.update({id: o.id}, o, {upsert: true}, function(err) {
+            db.close();
             if (err) {
                 nlog('notice: ' + err);
+                return;
             }
-
-            db.close();
 
             if (o.id) {
                 if (o.id.indexOf) {
@@ -288,6 +288,7 @@ exports.start = function(host, port, dbURL, init) {
                     }
                 }
             }
+            
             if (whenFinished)
                 whenFinished();
         });
@@ -780,7 +781,7 @@ exports.start = function(host, port, dbURL, init) {
        if (key) {
            return key;
        }
-       return null;        
+       return 'null';         //anonymous?
     }
     
     function getCurrentClientID(session) {
@@ -798,8 +799,35 @@ exports.start = function(host, port, dbURL, init) {
             return '';
         }
     }
-    function getClientSelves(session) {
+    function addClientSelf(session, uid) {
         var key = getSessionKey(session);
+        if (!key) {
+            key = 'anonymous';
+        }
+        if (!Server.users)
+            Server.users = { };
+        
+        var ss = Server.users[key];
+        if (!ss) {
+            Server.users[key] = [uid];
+        }
+        else {
+            Server.users[key].push(uid);
+        }
+        
+    }
+    function getClientSelves(session) {
+        if (!Server.users)
+            return Server.users = { };
+        
+        if (!session) {
+            if (!Server.users['anonymous']) {
+                Server.users['anonymous'] = [ ];
+            }
+            return Server.users['anonymous'];
+        }
+        
+        var key = getSessionKey(session);        
         if (key) {
             var selves = Server.users[key];
             return selves;
@@ -1127,8 +1155,8 @@ exports.start = function(host, port, dbURL, init) {
 
     var channelListeners = {};
 
-    function broadcast(socket, message) {
-        notice(message);
+    function broadcast(socket, message, whenFinished) {
+        notice(message, whenFinished);
 
 
         if (socket)
@@ -1165,8 +1193,8 @@ exports.start = function(host, port, dbURL, init) {
     }
     that.broadcast = broadcast;
 
-    function pub(message) {
-        broadcast(null, message);
+    function pub(message, whenFinished) {
+        broadcast(null, message, whenFinished);
     }
     that.pub = pub;
 
@@ -1245,8 +1273,56 @@ exports.start = function(host, port, dbURL, init) {
 
         });
 
-        socket.on('become', function(targetID, onSuccess, onFail) {
-           onFail(); 
+        socket.on('become', function(target, onResult) {
+            var targetObjectID = target;
+            var targetObject = target;
+            if (typeof(target)==="string") {
+                targetObjectID = 'Self-' + target; 
+                targetObject = null;
+            }                      
+            else {
+                targetObjectID = target.id;
+            }
+            
+            function pubAndSucceed(x) {
+                pub(x, function() {
+                    addClientSelf(session, targetObjectID);
+                    saveState();
+                    if (onResult)
+                        onResult(targetObjectID);           
+                });                
+            }
+            
+            var sessionKey = getSessionKey(session);
+            var keyRequired = (Server.permissions['authenticate_to_create_profiles']!=false);
+            if (!targetObject) { 
+                var selves = getClientSelves(session);
+                if (_.contains(selves, target)) {
+                    if (onResult)
+                        onResult(targetObjectID);
+                }
+                else {
+                    if (keyRequired) {
+                        if (onResult)
+                            onResult(null); //not the author
+                    }
+                    else {
+                        pubAndSucceed(targetObject);
+                    }
+                }
+                
+            }
+            else {
+
+                if ((keyRequired && sessionKey) || (!keyRequired)) {
+                    pubAndSucceed(targetObject);
+                }
+                else {
+                    if (onResult)
+                        onResult();
+                }
+            }
+
         });
         socket.on('connect', function(cid, callback) {
             var key = null, email = null;
@@ -1259,7 +1335,9 @@ exports.start = function(host, port, dbURL, init) {
                 }
             }
             if (!key) {
-                cid = util.uuid();
+                if (!cid) {
+                    cid = util.uuid();
+                }
             }
             else {
                 if (!cid) {

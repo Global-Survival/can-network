@@ -807,6 +807,7 @@ function renderObjectSummary(x, onRemoved, r, depthRemaining) {
 
 	if (x.name) {
         var axn = $('<a href="#">' + xn + '</a>');
+        axn.attr('title', x.id);
         axn.click(function() {
            newPopupObjectView(x.id); 
         });
