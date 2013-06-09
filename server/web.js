@@ -822,7 +822,9 @@ exports.start = function(host, port, dbURL, init) {
         }
         else {
             Server.users[key].push(uid);
+            
         }
+        
         
     }
     function getClientSelves(session) {

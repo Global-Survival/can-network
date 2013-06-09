@@ -178,8 +178,7 @@ function netention(f) {
                             s.connect(target, function() {
                                 var os = self.get('otherSelves');
                                 os.push(nextID);
-                                os = _.unique(os);
-                                self.set('otherSelves', os);
+                                self.set('otherSelves', _.unique(os));
                                 self.saveLocal();
                                 
                                 updateBrand(); //TODO use backbone Model instead of global fucntion                                
@@ -243,7 +242,7 @@ function netention(f) {
                 socket.on('setClientID', function (cid, key, otherSelves) {
                      that.set('clientID', cid.substring(5));
                      that.set('authorized', key);
-                     that.set('otherSelves', otherSelves);
+                     that.set('otherSelves', _.unique(otherSelves));
                      that.saveLocal();
                      /*$.pnotify({
                                 title: 'Connected',
