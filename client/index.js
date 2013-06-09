@@ -286,7 +286,7 @@ function initUI() {
                     n = o.name;
                 }
                 else {
-                    console.log('unknown self: ' + s);
+                    //console.log('unknown self: ' + s);
                 }
                 
                 selector.append('<option value="' + s + '">' + n + '</option>');

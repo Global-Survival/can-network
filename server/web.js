@@ -788,7 +788,10 @@ exports.start = function(host, port, dbURL, init) {
         var key = getSessionKey(session);
         var cid;
         if (key) {
-            cid = Server.currentClientID[key];
+            if (Server.currentClientID)
+                cid = Server.currentClientID[key];
+            else
+                cid = null
             if (!cid) {
                 cid = util.uuid();
                 Server.users[key] = [ cid ];
@@ -1348,7 +1351,7 @@ exports.start = function(host, port, dbURL, init) {
                     //Authenticated and clientID specified, check that the user actually owns that clientID
                     var possibleClients = getClientIDs(session);
                     if (_.contains(possibleClients, cid)) {
-                        setClientID(session, cid);
+                        socket.emit('setClientID', cid, key, getClientSelves(session));
                     }
                     else {
                         cid = getCurrentClientID(session);
