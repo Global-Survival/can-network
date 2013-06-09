@@ -278,6 +278,8 @@ function initUI() {
         }
         else {
             _.each(otherSelves, function(s) {
+                if (s.indexOf('Self-')==0)
+                    s = s.substring(5);
                 var o = self.getSelf(s);
                 var n = s;
                 if (o) {                    
