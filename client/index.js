@@ -277,7 +277,6 @@ function initUI() {
             deleteButton.attr('disabled', 'disabled');
         }
         else {
-            console.log(otherSelves);
             for (var i = 0; i < otherSelves.length; i++) {
                 var s = otherSelves[i];
                 if (s.indexOf('Self-')==0)
@@ -299,6 +298,8 @@ function initUI() {
         
         d.append(okButton);
         okButton.click(function() {
+            var id = selector.val();
+            become(self.getSelf(id));
             closeDialog();
         });
         d.append(deleteButton);
@@ -313,7 +314,7 @@ function initUI() {
             var uo = 'Self-' + u;
             var o = objNew(uo, name);
             objAddTag(o, 'Human');
-            objAddTag(o, 'User');
+            objAddTag(o, 'User');            
             become(o);
             closeDialog();
         });
