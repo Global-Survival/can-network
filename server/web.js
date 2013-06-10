@@ -821,10 +821,12 @@ exports.start = function(host, port, dbURL, init) {
             Server.users[key] = [uid];
         }
         else {
-            Server.users[key].push(uid);
-            
+            Server.users[key].push(uid);            
         }
         
+        //HACK clean users?
+        
+        saveState();       
         
     }
     function getClientSelves(session) {
