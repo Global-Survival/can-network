@@ -1169,7 +1169,6 @@ exports.start = function(host, port, dbURL, init) {
     function broadcast(socket, message, whenFinished) {
         notice(message, whenFinished);
 
-
         if (socket)
             nlog(socket.clientID + ' broadcast: ' + JSON.stringify(message, null, 4));
 
@@ -1187,11 +1186,12 @@ exports.start = function(host, port, dbURL, init) {
                         targets[i] = '';
             }
         }
-        targets['*'] = ''; //the global channel
+
 
         for (var t in targets) {
             io.sockets.socket(t).emit('notice', message);
         }
+        io.sockets.in('*').emit('notice', message);
 
         for (var p in plugins) {
             var pp = plugins[p];

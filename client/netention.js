@@ -243,9 +243,7 @@ function netention(f) {
                 else {                
                     self.set('clientID', targetID);
                 }
-                
-                console.log(targetID);
-                    
+                                    
                 var socket = this.socket
                 if (!socket) {
                     socket = io.connect('/', {
@@ -272,9 +270,10 @@ function netention(f) {
                 });                
                 
                 socket.on('setClientID', function (cid, key, otherSelves) {
-                     that.set('clientID', cid.substring(5));
+                     if (cid)
+                        that.set('clientID', cid.substring(5));
                      that.set('authorized', key);
-                     that.set('otherSelves', otherSelves);
+                     that.set('otherSelves', _.unique(otherSelves));
                      that.saveLocal();
                      /*$.pnotify({
                                 title: 'Connected',

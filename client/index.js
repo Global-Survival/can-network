@@ -315,13 +315,15 @@ function initUI() {
         var newButton = $('<button>New Profile...</button>');
         newButton.click(function() {
             var name = prompt("New Profile Name", "Anonymous");
-            var u = uuid();
-            var uo = 'Self-' + u;
-            var o = objNew(uo, name);
-            objAddTag(o, 'Human');
-            objAddTag(o, 'User');            
-            become(o);
-            closeDialog();
+            if (name) {
+                var u = uuid();
+                var uo = 'Self-' + u;
+                var o = objNew(uo, name);
+                objAddTag(o, 'Human');
+                objAddTag(o, 'User');            
+                become(o);
+                closeDialog();
+            }
         });
         d.append(newButton);        
     });
