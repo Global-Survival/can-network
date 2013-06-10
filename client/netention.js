@@ -199,11 +199,11 @@ function netention(f) {
                             
                             s.connect(target, function() {
                                 var os = self.get('otherSelves');
-                                os.push('Self-' + self.id());
                                 os.push('Self-' + nextID);
                                 self.set('otherSelves', _.unique(os));
                                 self.saveLocal();
                                 
+                                s.trigger('change:attention');
                                 updateBrand(); //TODO use backbone Model instead of global fucntion                                
                             });                        
                         });
@@ -233,11 +233,18 @@ function netention(f) {
                 
                 if (!targetID) {
                     targetID = this.get('clientID');
+                    var os = this.get('otherSelves');
+                    if (os.length > 0) {
+                        if (!_.contains(os, 'Self_' + targetID)) {
+                             targetID = os[os.length-1];
+                        }
+                    }
                 }
                 else {                
                     self.set('clientID', targetID);
                 }
                 
+                console.log(targetID);
                     
                 var socket = this.socket
                 if (!socket) {

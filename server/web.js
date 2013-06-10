@@ -1345,28 +1345,26 @@ exports.start = function(host, port, dbURL, init) {
                     }
                 }
             }
-            if (!key) {
-                if (!cid) {
-                    cid = util.uuid();
-                }
-            }
-            else {
+            {
                 if (!cid) {
                     //Authenticated but no clientID specified
                     cid = getCurrentClientID(session);
+                    if (!cid) {
+                        var possibleClients = getClientSelves(session);
+                        if (possibleClients)
+                            cid = possibleClients[0];
+                    }
                 }    
                 else {
                     //Authenticated and clientID specified, check that the user actually owns that clientID
-                    var possibleClients = getClientIDs(session);
+                    var possibleClients = getClientSelves(session);
                     if (_.contains(possibleClients, cid)) {
-                        socket.emit('setClientID', cid, key, getClientSelves(session));
                     }
                     else {
-                        cid = getCurrentClientID(session);
+                        cid = possibleClients[0];
                     }
                 }                
-            }
-            
+            }            
 
             nlog('connect: ' + cid + ', ' + key);
             socket.set('clientID', cid);
