@@ -168,16 +168,15 @@ function netention(f) {
                 return this.get('layer');
             },            
             
-            myself: function() { 
-                var o = this.getSelf(this.id()); 
-                if (!o) {
+            myself: function() { return this.getSelf(this.id());  },
+                /*if (!o) {
                     o = objNew('Self-' + this.id(), 'Anonymous');
                     objAddTag(o, 'Human');
                     objAddTag(o, 'User');                    
                     this.setObject(o);
                 }
-                return o;
-            },
+                return o;*/
+            //},
             
             become: function(target) {
                 if (!target)
@@ -631,8 +630,9 @@ function netention(f) {
         s.saveLocal();
         //console.log('saved clientID: ' + s.get('clientID'));
         
-        s.connect();
-        f(s);	    
+        s.connect(function() {
+        });
+        f(s);
 		
 	
 }

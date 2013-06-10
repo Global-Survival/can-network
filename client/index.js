@@ -432,6 +432,9 @@ var lastView = null;
 var currentView = null;
 
 function updateBrand() {
+    if (!self.myself())
+        return;
+    
     $('.brand').html(self.myself().name);
 
     var avatarURL = getAvatarURL(self.myself().email);
@@ -801,7 +804,8 @@ $(document).ready(function() {
 
     //KML
     {        
-        delete self.layer().kml;
+        if (self.layer)
+            delete self.layer().kml;
         
         $("#KMLLayers input").change(function() {
            var t = $(this);

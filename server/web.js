@@ -1354,7 +1354,7 @@ exports.start = function(host, port, dbURL, init) {
                     if (!cid) {
                         var possibleClients = getClientSelves(session);
                         if (possibleClients)
-                            cid = possibleClients[0];
+                            cid = possibleClients[possibleClients.length-1];
                     }
                 }    
                 else {
@@ -1363,21 +1363,21 @@ exports.start = function(host, port, dbURL, init) {
                     if (_.contains(possibleClients, cid)) {
                     }
                     else {
-                        cid = possibleClients[0];
+                        cid = possibleClients[possibleClients.length-1];
                     }
                 }                
             }            
 
             nlog('connect: ' + cid + ', ' + key);
+            
+            
             socket.set('clientID', cid);
-            socket.emit('setClientID', cid, key, getClientSelves(session));
-
-            //share server information
+            socket.emit('setClientID', cid, key, getClientSelves(session) );
             socket.emit('setServer', Server.name, Server.description);
-
-            //share tags
-            //socket.emit('addTags', tags, properties);
-
+            
+            getObjectsByTag('User', function(o) {      
+                socket.emit('notice', o);
+            });
             getObjectsByTag('Tag', function(to) {
                 socket.emit('notice', to);
             });
