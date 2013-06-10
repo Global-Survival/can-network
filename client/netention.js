@@ -234,9 +234,11 @@ function netention(f) {
                 if (!targetID) {
                     targetID = this.get('clientID');
                     var os = this.get('otherSelves');
-                    if (os.length > 0) {
-                        if (!_.contains(os, 'Self_' + targetID)) {
-                             targetID = os[os.length-1];
+                    if (os) {
+                        if (os.length > 0) {
+                            if (!_.contains(os, 'Self_' + targetID)) {
+                                 targetID = os[os.length-1];
+                            }
                         }
                     }
                 }
