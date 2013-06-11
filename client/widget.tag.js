@@ -19,10 +19,15 @@ function newTagChooserWidget(selected, onFinished) {
         for (var i = 0; i < tags.length; i++)
             tagsCombo.append('<option>' + tags[i] + '</option>');
     };
+     
+    function onTagAdded(t) {
+        tags.push(t);
+        tagsCombo.update();
+    }
     
     function loadBrowser(w) {
         t.html('');
-        currentBrowser = w(selected);
+        currentBrowser = w(selected, onTagAdded);
         t.append(currentBrowser);        
     }
     
@@ -80,7 +85,7 @@ function newTagChooserWidget(selected, onFinished) {
     return d;
 }
 
-function newTreeBrowser(selected) {
+function newTreeBrowser(selected, onTagAdded) {
     var e = newDiv();
     e.addClass('SelfTimeTagTree');
     
@@ -103,7 +108,9 @@ function newTreeBrowser(selected) {
     
 }
 
-function newWikiBrowser(s) {
+function newWikiBrowser(selected, onTagAdded) {
+    console.log('onTagAdded', onTagAdded);
+    
     var b = $('<div/>');
     
     
@@ -148,15 +155,8 @@ s
             function newPopupButton(target) {
                 var p = $('<a href="#" title="Tag">+</a>');
                 p.click(function() {
-                    var d = newPopup(target, {width: 550});
-                    var tagBar = newTagBar(s, target);
-                    var saveButton = newTagBarSaveButton(s, target, tagBar, function() {
-                        d.dialog('close');
-                    });
-
-                    d.append(saveButton);        
-                    d.prepend(tagBar);
-
+                    if (onTagAdded)
+                        onTagAdded(target);
                 });
                 return p;
             }
@@ -185,8 +185,9 @@ s
                              gotoTag(target); 
                         });
                          
-                        if ((target.indexOf('Portal:')!=0) && (target.indexOf('Special:')!=0))
+                        if ((target.indexOf('Portal:')!=0) && (target.indexOf('Special:')!=0)) {
                             t.after(newPopupButton(target));
+                        }
                     }
                    }
                });

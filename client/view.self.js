@@ -174,6 +174,16 @@ function getKnowledgeCode(s, userid) {
     return JSON.stringify(tags,null,0);
 }
 
+function onWikiTagAdded(target) {
+    var d = newPopup(target, {width: 550});
+    var tagBar = newTagBar(self, target);
+    var saveButton = newTagBarSaveButton(self, target, tagBar, function() {
+        d.dialog('close');
+    });
+
+    d.append(saveButton);        
+    d.prepend(tagBar);
+}
 
 function newSelfTagList(s, user, c) {
 
@@ -247,7 +257,7 @@ function newSelfTagList(s, user, c) {
             if (own) {
                 addLink.click(function() {
                     //TODO make tag browser
-                    c.html(newWikiBrowser(s));           
+                    c.html(newWikiBrowser([], onWikiTagAdded));           
                 });
             }
             else {
@@ -328,7 +338,7 @@ function newSelfSummary(s, user, content) {
     if (editable) {
         var tagButton = $('<button title="Add tags to describe your self"><b>+ Tag</b></button>');
         tagButton.click(function() {
-            content.html(newWikiBrowser(s));
+            content.html(newWikiBrowser(s, onWikiTagAdded));
         });
         np.append(tagButton);
     }
