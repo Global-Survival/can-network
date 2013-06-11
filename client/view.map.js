@@ -134,24 +134,22 @@ function renderOLMap(s, o, v) {
 
     
     function saveBounds() {
-        s.set('mapExtent', m.getExtent());
+        /*later(function() {
+            s.set('mapExtent', m.getExtent());            
+        });*/
     }
     
-    m.events.register("moveend", m, function() {
-        //save updated bounds to self
-        saveBounds();
-    });
-    m.events.register("zoomend", m, function() {
-        //save updated bounds to self
-        saveBounds();
-    });
+    m.events.register("moveend", m, saveBounds);
+    m.events.register("zoomend", m, saveBounds);
     
     var exm = s.get('mapExtent');
-    if (exm)
-        m.zoomToExtent(exm, true);
+    if (exm) {
+        //m.zoomToExtent(exm, true);
+        m.zoomToMaxExtent();
+    }
     else {
         var hh = project(new OpenLayers.LonLat(location[1], location[0]));    
-        center(hh);        
+        center(hh);
     }
     
     m.targetLocation = m.getCenter();
@@ -178,7 +176,7 @@ function renderOLMap(s, o, v) {
     df.activate();*/
 
     function center(oll) {
-        m.setCenter(oll);        
+        m.setCenter(oll, 12, false, true);        
     }
 
     
@@ -319,26 +317,40 @@ function renderOLMap(s, o, v) {
 
             iconURL = getTagIcon(x);
             
-            if (objHasTag(x, 'environment.EarthQuake')) {
-                fill = '#b33';
-                var mag = objFirstValue(x,'eqMagnitude',1);
-                rad = 100000 + (mag - 5.0)*700000;
-                
-                op *= 0.5;
+            var tagStyling = {
+                'environment.EarthQuake' : function() {
+                    fill = '#b33';
+                    var mag = objFirstValue(x,'eqMagnitude',1);
+                    rad = 100000 + (mag - 5.0)*700000;
+
+                    op *= 0.5;                    
+                },
+                'NuclearFacility' : function() {
+                    rad = 7000;
+                    op = 0.3;
+                    fill = '#ff0';                    
+                },
+                'Human' : function() {
+                    rad = 200;
+                    op = 0.25;                    
+                },
+                'Message' : function() {
+                    fill = '#55f';
+                    rad = 50;                    
+                },
+                'PlanCentroid' : function() {
+                    rad = 7000;
+                    op = 0.3;
+                    fill = '#fa3';                    
+                }                        
+            };
+            var tags = objTags(x);
+            for (var i = 0; i < tags.length; i++) {
+                var tt = tags[i];
+                if (tagStyling[tt])
+                    tagStyling[tt]();
             }
-            else if (objHasTag(x, 'NuclearFacility')) {
-                rad = 7000;
-                op = 0.3;
-                fill = '#ff0';
-            }
-            else if (objHasTag(x, 'Human')) {
-                rad = 200;
-                op = 0.25;
-            }
-            else if (objHasTag(x, 'Message')) {
-                fill = '#55f';
-                rad = 50;
-            }
+            
             createMarker(k, s.lat, s.lon, rad, op, fill, iconURL);
         }        
     }

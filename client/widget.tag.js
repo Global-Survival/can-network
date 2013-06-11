@@ -118,9 +118,7 @@ function newTreeBrowser(selected, onTagAdded) {
     
 }
 
-function newWikiBrowser(selected, onTagAdded) {
-    console.log('onTagAdded', onTagAdded);
-    
+function newWikiBrowser(selected, onTagAdded) {    
     var b = $('<div/>');
     
     
@@ -131,6 +129,10 @@ function newWikiBrowser(selected, onTagAdded) {
     });
     var searchInput = $('<input placeholder="Search Wikipedia"/>');
     var searchInputButton = $('<button>&gt;&gt;&gt;</button>');
+    searchInput.keyup(function(event){
+        if(event.keyCode == 13)
+            searchInputButton.click();
+    });
     searchInputButton.click(function() {
        gotoTag(searchInput.val(), true); 
     });
@@ -183,6 +185,7 @@ s
                br.find('#siteSub').remove();
                br.find('#contentSub').remove();
                br.find('#jump-to-nav').remove();
+               br.find('.IPA').remove();
                br.find('a').each(function(){
                    var t = $(this);
                    var h = t.attr('href');
