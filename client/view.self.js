@@ -463,8 +463,11 @@ function newRoster(selectUser) {
             d.append(sx);
         }
         sx.click(function() {
-            if (selectUser)
-                selectUser(x); 
+            if (selectUser) {
+                later(function() {
+                    selectUser(x);
+                }); 
+            }
         });        
     }
     

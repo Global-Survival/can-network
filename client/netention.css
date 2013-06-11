@@ -519,7 +519,7 @@ clear:both;
  */
  
  /* Global Rules */
- * { outline:none; }
+ /* * { outline:none; } */ /* removed because it was taking ~8% of CSS processing accorindg to Chrome profiler */
 body { width:100%; height:100%; margin:0px; padding:0px; overflow:hidden; font-family: Arial, sans; z-index:1; }
 		.nobg { background: #000000 !important; background-image: none !important; }
 		.shadow { moz-box-shadow: 0px 0px 24px #000000; -webkit-box-shadow: 0px 0px 24px #000000; box-shadow:0px 0px 24px #000000; -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#444444')"; filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#444444'); }

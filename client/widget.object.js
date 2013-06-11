@@ -688,7 +688,8 @@ function renderObjectSummary(x, onRemoved, r, depthRemaining) {
         }
     }
 
-    var hb = newDiv().addClass('ObjectViewHideButton ui-widget-header ui-corner-tl');
+    //var hb = newDiv().addClass('ObjectViewHideButton ui-widget-header ui-corner-tl');
+    var hb = newDiv().addClass('ObjectViewHideButton ui-corner-tl'); //without ui-widget-header, it is faster CSS according to Chrome profiler
     
     var favoriteButton = $('<button title="Favorite" class="ui-widget-content ui-button ui-corner-tl">*</button>');
     hb.append(favoriteButton);

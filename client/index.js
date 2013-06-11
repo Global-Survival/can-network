@@ -305,8 +305,10 @@ function initUI() {
         
         d.append(deleteButton);
         deleteButton.click(function() {
-            self.deleteSelf(selector.val());
-            closeDialog();
+            if (confirm('Permanently delete?')) {
+                self.deleteSelf(selector.val());
+                closeDialog();
+            }
         });
         
         

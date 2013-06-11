@@ -1375,9 +1375,6 @@ exports.start = function(host, port, dbURL, init) {
             socket.emit('setClientID', cid, key, getClientSelves(session) );
             socket.emit('setServer', Server.name, Server.description);
             
-            getObjectsByTag('User', function(o) {      
-                socket.emit('notice', o);
-            });
             getObjectsByTag('Tag', function(to) {
                 socket.emit('notice', to);
             });

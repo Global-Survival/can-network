@@ -1,4 +1,4 @@
-function newTagChooserWidget(selected, onClose) {
+function newTagChooserWidget(selected, onFinished) {
     //tagview select div
     //  wiki, tree, favorites, search, emotion, body, etc..
     //tag view (most of height)
@@ -8,52 +8,74 @@ function newTagChooserWidget(selected, onClose) {
         selected = [];
     
     var d = newDiv();
-    var t = newDiv();
+    var t = newDiv(); //target for the browser instances
+    var currentBrowser = null;
     
-    function loadTag(w) {
+    var tags = selected;
+    
+    var tagsCombo = $('<select></select>');
+    tagsCombo.update = function() {
+        tagsCombo.html('');
+        for (var i = 0; i < tags.length; i++)
+            tagsCombo.append('<option>' + tags[i] + '</option>');
+    };
+    
+    function loadBrowser(w) {
         t.html('');
-        t.append(w(selected));
+        currentBrowser = w(selected);
+        t.append(currentBrowser);        
     }
     
-    var selectBar = $('<div/>');
+    var selectBar = newDiv();
+    selectBar.attr('style', 'width: 50%; float: left;');
     {
         var b1 = $('<button>Wiki</button>');
-        b1.click(function() { loadTag(newWikiBrowser); });
+        b1.click(function() { loadBrowser(newWikiBrowser); });
         selectBar.append(b1);
         var b2 = $('<button>Tree</button>');
-        b2.click(function() { loadTag(newTreeBrowser); });
+        b2.click(function() { loadBrowser(newTreeBrowser); });
         selectBar.append(b2);
-        var b3 = $('<button>Who</button>');
+        var b3 = $('<button disabled>Who</button>');
         selectBar.append(b3);
-        var b4 = $('<button>Emotion</button>');
+        var b4 = $('<button disabled>Emotion</button>');
         selectBar.append(b4);
-        var b5 = $('<button>Body</button>');
+        var b5 = $('<button disabled>Body</button>');
         selectBar.append(b5);
     }
     d.append(selectBar);
     
-    d.append('<hr/>');
+    var saveBar = newDiv();
+    saveBar.attr('style', 'width: 50%; float: right; text-align: right');
+    {
+        tagsCombo.update();
+        saveBar.append(tagsCombo);
+        
+        saveBar.append('<button disabled>x</button>');
+        
+        var b = $('<button><b>OK</b></button>');
+        b.click(function() {
+            onFinished(tags);
+            /*
+            var newTags = [];
+            $('.TagChoice').each(function(x) {
+                var t = $(this);
+                var tag = t.attr('id');
+                if (t.is(':checked'))
+                    newTags.push(tag);
+            });
+            onFinished(newTags);*/
+            
+        });
+        saveBar.append(b);
+    }
+    d.append(saveBar);
+        
+    t.attr('style', 'clear: both');
     d.append(t);
     
+    //default
+    loadBrowser(newTreeBrowser);
     
-    loadTag(newTreeBrowser);
-    //loadTag(newWikiBrowser);
-    
-    var b = $('<button>Save</button>');
-    b.click(function() {
-        var newTags = [];
-        $('.TagChoice').each(function(x) {
-            var t = $(this);
-            var tag = t.attr('id');
-            if (t.is(':checked'))
-                newTags.push(tag);
-        });
-        onClose(newTags);
-    });
-    
-
-
-    d.prepend(b);
     
     return d;
 }

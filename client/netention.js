@@ -630,8 +630,7 @@ function netention(f) {
         s.saveLocal();
         //console.log('saved clientID: ' + s.get('clientID'));
         
-        s.connect(function() {
-        });
+        s.connect(function() { });
         f(s);
 		
 	
