@@ -1,9 +1,4 @@
-function newTagChooserWidget(selected, onFinished) {
-    //tagview select div
-    //  wiki, tree, favorites, search, emotion, body, etc..
-    //tag view (most of height)
-    //collected tags (buttons with close 'x') + save button
-    
+function newTagger(selected, onFinished) {
     if (!selected)
         selected = [];
     
@@ -22,6 +17,7 @@ function newTagChooserWidget(selected, onFinished) {
      
     function onTagAdded(t) {
         tags.push(t);
+        tags = _.unique(tags);
         tagsCombo.update();
     }
     
@@ -98,11 +94,18 @@ function newTreeBrowser(selected, onTagAdded) {
             if (ti)
                 content = '<img style="height: 1em" src="' + ti + '"/>' + content;
             return {
-                label: ('<input id="' + id + '" class="TagChoice" type="checkbox" ' + (_.contains(selected, id) ? 'selected' : '') + '>' + content + '</input>')
+                label: ('<button id="' + id + '" class="TagChoice")>' + content + '</button>')
             };
         }        
     };
     newTagTree(p);    
+    
+    e.find('.TagChoice').each(function(x) {
+        var t = $(this);
+        t.click(function() {
+           onTagAdded(t.attr('id'));
+        });
+    });
     
     return e;
     

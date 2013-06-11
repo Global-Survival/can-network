@@ -117,7 +117,7 @@ function newSelfTimeList(x, container) {
                 t.click(function() {
                     var targetTime = (time + endtime)/2.0;
                     var d = newPopup("Select Tags for " + new Date(targetTime), {width: 800, height: 600, modal: true});
-                    d.append(newTagChooserWidget(planSlots[i], function(results) {
+                    d.append(newTagger(planSlots[i], function(results) {
                         planSlots[i] = results;
                         later(function() {
                             save();                    
