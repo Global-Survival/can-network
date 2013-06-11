@@ -16,8 +16,7 @@ function newTagger(selected, onFinished) {
     };
      
     function onTagAdded(t) {
-        tags.push(t);
-        tags = _.unique(tags);
+        tags = _.unique( [t].concat(tags) ); 
         tagsCombo.update();
     }
     
@@ -51,7 +50,15 @@ function newTagger(selected, onFinished) {
         tagsCombo.update();
         saveBar.append(tagsCombo);
         
-        saveBar.append('<button disabled>x</button>');
+        var clearButton = $('<button>x</button>');
+        clearButton.click(function() {
+            if (confirm('Clear selected tags?')) {
+                tags = []; 
+                tagsCombo.update();
+            }
+        });
+        saveBar.append(clearButton);
+        
         
         var b = $('<button><b>OK</b></button>');
         b.click(function() {
