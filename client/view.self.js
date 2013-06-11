@@ -23,9 +23,9 @@ function newTagBarSaveButton(s, currentTag, tagBar, onSave) {
            }
         });
         if (selTags.length > 0) {
-            var id = s.id() + '-' + currentTag;
+            var id = self.id() + '-' + currentTag;
             var o = objNew(id, currentTag);
-            o.author = s.id();
+            o.author = self.id();
             objAddTag(o, currentTag);
 
             for (var i = 0; i < selTags.length; i++) {
@@ -33,10 +33,10 @@ function newTagBarSaveButton(s, currentTag, tagBar, onSave) {
             }
 
             
-            s.pub(o, function(err) {
+            self.pub(o, function(err) {
                 $.pnotify({title: 'Error saving:', text: err, type:'error'});
             }, function() {
-                s.notice(o);
+                self.notice(o);
                 $.pnotify({title: 'Saved', text: currentTag});
             });                            
             
@@ -79,7 +79,7 @@ function newTagBar(s, currentTag) {
         });
         target.append(b);
 
-        var tt = s.tag(tag);
+        var tt = self.tag(tag);
         
         var tagname;
         var tooltip;
@@ -126,7 +126,7 @@ function newTagBar(s, currentTag) {
 function getKnowledgeCodeTags(s, userid) {
     userid = userid.substring(5);
     
-    var tags = s.getIncidentTags(userid, _.keys(tagColorPresets));                 
+    var tags = self.getIncidentTags(userid, _.keys(tagColorPresets));                 
         
     
     for (var k in tags) {
@@ -174,136 +174,16 @@ function getKnowledgeCode(s, userid) {
     return JSON.stringify(tags,null,0);
 }
 
-function newTagBrowser(s) {
-    var b = $('<div/>');
-    
-    var homeButton = $('<button>Home</button>');
-    homeButton.click(function() {
-       gotoTag(configuration.wikiStartPage);
-    });
-    var searchInput = $('<input placeholder="Search Wikipedia"/>');
-    var searchInputButton = $('<button>&gt;&gt;&gt;</button>');
-    searchInputButton.click(function() {
-       gotoTag(searchInput.val(), true); 
-    });
-    b.append(homeButton);
-    b.append(searchInput);
-    b.append(searchInputButton);
-    
-    var br = $('<div/>');
-    br.addClass('WikiBrowser');
-    
-        
-    var currentTag = configuration.wikiStartPage;
-    
-    function gotoTag(t,search) {        
-        br.html('Loading...');
-        currentTag = t;
-        
-        /*if (t == null) {
-            $.get('/skill-home.html', function(d) {
-               br.html('');
-               br.append(d); 
-s
-            });
-            
-            }
-            else */
-        {
-            var url = search ? '/wiki/search/' + t : '/wiki/' + t + '/html';
-
-            function newPopupButton(target) {
-                var p = $('<a href="#" title="Tag">+</a>');
-                p.click(function() {
-                    var d = newPopup(target, {width: 550});
-                    var tagBar = newTagBar(s, target);
-                    var saveButton = newTagBarSaveButton(s, target, tagBar, function() {
-                        d.dialog('close');
-                    });
-
-                    d.append(saveButton);        
-                    d.prepend(tagBar);
-
-                });
-                return p;
-            }
-            
-            $.get(url, function(d) {
-               br.html('');
-               br.append(d); 
-               
-               if (search) {
-                    currentTag = $('.WIKIPAGEREDIRECTOR').html();
-               }
-               
-               br.find('#top').remove();
-               br.find('#siteSub').remove();
-               br.find('#contentSub').remove();
-               br.find('#jump-to-nav').remove();
-               br.find('a').each(function(){
-                   var t = $(this);
-                   var h = t.attr('href');
-                   t.attr('href', '#');
-                   if (h) {
-                    if (h.indexOf('/wiki') == 0) {
-                        var target = h.substring(6);
-                        
-                        t.click(function() {
-                             gotoTag(target); 
-                        });
-                         
-                        if ((target.indexOf('Portal:')!=0) && (target.indexOf('Special:')!=0))
-                            t.after(newPopupButton(target));
-                    }
-                   }
-               });
-               var lt = newPopupButton(currentTag);
-               
-               if (currentTag.indexOf('Portal:')!=0)
-                    br.find('#firstHeading').append(lt);
-            });
-            
-            //..
-        }
-    }
-    gotoTag(currentTag);
-        
-    b.append(br);
-    
-    
-    /*{
-        var tagBar = newTagBar(s, currentTag);
-        var saveButton = newTagBarSaveButton(s, currentTag, tagBar);
-        
-        b.append(saveButton);        
-        b.prepend(tagBar);
-    }*/
-    
-    return b;    
-}
 
 function newSelfTagList(s, user, c) {
 
     var b = $('<div/>');
          
-    var tags = s.getIncidentTags(user.id.substring(5), _.keys(tagColorPresets));            
+    var tags = self.getIncidentTags(user.id.substring(5), _.keys(tagColorPresets));            
     
-    //var svbp = $('<div/>').attr('class', 'SelfViewButtonPanel');
-    
-    /*svbp.append(addButton = $('<button class="SelfAddTagButton">+</button>'));
-    ownButton.click(function() {
-        c.html(newSelfSummary(s, user));
-    });
-    addButton.click(function() {
-        c.html(newTagBrowser(s));        
-    });
-    
-    
-    b.append(svbp);*/
-
     function newTagWidget(x, i) {
         var name
-        var o = s.getObject(i);
+        var o = self.getObject(i);
         if (o) {
             var tags = objTags(o);
             var otherTags = _.without(tags, x);  
@@ -331,7 +211,7 @@ function newSelfTagList(s, user, c) {
         
         var color = tagColorPresets[x] || 'gray';
         
-        var xn = s.tag(x).name;
+        var xn = self.tag(x).name;
         b.append('<div><h4><span style="padding-right: 0.2em; background-color: ' + color + '">&nbsp;&nbsp;</span>&nbsp;' + xn + '</h4></div>');
         
         for (var i = 0; i < cl.length; i++) {
@@ -360,13 +240,14 @@ function newSelfTagList(s, user, c) {
     }
     else {
         if (user) {
-            var own = (user.id === s.myself().id);
+            var own = (user.id === self.myself().id);
             b.append('Click ');
 
             var addLink = $('<button><b>+ Tag</b></button>' );
             if (own) {
                 addLink.click(function() {
-                    c.html(newTagBrowser(s));           
+                    //TODO make tag browser
+                    c.html(newWikiBrowser(s));           
                 });
             }
             else {
@@ -404,7 +285,7 @@ function saveSelf(editFunction) {
 }
 
 function newSelfSummary(s, user, content) {
-    var editable = (user.id === s.myself().id);
+    var editable = (user.id === self.myself().id);
     
     var c = $('<div/>');        
     $.get('/self.header.html', function(d) {
@@ -447,7 +328,7 @@ function newSelfSummary(s, user, content) {
     if (editable) {
         var tagButton = $('<button title="Add tags to describe your self"><b>+ Tag</b></button>');
         tagButton.click(function() {
-            content.html(newTagBrowser(s));
+            content.html(newWikiBrowser(s));
         });
         np.append(tagButton);
     }
@@ -521,7 +402,7 @@ function newSelfSummary(s, user, content) {
         lmap.onClicked = function(l) {
             if (editable) {
                 tags['@'] = [ l.lon, l.lat ];
-                objSetFirstValue( s.myself(), 'spacepoint', {lat: l.lat, lon: l.lon, planet: 'Earth'} );            
+                objSetFirstValue( self.myself(), 'spacepoint', {lat: l.lat, lon: l.lon, planet: 'Earth'} );            
             }
         };
     });
@@ -607,54 +488,6 @@ function hoursFromNow(n) {
     return Date.now() + 60.0 * 60.0 * 1000.0 * n;
 }
 
-function newTagChooserWidget(time, selected, onClose) {
-    var d = newDiv();
-    
-    var e = newDiv();
-    e.appendTo(d);
-    e.addClass('SelfTimeTagTree');
-    
-    $('.TagChoice').remove();
-    
-    var p = {
-        target: e,
-        newTagDiv: function(id, content) {
-            var ti = getTagIcon(id);
-            if (ti)
-                content = '<img style="height: 1em" src="' + ti + '"/>' + content;
-            return {
-                label: ('<input id="' + id + '" class="TagChoice" type="checkbox" ' + (_.contains(selected, id) ? 'selected' : '') + '>' + content + '</input>')
-            };
-        }        
-    };
-    newTagTree(p);    
-    
-    var b = $('<button>Save</button>');
-    b.click(function() {
-        var newTags = [];
-        $('.TagChoice').each(function(x) {
-            var t = $(this);
-            var tag = t.attr('id');
-            if (t.is(':checked'))
-                newTags.push(tag);
-        });
-        onClose(newTags);
-    });
-    
-    var c = $('<button>Other...</button>');
-    c.click(function() {
-        alert('This will eventually popup a Wikitagger');
-    });
-    var e = $('<button>Who</button>');
-    e.click(function() {
-        alert('This will eventually popup a person selector');
-    });
-    d.prepend(c);    
-    d.prepend(e)
-    d.prepend(b);
-    
-    return d;
-}
 
 
 function renderSelf(s, o, v) {

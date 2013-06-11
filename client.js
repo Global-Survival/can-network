@@ -6,7 +6,7 @@ var configuration = {
     enableAnonymous: true,
     defaultAvatarIcon: '/icon/netention-160.jpg',
     includeCanNeedNot: true,
-    wikiStartPage: 'Portal:Contents',
+    wikiStartPage: 'Consciousness', //'Portal:Contents',
     showPlanOnSelfPage: true,
     defaultTheme: '_cybernetic'
 };
