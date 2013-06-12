@@ -6,28 +6,7 @@
 
 var MAX_INITIAL_OBJECTS = 1024;
 
-function clearFocus() {
-    later(function() {
-        var u = uuid();
-        Backbone.history.navigate('/object/' + u);
-        self.set('list-semantic', 'Any');
-        commitFocus(objNew(u));
-    });
-}
 
-function focus() {
-    return window.self.focus();
-}
-
-var renderedFocus;
-function updateFocus() {
-
-    var ff = focus();
-    if (ff) {
-        renderedFocus = renderObject(focus(), true, focus, commitFocus);
-        $('#Focus').html(renderedFocus);
-    }    
-}
 
 function updateLayers() {
         
@@ -194,11 +173,6 @@ function updateLayers() {
 
 }
 
-function commitFocus(f) {
-    window.self.set('focus', f);
-    window.self.trigger('change:focus');
-    updateFocus();
-}
 
 function saveObject(p) {
     p.author = self.id();
@@ -218,6 +192,7 @@ function saveObject(p) {
     });
 }
 
+//DEPR?
 function initDescriptionRichText() {
     $('#FocusDescriptionSection').html('<textarea id="FocusDescription"></textarea>');
     $('#FocusDescription').wysihtml5();
@@ -250,7 +225,6 @@ function initUI() {
 
     self.on('change:tags', function() {
         later(function() {
-            updateFocus();
             updateLayers();
         });
     });
@@ -353,9 +327,6 @@ function initUI() {
             saveObject(p);
         });
     });
-    $('#ClearButton').click(function() {
-        clearFocus();
-    });
 
     $('#AddDescriptionButton').click(function() {
         commitFocus(objAddValue(renderedFocus.getEditedFocus(), 'textarea', ''));
@@ -420,8 +391,6 @@ function initUI() {
         setInterval(updatePrompt, 7000);
         updatePrompt();
     }
-
-    updateFocus(); //DEPR?
     
     updateLayers();
     
@@ -660,9 +629,6 @@ $(document).ready(function() {
                         "example": "completeExample"
                                 //"search/:query/:page":  "query"   // #search/kiwis/p7
                     },
-                    'new': function() {
-                        clearFocus();
-                    },
                     /*
                      newWithTags : function(ts) {                              
                      //'/new/with/tags/' + ts
@@ -745,12 +711,6 @@ $(document).ready(function() {
                 $('#ViewControls #' + self.get('currentView')).attr('checked', true);
                 $('#ViewControls').buttonset('refresh');
 
-
-                //updateFocus();
-                if (!self.focus())
-                    clearFocus();
-                else
-                    updateFocus();
                 
                 initUI();
                 
@@ -800,7 +760,6 @@ $(document).ready(function() {
     }
 
     $('#close-menu').button();
-    $('#FocusEdit button').button();
     $("#ViewControls").buttonset();
     
 
@@ -888,6 +847,21 @@ $(document).ready(function() {
         
     });
 */
+
+    $('#AddContentButton').click(function() {
+        newPopup('Add...', { }).append(newObjectEdit(objNew(), true));               
+    });
+
+    $('#FocusButton').click(function() {
+        /*
+                            <div id="Layer" class="ui-widget-header overthrow">
+                            </div>
+                            <span>
+                                <input type="text" placeholder="Filter" disabled/>
+                                <input type="checkbox" id="GeographicToggle">Exclude Un-Mappable</input>
+                            </span>                                                        
+*/
+    });
 
     if (configuration.initialDisplayAvatarMenu)
         showAvatarMenu(true);

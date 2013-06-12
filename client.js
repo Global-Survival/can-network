@@ -1,7 +1,7 @@
 /* Netention Client Configuration */
 
 var configuration = {
-    initialView: 'map',
+    initialView: 'self',
     initialDisplayAvatarMenu: false,
     enableAnonymous: true,
     defaultAvatarIcon: '/icon/netention-160.jpg',

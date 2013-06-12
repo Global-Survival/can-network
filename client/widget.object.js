@@ -126,21 +126,44 @@ function newReplyWidget(onReply, onCancel) {
  *  focus - a function that returns the current focus
  *  commitFocus - a function that takes as parameter the next focus to save
  */
-function renderObject(x, editable, focus, commitFocus) {
+function newObjectEdit(x, editable) {
     var d = newDiv();
+        //$('#FocusEdit button').button();       
+        /*
+                        <div id="FocusEdit" class="ui-widget-content ui-corner-all overthrow">
+                            <div id="Focus" class="ui-corner-all"></div>
+                            <div id="FocusMainMenu">
+
+                                <button title="What?" id="AddWhatButton"><img src="/icon/rrze/emblems/information.png"></button>
+                                <button title="How/Why?" id="AddDescriptionButton"><img src="/icon/rrze/actions/quote.png"></button>
+                                <button title="When?" id="AddWhenButton" ><img src="/icon/clock.png"></button>
+                                <button title="Where?" id="AddLocationButton"><img src="/icon/rrze/emblems/globe.png"></button>
+                                <button title="Who?" id="AddWhoButton"><img src="/icon/rrze/categories/user-group.png"></button>
+
+
+                                <button title="Upload"><img src="/icon/rrze/actions/dial-in.png"/></button>                
+                                <!--<button>Save Privately...</button>-->
+                                <!-- <button onclick="javascript:cloneFocus();" title="Clone"><span class="FocusButtonIcon ui-icon ui-icon-newwin"></span><span class="FocusButtonLabel">Clone</span></button> -->
+                                <!-- <button onclick="javascript:deleteFocus();" title="Delete"><span class="FocusButtonIcon ui-icon ui-icon-trash"></span><span class="FocusButtonLabel">Delete</span></button> -->
+                                <button id='SaveButton' title="Save/Share"><img src="/icon/vote.png"/></button>                            
+                                <button onclick="javascript:showEditedFocus();" title="Export"><img src="/icon/rrze/actions/print.png"/></button>
+                                <button id="ClearButton" title="Clear"><img src="/icon/rrze/actions/refuse.png"/></button>
+                            </div>
+                        </div>
+        */
     
     var whenSaved = [];
             
     function getEditedFocus() {
-        var f = focus();
-        var x = objNew( f.id );
-        x.createdAt = f.createdAt;
-        x.author = f.author;
+        var f = x;
+        var n = objNew( f.id );
+        n.createdAt = f.createdAt;
+        n.author = f.author;
         for (var i = 0; i < whenSaved.length; i++) {
             var w = whenSaved[i];
-            w(x);
+            w(n);
         }
-        return x;
+        return n;
     }
     
     var onAdd = function(tag, value) {
