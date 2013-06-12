@@ -128,29 +128,6 @@ function newReplyWidget(onReply, onCancel) {
  */
 function newObjectEdit(x, editable) {
     var d = newDiv();
-        //$('#FocusEdit button').button();       
-        /*
-                        <div id="FocusEdit" class="ui-widget-content ui-corner-all overthrow">
-                            <div id="Focus" class="ui-corner-all"></div>
-                            <div id="FocusMainMenu">
-
-                                <button title="What?" id="AddWhatButton"><img src="/icon/rrze/emblems/information.png"></button>
-                                <button title="How/Why?" id="AddDescriptionButton"><img src="/icon/rrze/actions/quote.png"></button>
-                                <button title="When?" id="AddWhenButton" ><img src="/icon/clock.png"></button>
-                                <button title="Where?" id="AddLocationButton"><img src="/icon/rrze/emblems/globe.png"></button>
-                                <button title="Who?" id="AddWhoButton"><img src="/icon/rrze/categories/user-group.png"></button>
-
-
-                                <button title="Upload"><img src="/icon/rrze/actions/dial-in.png"/></button>                
-                                <!--<button>Save Privately...</button>-->
-                                <!-- <button onclick="javascript:cloneFocus();" title="Clone"><span class="FocusButtonIcon ui-icon ui-icon-newwin"></span><span class="FocusButtonLabel">Clone</span></button> -->
-                                <!-- <button onclick="javascript:deleteFocus();" title="Delete"><span class="FocusButtonIcon ui-icon ui-icon-trash"></span><span class="FocusButtonLabel">Delete</span></button> -->
-                                <button id='SaveButton' title="Save/Share"><img src="/icon/vote.png"/></button>                            
-                                <button onclick="javascript:showEditedFocus();" title="Export"><img src="/icon/rrze/actions/print.png"/></button>
-                                <button id="ClearButton" title="Clear"><img src="/icon/rrze/actions/refuse.png"/></button>
-                            </div>
-                        </div>
-        */
     
     var whenSaved = [];
             
@@ -243,6 +220,54 @@ function newObjectEdit(x, editable) {
         ontoSearcher = setInterval(search, 500);
     
     d.getEditedFocus = getEditedFocus;
+
+
+        //$('#FocusEdit button').button();       
+        /*
+
+                                <button title="What?" id="AddWhatButton"><img src="/icon/rrze/emblems/information.png"></button>
+                                <button title="How/Why?" id="AddDescriptionButton"><img src="/icon/rrze/actions/quote.png"></button>
+                                <button title="When?" id="AddWhenButton" ><img src="/icon/clock.png"></button>
+                                <button title="Where?" id="AddLocationButton"><img src="/icon/rrze/emblems/globe.png"></button>
+                                <button title="Who?" id="AddWhoButton"><img src="/icon/rrze/categories/user-group.png"></button>
+
+
+                                <button title="Upload"><img src="/icon/rrze/actions/dial-in.png"/></button>                
+                                <!--<button>Save Privately...</button>-->
+                                <!-- <button onclick="javascript:cloneFocus();" title="Clone"><span class="FocusButtonIcon ui-icon ui-icon-newwin"></span><span class="FocusButtonLabel">Clone</span></button> -->
+                                <!-- <button onclick="javascript:deleteFocus();" title="Delete"><span class="FocusButtonIcon ui-icon ui-icon-trash"></span><span class="FocusButtonLabel">Delete</span></button> -->
+        */
+
+    var whatButton = $('<button><img src="/icon/rrze/emblems/information.png"></button>');
+    whatButton.click(function() {
+        var p = newPopup('Select Tags', { modal: true } );
+        p.append(newTagger([], function(t) {
+            p.dialog('close');
+        }));
+    });
+    d.append(whatButton);
+
+    /* <button id='SaveButton' title="Save/Share"><img src="/icon/vote.png"/></button> */
+    var saveButton = $('<button><b>Save/Share</b></button>');
+    saveButton.click(function() {
+        var x = getEditedFocus();
+        self.pub(x);
+        $.pnotify({
+           title: 'Saved.',
+           text: x.name
+        });
+        d.parent().dialog('close');
+    });
+    d.append(saveButton);
+    
+    var exportButton = $('<button>Export</button>');
+    exportButton.click(function() {
+        $.pnotify({
+           title: x.id,
+           text: JSON.stringify(x, null, 4)
+        });
+    });
+    d.append(exportButton);
     
     return d;                
 }

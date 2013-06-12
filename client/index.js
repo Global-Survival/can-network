@@ -493,37 +493,31 @@ function _updateView(force) {
 
 }
 
-function showEditedFocus() {
-    $.pnotify({
-        title: 'Current Focus (JSON)',
-        text: (JSON.stringify(renderedFocus.getEditedFocus(), null, 4))
-    });
-}
 
-function cloneFocus() {
-    var y = getEditedFocus();
-    var oldURI = y.id;
-    y.id = uuid();
-    y.author = window.self.id();
-    commitFocus(y);
-    saveObject(y);
-
-    $.pnotify({
-        title: 'Cloning...',
-        text: oldURI + ' -> ' + y.id
-    });
-    return y;
-}
-
-function deleteFocus() {
-    var f = window.self.focus();
-
-    $.pnotify({
-        title: 'Delete coming soon',
-        text: f.uri
-    });
-
-}
+//function cloneFocus() {
+//    var y = getEditedFocus();
+//    var oldURI = y.id;
+//    y.id = uuid();
+//    y.author = window.self.id();
+//    commitFocus(y);
+//    saveObject(y);
+//
+//    $.pnotify({
+//        title: 'Cloning...',
+//        text: oldURI + ' -> ' + y.id
+//    });
+//    return y;
+//}
+//
+//function deleteFocus() {
+//    var f = window.self.focus();
+//
+//    $.pnotify({
+//        title: 'Delete coming soon',
+//        text: f.uri
+//    });
+//
+//}
 
 function setTheme(t) {
     if (!t)
@@ -849,7 +843,8 @@ $(document).ready(function() {
 */
 
     $('#AddContentButton').click(function() {
-        newPopup('Add...', { }).append(newObjectEdit(objNew(), true));               
+        newPopup('Add...', { }).append(newObjectEdit(objNew(), true));
+        showAvatarMenu(false);        
     });
 
     $('#FocusButton').click(function() {
