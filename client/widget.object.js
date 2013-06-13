@@ -834,9 +834,10 @@ function renderObjectSummary(x, onRemoved, r, depthRemaining) {
     
 	deleteButton = $('<button title="Delete" class="ui-widget-content ui-button" style="padding-right:8px;">x</button>');
 	deleteButton.click(function() {
-        if (confirm('Permanently delete? ' + x.id)) {
-                self.deleteObject(x);			
-        }
+            if (confirm('Permanently delete? ' + x.id)) {
+                    self.deleteObject(x);			
+            }
+        });
         
         if (deleteButton)
           deleteButton.hover(
