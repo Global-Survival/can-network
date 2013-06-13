@@ -126,44 +126,44 @@ function newReplyWidget(onReply, onCancel) {
  *  focus - a function that returns the current focus
  *  commitFocus - a function that takes as parameter the next focus to save
  */
-function newObjectEdit(x, editable) {
+function newObjectEdit(ix, editable) {
     var d = newDiv();
-    
-    var whenSaved = [];
-            
-            
-    
-    function getEditedFocus() {
-        var f = x;
-        var n = objNew( f.id );
-        n.createdAt = f.createdAt;
-        n.author = f.author;
-        for (var i = 0; i < whenSaved.length; i++) {
-            var w = whenSaved[i];
-            w(n);
+        
+    function update(x) {
+        var whenSaved = [];
+
+
+
+        function getEditedFocus() {
+            var n = objNew( x.id, x.name );
+            n.createdAt = x.createdAt;
+            n.author = x.author;
+            for (var i = 0; i < whenSaved.length; i++) {
+                var w = whenSaved[i];
+                w(n);
+            }
+            return n;
         }
-        return n;
-    }
-    
-    var onAdd = function(tag, value) {
-        objAddValue(x, tag, value)
-        update();
-    };
-    var onRemove = function(i) {                    
-        objRemoveValue( x, i);
-        update();
-    };
-    var onStrengthChange = function(i, newStrength) {
-        var e = x();
-        x.value[i].strength = newStrength;
-        update();
-    };
-    var onOrderChange = function(fromIndex, toIndex) {        
-        //http://stackoverflow.com/questions/5306680/move-an-array-element-from-one-array-position-to-another
-        x.value.splice(toIndex, 0, x.value.splice(fromIndex, 1)[0]);
-        update();
-    };
-    function update() {
+
+        var onAdd = function(tag, value) {                    
+            update(objAddValue(getEditedFocus(), tag, value));
+        };
+        var onRemove = function(i) {                                
+            update(objRemoveValue( getEditedFocus(), i));
+        };
+        var onStrengthChange = function(i, newStrength) {        
+            var y = getEditedFocus();
+            y.value[i].strength = newStrength;
+            update(y);
+        };
+        var onOrderChange = function(fromIndex, toIndex) {        
+            //http://stackoverflow.com/questions/5306680/move-an-array-element-from-one-array-position-to-another
+            var y = getEditedFocus();
+            y.value.splice(toIndex, 0, x.value.splice(fromIndex, 1)[0]);
+            update(y);
+        };
+
+        
         d.html('');
         
         var nameInput = null;
@@ -276,7 +276,7 @@ function newObjectEdit(x, editable) {
 
     }
     
-    update();
+    update(ix);
 
     
     return d;                
