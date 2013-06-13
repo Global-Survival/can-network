@@ -131,6 +131,8 @@ function newObjectEdit(x, editable) {
     
     var whenSaved = [];
             
+            
+    
     function getEditedFocus() {
         var f = x;
         var n = objNew( f.id );
@@ -144,130 +146,138 @@ function newObjectEdit(x, editable) {
     }
     
     var onAdd = function(tag, value) {
-        commitFocus( objAddValue(getEditedFocus(), tag, value));
+        objAddValue(x, tag, value)
+        update();
     };
     var onRemove = function(i) {                    
-        commitFocus( objRemoveValue( getEditedFocus(), i) );
+        objRemoveValue( x, i);
+        update();
     };
     var onStrengthChange = function(i, newStrength) {
-        var e = getEditedFocus();
-        e.value[i].strength = newStrength;
-        commitFocus(e);
+        var e = x();
+        x.value[i].strength = newStrength;
+        update();
     };
-    var onOrderChange = function(fromIndex, toIndex) {
-        var e = getEditedFocus();
+    var onOrderChange = function(fromIndex, toIndex) {        
         //http://stackoverflow.com/questions/5306680/move-an-array-element-from-one-array-position-to-another
-        e.value.splice(toIndex, 0, e.value.splice(fromIndex, 1)[0]);
-        commitFocus(e);
+        x.value.splice(toIndex, 0, x.value.splice(fromIndex, 1)[0]);
+        update();
     };
-    
-    var nameInput = null;
-    if (editable) {
-        nameInput = $('<input/>').attr('type', 'text').attr('x-webkit-speech', 'x-webkit-speech').addClass('nameInput');
-        nameInput.val(objName(x));
-        d.append(nameInput);
+    function update() {
+        d.html('');
         
-        whenSaved.push(function(y) {
-           objName(y, nameInput.val());
-        });
-    }
-    else {
-        d.append('<h1>' + objName(x) + '</h1>');
-    }
-    //d.append($('<span>' + x.id + '</span>').addClass('idLabel'));
+        var nameInput = null;
+        if (editable) {
+            nameInput = $('<input/>').attr('type', 'text').attr('x-webkit-speech', 'x-webkit-speech').addClass('nameInput');
+            nameInput.val(objName(x));
+            d.append(nameInput);
 
-
-    if (x.value) {
-        for (var i = 0; i < x.value.length; i++) {
-            var t = x.value[i];
-            var tt = renderTagSection(x, i, t, editable, whenSaved, onAdd, onRemove, onStrengthChange, onOrderChange);
-            d.append(tt); 
-        }
-    }
-    
-    var ts = $('<ul/>');
-    
-    d.append( ts.addClass('tagSuggestions') );
-    
-    var ontoSearcher;
-
-    var lastValue = null;
-    function search() {   
-        if (!ts.is(':visible')) {
-            //clearInterval(ontoSearcher);
-            return;
-        }
-        if (!d.is(':visible')) {
-            clearInterval(ontoSearcher);
-            return;            
-        }
-        
-        //skip suggestions when editing a Tag
-        if (objHasTag(getEditedFocus(), 'Tag')) {
-            ts.html('');    
+            whenSaved.push(function(y) {
+               objName(y, nameInput.val());
+            });
         }
         else {
-            var v = nameInput.val();
-            if (lastValue!=v) {
-                updateTagSuggestions(v, ts, onAdd, getEditedFocus);
-            }
-            lastValue = v;
+            d.append('<h1>' + objName(x) + '</h1>');
         }
-        
+        //d.append($('<span>' + x.id + '</span>').addClass('idLabel'));
+
+
+        if (x.value) {
+            for (var i = 0; i < x.value.length; i++) {
+                var t = x.value[i];
+                var tt = renderTagSection(x, i, t, editable, whenSaved, onAdd, onRemove, onStrengthChange, onOrderChange);
+                d.append(tt); 
+            }
+        }
+
+        var ts = $('<ul/>');
+
+        d.append( ts.addClass('tagSuggestions') );
+
+        var ontoSearcher;
+
+        var lastValue = null;
+        function search() {   
+            if (!ts.is(':visible')) {
+                //clearInterval(ontoSearcher);
+                return;
+            }
+            if (!d.is(':visible')) {
+                clearInterval(ontoSearcher);
+                return;            
+            }
+
+            //skip suggestions when editing a Tag
+            if (objHasTag(getEditedFocus(), 'Tag')) {
+                ts.html('');    
+            }
+            else {
+                var v = nameInput.val();
+                if (lastValue!=v) {
+                    updateTagSuggestions(v, ts, onAdd, getEditedFocus);
+                }
+                lastValue = v;
+            }
+
+        }
+
+        if (editable)
+            ontoSearcher = setInterval(search, 500);
+
+        d.getEditedFocus = getEditedFocus;
+
+
+            //$('#FocusEdit button').button();       
+            /*
+
+                                    <button title="What?" id="AddWhatButton"><img src="/icon/rrze/emblems/information.png"></button>
+                                    <button title="How/Why?" id="AddDescriptionButton"><img src="/icon/rrze/actions/quote.png"></button>
+                                    <button title="When?" id="AddWhenButton" ><img src="/icon/clock.png"></button>
+                                    <button title="Where?" id="AddLocationButton"><img src="/icon/rrze/emblems/globe.png"></button>
+                                    <button title="Who?" id="AddWhoButton"><img src="/icon/rrze/categories/user-group.png"></button>
+
+
+                                    <button title="Upload"><img src="/icon/rrze/actions/dial-in.png"/></button>                
+                                    <!--<button>Save Privately...</button>-->
+                                    <!-- <button onclick="javascript:cloneFocus();" title="Clone"><span class="FocusButtonIcon ui-icon ui-icon-newwin"></span><span class="FocusButtonLabel">Clone</span></button> -->
+                                    <!-- <button onclick="javascript:deleteFocus();" title="Delete"><span class="FocusButtonIcon ui-icon ui-icon-trash"></span><span class="FocusButtonLabel">Delete</span></button> -->
+            */
+
+        var whatButton = $('<button><img src="/icon/rrze/emblems/information.png"></button>');
+        whatButton.click(function() {
+            var p = newPopup('Select Tags for ' + nameInput.val(), { modal: true } );
+            p.append(newTagger([], function(t) {
+                p.dialog('close');
+            }));
+        });
+        d.append(whatButton);
+
+        /* <button id='SaveButton' title="Save/Share"><img src="/icon/vote.png"/></button> */
+        var saveButton = $('<button><b>Save/Share</b></button>');
+        saveButton.click(function() {
+            var x = getEditedFocus();
+            self.pub(x);
+            $.pnotify({
+               title: 'Saved.',
+               text: '<button disabled>Goto: ' + x.name + '</button>'  //TODO button to view object           
+            });
+            d.parent().dialog('close');
+        });
+        d.append(saveButton);
+
+        var exportButton = $('<button>Export</button>');
+        exportButton.click(function() {
+            $.pnotify({
+               title: x.id,
+               text: JSON.stringify(x, null, 4)
+            });
+        });
+        d.append(exportButton);
+
     }
     
-    if (editable)
-        ontoSearcher = setInterval(search, 500);
-    
-    d.getEditedFocus = getEditedFocus;
+    update();
 
-
-        //$('#FocusEdit button').button();       
-        /*
-
-                                <button title="What?" id="AddWhatButton"><img src="/icon/rrze/emblems/information.png"></button>
-                                <button title="How/Why?" id="AddDescriptionButton"><img src="/icon/rrze/actions/quote.png"></button>
-                                <button title="When?" id="AddWhenButton" ><img src="/icon/clock.png"></button>
-                                <button title="Where?" id="AddLocationButton"><img src="/icon/rrze/emblems/globe.png"></button>
-                                <button title="Who?" id="AddWhoButton"><img src="/icon/rrze/categories/user-group.png"></button>
-
-
-                                <button title="Upload"><img src="/icon/rrze/actions/dial-in.png"/></button>                
-                                <!--<button>Save Privately...</button>-->
-                                <!-- <button onclick="javascript:cloneFocus();" title="Clone"><span class="FocusButtonIcon ui-icon ui-icon-newwin"></span><span class="FocusButtonLabel">Clone</span></button> -->
-                                <!-- <button onclick="javascript:deleteFocus();" title="Delete"><span class="FocusButtonIcon ui-icon ui-icon-trash"></span><span class="FocusButtonLabel">Delete</span></button> -->
-        */
-
-    var whatButton = $('<button><img src="/icon/rrze/emblems/information.png"></button>');
-    whatButton.click(function() {
-        var p = newPopup('Select Tags', { modal: true } );
-        p.append(newTagger([], function(t) {
-            p.dialog('close');
-        }));
-    });
-    d.append(whatButton);
-
-    /* <button id='SaveButton' title="Save/Share"><img src="/icon/vote.png"/></button> */
-    var saveButton = $('<button><b>Save/Share</b></button>');
-    saveButton.click(function() {
-        var x = getEditedFocus();
-        self.pub(x);
-        $.pnotify({
-           title: 'Saved.',
-           text: x.name
-        });
-        d.parent().dialog('close');
-    });
-    d.append(saveButton);
-    
-    var exportButton = $('<button>Export</button>');
-    exportButton.click(function() {
-        $.pnotify({
-           title: x.id,
-           text: JSON.stringify(x, null, 4)
-        });
-    });
-    d.append(exportButton);
     
     return d;                
 }

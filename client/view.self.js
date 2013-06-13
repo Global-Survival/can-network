@@ -465,13 +465,20 @@ function newRoster(selectUser) {
     
     function h(x) {
         var sx = renderObjectSummary(x, null, 0.5, 0);        
-        if (x.id === self.myself().id) {
-            sx.find('h1 a').append(' (me)');
-            d.prepend(sx);            
+        
+        if (self.myself()) {
+            if (x.id === self.myself().id) {
+                sx.find('h1 a').append(' (me)');
+                d.prepend(sx);            
+            }
+            else {
+                d.append(sx);
+            }
         }
         else {
-            d.append(sx);
+            d.append(sx);            
         }
+        
         sx.click(function() {
             if (selectUser) {
                 later(function() {

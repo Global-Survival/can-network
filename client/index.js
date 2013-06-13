@@ -844,7 +844,7 @@ $(document).ready(function() {
 
     $('#AddContentButton').click(function() {
         newPopup('Add...', { }).append(newObjectEdit(objNew(), true));
-        showAvatarMenu(false);        
+        //showAvatarMenu(false);        
     });
 
     $('#FocusButton').click(function() {

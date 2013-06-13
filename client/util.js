@@ -329,6 +329,8 @@ exports.objHasTag = objHasTag;
 
 
 function objFirstValue(object, id, defaultValue) {
+    if (!object) return defaultValue;
+    
     if (object.value) {
         for (var k = 0; k < object.value.length; k++) {
         	if (object.value[k].id == id)
