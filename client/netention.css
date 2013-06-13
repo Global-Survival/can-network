@@ -614,6 +614,8 @@ body { width:100%; height:100%; margin:0px; padding:0px; overflow:hidden; font-f
 	.reply-section { text-align:left; }
 	.object-reply-button { padding:1px 4px !important; }
 
+        .ObjectEditDiv button img { height: 1em; }
+        
 /* Team/Self Browser */
 .SelfView { width: 100%; }
 	.SelfRoster { float: left; width: 25%; padding-right: 1em; max-height: 95%; position: fixed; overflow: auto; margin-top: 1em; }
@@ -628,6 +630,9 @@ body { width:100%; height:100%; margin:0px; padding:0px; overflow:hidden; font-f
 	.SelfCode { width: 95%; height: 90%; }
 	.SelfMeta { float: left; }
 	.SelfMeta input, .SelfMeta button { font-size: 150%; }
+        .ui-dialog-content .WikiBrowser {
+            max-height: 400px;
+        }
 	.WikiBrowser { height: 90%; overflow:auto; background-color: white; color: black; width: 98%; border-top: 1px solid gray; border-bottom: 1px solid gray; }
 	.WikiBrowser h1 { margin-top: 0; }
 	.WikiBrowser a, .WikiBrowser a:visited { border: 1px solid gray; padding: 1px; cursor: crosshair; color: black !important;}

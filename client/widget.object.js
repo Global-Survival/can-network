@@ -132,8 +132,6 @@ function newObjectEdit(ix, editable) {
     function update(x) {
         var whenSaved = [];
 
-
-
         function getEditedFocus() {
             var n = objNew( x.id, x.name );
             n.createdAt = x.createdAt;
@@ -243,16 +241,40 @@ function newObjectEdit(ix, editable) {
                                     <!-- <button onclick="javascript:deleteFocus();" title="Delete"><span class="FocusButtonIcon ui-icon ui-icon-trash"></span><span class="FocusButtonLabel">Delete</span></button> -->
             */
 
-        var whatButton = $('<button><img src="/icon/rrze/emblems/information.png"></button>');
+        d.addClass('ObjectEditDiv');
+        
+        var whatButton = $('<button title="What?"><img src="/icon/rrze/emblems/information.png"></button>');
         whatButton.click(function() {
             var p = newPopup('Select Tags for ' + nameInput.val(), { modal: true } );
             p.append(newTagger([], function(t) {
+                var y = getEditedFocus();
+                for (var i = 0; i < t.length; i++) {
+                    objAddTag(y, t[i]); 
+                }
+                update(y);
                 p.dialog('close');
             }));
         });
         d.append(whatButton);
 
-        /* <button id='SaveButton' title="Save/Share"><img src="/icon/vote.png"/></button> */
+        var howButton = $('<button title="How/Why?" id="AddDescriptionButton"><img src="/icon/rrze/actions/quote.png"></button>');
+        howButton.click(function() {
+            update(objAddValue(getEditedFocus(), 'textarea', ''));            
+        });
+        d.append(howButton);
+
+        var whenButton = $('<button disabled title="When?" id="AddWhenButton" ><img src="/icon/clock.png"></button>');
+        d.append(whenButton);
+        
+        var whereButton = $('<button title="Where?"><img src="/icon/rrze/emblems/globe.png"></button>');
+        whereButton.click(function() {
+            update(objAddValue(getEditedFocus(), 'spacepoint', ''));            
+        });
+        d.append(whereButton);
+
+        var whoButton = $('<button disabled title="Who?" id="AddWhoButton"><img src="/icon/rrze/categories/user-group.png"></button>');
+        d.append(whoButton);
+
         var saveButton = $('<button><b>Save/Share</b></button>');
         saveButton.click(function() {
             var x = getEditedFocus();
@@ -603,8 +625,11 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
     }    
     else if (tag) {        
         var TAG = self.tags()[tag];
+        whenSaved.push(function(y) {
+           objAddTag(y, tag, strength);
+        });
         if (!TAG) {
-            d.append('Unknown tag: ' + tag);            
+            //d.append('Unknown tag: ' + tag);            
         }
         else {
             var ti = getTagIcon(tag);
@@ -615,9 +640,6 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
                 tagLabel.prepend('<img src="' + ti + '"/>');
             }
             if (editable) {
-                whenSaved.push(function(y) {
-                   objAddTag(y, tag, strength);
-                });
                 /*var pb = $('<button>...</button>');
                 tagLabel.append(pb);*/
                 
@@ -800,25 +822,21 @@ function renderObjectSummary(x, onRemoved, r, depthRemaining) {
         });
         hb.append(replyButton);
 
-        focusButton = $('<button title="Focus" class="ui-widget-content ui-button">f</button>');
+        
+        focusButton = $('<button title="Edit" class="ui-widget-content ui-button">e</button>');
     	focusButton.click(function() {
             var oid = x.id;
-            Backbone.history.navigate('/object/' + oid + '/focus', {trigger: true});
+            ///Backbone.history.navigate('/object/' + oid + '/focus', {trigger: true});
+            var e = newPopup("Edit " + oid);
+            e.append(newObjectEdit(x, true));
     	});
     }
     
 	deleteButton = $('<button title="Delete" class="ui-widget-content ui-button" style="padding-right:8px;">x</button>');
 	deleteButton.click(function() {
-        if (!x.author) {
-            //don't confirm delete if no author is specified
-            self.deleteObject(x);
+        if (confirm('Permanently delete? ' + x.id)) {
+                self.deleteObject(x);			
         }
-        else {
-    		if (confirm('Permanently delete? ' + x.id)) {
-    			self.deleteObject(x);			
-    		}
-        }
-	});
         
         if (deleteButton)
           deleteButton.hover(

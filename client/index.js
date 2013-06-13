@@ -328,22 +328,6 @@ function initUI() {
         });
     });
 
-    $('#AddDescriptionButton').click(function() {
-        commitFocus(objAddValue(renderedFocus.getEditedFocus(), 'textarea', ''));
-    });
-    $('#AddLocationButton').click(function() {
-        commitFocus(objAddValue(renderedFocus.getEditedFocus(), 'spacepoint', ''));
-    });
-
-    $("#AddWhatButton").click(function() {
-       alert('Tag selection widget not available yet.'); 
-    });
-    $("#AddWhenButton").click(function() {
-       alert('Timepoint selection widget not available yet.'); 
-    });
-    $("#AddWhoButton").click(function() {
-       alert('Agent selection widget not available yet.'); 
-    });
 
     {
 

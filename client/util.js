@@ -22,8 +22,8 @@ function objNew(id, name) {
         
     var x = {
         'id': id,
-        createdAt: Date.now(),
-        scope: 'public'
+        createdAt: Date.now()
+        //scope: 'public'
     };
     
     if (name)
