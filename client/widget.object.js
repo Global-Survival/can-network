@@ -239,7 +239,24 @@ function newObjectEdit(ix, editable) {
                                     <!--<button>Save Privately...</button>-->
                                     <!-- <button onclick="javascript:cloneFocus();" title="Clone"><span class="FocusButtonIcon ui-icon ui-icon-newwin"></span><span class="FocusButtonLabel">Clone</span></button> -->
                                     <!-- <button onclick="javascript:deleteFocus();" title="Delete"><span class="FocusButtonIcon ui-icon ui-icon-trash"></span><span class="FocusButtonLabel">Delete</span></button> -->
-            */
+
+        <div id="UploadModal" data-backdrop="" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none">
+            <form id="FocusUploadForm" action="/upload" method="post" enctype="multipart/form-data">
+                <div>File:
+                    <input type="file" name="uploadfile" />
+                    <input type="submit" value="Upload" />
+                </div>
+            </form>
+            <div class="FocusUploadProgress">
+                <div class="FocusUploadBar"></div>
+                <div class="FocusUploadPercent">0%</div>
+            </div>
+            <div id="FocusUploadStatus"></div>        
+
+            <button class="btn" data-dismiss="modal" aria-hidden="true">OK</button>
+        </div>
+
+         *                                    */
 
         d.addClass('ObjectEditDiv');
         

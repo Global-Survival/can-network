@@ -14,8 +14,8 @@
 
         <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
-          <script src="assets/js/html5shiv.js"></script>
-        <![endif]-->
+           <script src="assets/js/html5shiv.js"></script>
+           <![endif]-->
 
         <!-- Fav and touch icons -->
         <link rel="apple-touch-icon-precomposed" sizes="144x144" href="icon/apple-touch-icon-144-precomposed.png">
@@ -28,44 +28,42 @@
     <body>
 
 
-<!-- <div id="LoadingSplash2">&nbsp;</div> -->
-        
-<!-- LOGIN SCREEN -->
+        <!-- LOGIN SCREEN -->
 
         <div id="LoadingSplash">        
             <div id="login-prompt" class="logon overthrow">
-            	<div>
-                	<img alt="Welcome" id="about-toggle" title="Click here to learn about this project" src="icon/netention-logo.png" />
+                <div>
+                    <img alt="Welcome" id="about-toggle" title="Click here to learn about this project" src="icon/netention-logo.png" />
                     <h3 style="text-align:center;">Login</h3>
                     <ul>
-                    	<li id="AnonymousLoginButton"><a href="/anonymous"><img src="icon/anonymous-login.png" alt="Anonymous Login" title="Anonymous Login" /></a></li>
-                    	<li><img src="icon/facebook.png" alt="Facebook Login" title="Login with your Facebook Account" /></li>
-                    	<li><a href="/auth/google"><img src="icon/google.png" alt="Google Login" title="Login with your Google Account" /></a></li>
-                    	<li><!--<a href="/auth/twitter">--><img src="icon/twitter.png" alt="Twitter Login" title="Login with your Twitter Account" /><!--</a>--></li>
-                    	<li><img src="icon/openid.png" alt="Open ID Login" title="Login with your Open ID" id="openid-toggle" /></li>
+                        <li id="AnonymousLoginButton"><a href="/anonymous"><img src="icon/anonymous-login.png" alt="Anonymous Login" title="Anonymous Login" /></a></li>
+                        <li><img src="icon/facebook.png" alt="Facebook Login" title="Login with your Facebook Account" /></li>
+                        <li><a href="/auth/google"><img src="icon/google.png" alt="Google Login" title="Login with your Google Account" /></a></li>
+                        <li><!--<a href="/auth/twitter">--><img src="icon/twitter.png" alt="Twitter Login" title="Login with your Twitter Account" /><!--</a>--></li>
+                        <li><img src="icon/openid.png" alt="Open ID Login" title="Login with your Open ID" id="openid-toggle" /></li>
                     </ul>
                     <div id="openid-login" style="display:none">
-                    <p>Surprise! You may already have an OpenID. Find out, <a href="http://openid.net/get-an-openid/" target="_blank">click here</a>.</p>
-                    <form action="/auth/openid" method="post">
-                      <label>OpenID:</label>
-                      <input type="text" name="openid_identifier"/><input type="submit" value="OpenID Login"/>
-                    </form>
+                        <p>Surprise! You may already have an OpenID. Find out, <a href="http://openid.net/get-an-openid/" target="_blank">click here</a>.</p>
+                        <form action="/auth/openid" method="post">
+                            <label>OpenID:</label>
+                            <input type="text" name="openid_identifier"/><input type="submit" value="OpenID Login"/>
+                        </form>
                     </div>
                     <div id="about-netention" style="display:none">
-                    <p>Contribute to the <a href="http://netention.org/" target="_blank">&ldquo;<em>Netention</em>&rdquo;</a> open-source project on <a href="https://github.com/automenta/netentionjs2" target="_blank">Github</a> and read about the upcoming <a href="http://climateviewer.com/" target="_blank">Global Survival System</a>. Contact Jim Lee on <a href="http://twitter.com/rezn8d" target="_blank">Twitter</a>, <a href="http://www.facebook.com/rezn8d" target="_blank">Facebook</a>, or Skype user &ldquo;rezn8d&rdquo; if you are interested in helping.  Works best on <a href="http://chrome.google.com/" target="_blank">Chrome</a> or <a href="http://www.firefox.com/" target="_blank">Firefox</a>.</p>
+                        <p>Contribute to the <a href="http://netention.org/" target="_blank">&ldquo;<em>Netention</em>&rdquo;</a> open-source project on <a href="https://github.com/automenta/netentionjs2" target="_blank">Github</a> and read about the upcoming <a href="http://climateviewer.com/" target="_blank">Global Survival System</a>. Contact Jim Lee on <a href="http://twitter.com/rezn8d" target="_blank">Twitter</a>, <a href="http://www.facebook.com/rezn8d" target="_blank">Facebook</a>, or Skype user &ldquo;rezn8d&rdquo; if you are interested in helping.  Works best on <a href="http://chrome.google.com/" target="_blank">Chrome</a> or <a href="http://www.firefox.com/" target="_blank">Firefox</a>.</p>
                     </div>
                 </div>    
             </div>           
         </div> 
-        
-<!-- HIDDEN UNTIL LOADED -->
 
-<!-- UI LAYERS -->
- 
+        <!-- HIDDEN UNTIL LOADED -->
+
+        <!-- UI LAYERS -->
+
         <div id="View" style="display:none;" class="display-window "></div>
-            <div id="toggle-menu" style="display:none;" class="ui-corner-all shadow"><img id="toggle-img" title="Click here to expand the control panel" class="ui-corner-all" alt="toggle menu button" src="icon/netention-button.png" /></div>
-            <div id="close-menu" class="close-menu" style="display:none;" title="Click here to close the control panel"><span class="ui-icon ui-icon-closethick"></span></div>
-            <div id="AvatarButton" class="ui-corner-br shadow" style="display:none;"><img id="avatar-img" class="ui-corner-br" alt="avatar image" src="icon/load.gif" /></div>
+        <div id="toggle-menu" style="display:none;" class="ui-corner-all shadow"><img id="toggle-img" title="Click here to expand the control panel" class="ui-corner-all" alt="toggle menu button" src="icon/netention-button.png" /></div>
+        <div id="close-menu" class="close-menu" style="display:none;" title="Click here to close the control panel"><span class="ui-icon ui-icon-closethick"></span></div>
+        <div id="AvatarButton" class="ui-corner-br shadow" style="display:none;"><img id="avatar-img" class="ui-corner-br" alt="avatar image" src="icon/load.gif" /></div>
         <div id="ViewMenu" style="display:none;" class="ui-widget ui-widget-header shadow overthrow">
             <div class="viewmenu-container">
                 <!-- <li class="viz"><a class="ui-button" id="time" title="Timeline" href="#"><b class="icon-time"></b><span class="display-menu-collapse">Timeline</span></a></li> -->
@@ -92,77 +90,52 @@
                 <button id="FocusButton">Focus</button>
                 <button id="AddContentButton">[+]</button>
 
-
-
-        </div>
-
-<!-- END HIDDEN UNTIL LOADED -->
-        
-<!-- SEH REMOVE THIS DIV AFTER REMOVING FROM index.js etc -->  <div id="ViewOptions" style="display:none !important"></div>
-        
-        <div id="TypeSelectModal" data-backdrop="" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none">
-
-            <h2>Select Tags</h2>
-            <div id="TypeSelectModalTree"></div>
-
-            <button class="btn" data-dismiss="modal" aria-hidden="true">OK</button>
-        </div>
-        <div id="UploadModal" data-backdrop="" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none">
-            <form id="FocusUploadForm" action="/upload" method="post" enctype="multipart/form-data">
-                <div>File:
-                    <input type="file" name="uploadfile" />
-                    <input type="submit" value="Upload" />
-                </div>
-            </form>
-            <div class="FocusUploadProgress">
-                <div class="FocusUploadBar"></div>
-                <div class="FocusUploadPercent">0%</div>
             </div>
-            <div id="FocusUploadStatus"></div>        
 
-            <button class="btn" data-dismiss="modal" aria-hidden="true">OK</button>
         </div>
+        <!-- END HIDDEN UNTIL LOADED -->
 
-    <script src="lib/jquery/jquery.js" type="text/javascript"></script>
-    <script src="lib/jquery-ui/1.10.3/ui/minified/jquery-ui.min.js" type="text/javascript"></script>
-    <script src="lib/overthrow/overthrow.js" type="text/javascript"></script>
-        
-    <script src="lib/lazyload.js" type="text/javascript"></script> 
-    <script src="socket.io/socket.io.js" type="text/javascript"></script> 
-    <!--<script src="http://openlayers.org/dev/OpenLayers.js" type="text/javascript"></script> -->
-    <script src="lib/openlayers/OpenLayers.js" type="text/javascript"></script>
-    <script src="lib/jQuery-URL-Parser/purl.js" type="text/javascript"></script> 
-    <script src="lib/underscore.js/1.4.4/underscore-min.js" type="text/javascript"></script> 
-    <script src="lib/underscore.string/2.3.0/underscore.string.min.js" type="text/javascript"></script> 
-    <script src="lib/backbone.js/0.9.10/backbone-min.js" type="text/javascript"></script> 
-    <script src="lib/pnotify/jquery.pnotify.min.js" type="text/javascript"></script> 
 
-    <script src="lib/timeago/timeago.js" type="text/javascript"></script> 
-    <script src="lib/jquery-form/jquery.form.js" type="text/javascript"></script> 
+        <script src="lib/jquery/jquery.js" type="text/javascript"></script>
+        <script src="lib/jquery-ui/1.10.3/ui/minified/jquery-ui.min.js" type="text/javascript"></script>
+        <script src="lib/overthrow/overthrow.js" type="text/javascript"></script>
 
-    <script src="lib/jqtree/tree.jquery.js"></script>
-    
-    <script src="util.js" type="text/javascript"></script> 
-    <script src="widget.object.js" type="text/javascript"></script> 
-    <script src="widget.map.js" type="text/javascript"></script> 
-    <script src="widget.tag.js" type="text/javascript"></script> 
-    <script src="search.js" type="text/javascript"></script> 
-    
-    <!-- <script src="lib/masonry/jquery.masonry.min.js" type="text/javascript"></script>  -->
-    
-    <script src="client_configuration.js" type="text/javascript"></script> 
-    <script src="view.map.js" type="text/javascript"></script> 
-    <script src="view.grid.js" type="text/javascript"></script> 
-    <script src="view.list.js" type="text/javascript"></script> 
-    <script src="view.trends.js" type="text/javascript"></script> 
-    <script src="view.slides.js" type="text/javascript"></script> 
-    <script src="view.graph.js" type="text/javascript"></script> 
-    <script src="view.self.js" type="text/javascript"></script> 
-    <script src="view.plan.js" type="text/javascript"></script> 
-    <script src="view.options.js" type="text/javascript"></script> 
+        <script src="lib/lazyload.js" type="text/javascript"></script> 
+        <script src="socket.io/socket.io.js" type="text/javascript"></script> 
 
-    <script src="netention.js" type="text/javascript"></script> 
-    <script src="index.js" type="text/javascript"></script> 
+        <script src="lib/openlayers/OpenLayers.js" type="text/javascript"></script> <!--<script src="http://openlayers.org/dev/OpenLayers.js" type="text/javascript"></script> -->
+        <script src="lib/jQuery-URL-Parser/purl.js" type="text/javascript"></script> 
+        <script src="lib/underscore.js/1.4.4/underscore-min.js" type="text/javascript"></script> 
+        <script src="lib/underscore.string/2.3.0/underscore.string.min.js" type="text/javascript"></script> 
+        <script src="lib/backbone.js/0.9.10/backbone-min.js" type="text/javascript"></script> 
+        <script src="lib/pnotify/jquery.pnotify.min.js" type="text/javascript"></script> 
 
-</body>
+        <script src="lib/timeago/timeago.js" type="text/javascript"></script> 
+        <script src="lib/jquery-form/jquery.form.js" type="text/javascript"></script> 
+
+        <script src="lib/jqtree/tree.jquery.js"></script>
+
+        <script src="util.js" type="text/javascript"></script> 
+        <script src="widget.object.js" type="text/javascript"></script> 
+        <script src="widget.map.js" type="text/javascript"></script> 
+        <script src="widget.tag.js" type="text/javascript"></script> 
+        <script src="search.js" type="text/javascript"></script> 
+
+        <!-- <script src="lib/masonry/jquery.masonry.min.js" type="text/javascript"></script>  -->
+
+        <script src="client_configuration.js" type="text/javascript"></script> 
+        <script src="view.map.js" type="text/javascript"></script> 
+        <script src="view.grid.js" type="text/javascript"></script> 
+        <script src="view.list.js" type="text/javascript"></script> 
+        <script src="view.trends.js" type="text/javascript"></script> 
+        <script src="view.slides.js" type="text/javascript"></script> 
+        <script src="view.graph.js" type="text/javascript"></script> 
+        <script src="view.self.js" type="text/javascript"></script> 
+        <script src="view.plan.js" type="text/javascript"></script> 
+        <script src="view.options.js" type="text/javascript"></script> 
+
+        <script src="netention.js" type="text/javascript"></script> 
+        <script src="index.js" type="text/javascript"></script> 
+
+    </body>
 </html>
