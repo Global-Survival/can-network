@@ -128,12 +128,16 @@ function newReplyWidget(onReply, onCancel) {
  */
 function newObjectEdit(ix, editable) {
     var d = newDiv();
-        
+
+    
     function update(x) {
         var whenSaved = [];
+        var nameInput = null;
 
         function getEditedFocus() {
-            var n = objNew( x.id, x.name );
+            if (!editable)
+                return x;            
+            var n = objNew( x.id, nameInput.val() );
             n.createdAt = x.createdAt;
             n.author = x.author;
             for (var i = 0; i < whenSaved.length; i++) {
@@ -164,7 +168,6 @@ function newObjectEdit(ix, editable) {
         
         d.html('');
         
-        var nameInput = null;
         if (editable) {
             nameInput = $('<input/>').attr('type', 'text').attr('x-webkit-speech', 'x-webkit-speech').addClass('nameInput');
             nameInput.val(objName(x));
@@ -354,9 +357,10 @@ function newObjectEdit(ix, editable) {
 
         var saveButton = $('<button><b>Save/Share</b></button>');
         saveButton.click(function() {
-            x.author = self.id();
-            objTouch(x);
-            self.pub(x, function(err) {
+            var e = getEditedFocus();
+            e.author = self.id();
+            objTouch(e);
+            self.pub(e, function(err) {
                 $.pnotify({
                     title: 'Unable to save.',
                     text: x.name,
@@ -367,7 +371,7 @@ function newObjectEdit(ix, editable) {
                     title: 'Saved (' + x.id.substring(0,6) + ')' ,
                     text: '<button disabled>Goto: ' + x.name + '</button>'  //TODO button to view object           
                 });        
-                self.notice(x);
+                self.notice(e);
             });
             d.parent().dialog('close');
         });
