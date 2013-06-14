@@ -8,37 +8,6 @@ var MAX_INITIAL_OBJECTS = 1024;
 
 var updateView;
 
-function initUI() {
-
-    $('body').timeago();
-    updateView = _.throttle(_updateView, 650);
-
-    function doUpdate() {
-        later(function() {
-            updateView();
-        });        
-    }
-    
-    self.on('change:attention', doUpdate);    
-    self.on('change:layer', doUpdate);
-    self.on('change:currentView', doUpdate);
-    self.on('change:tags', doUpdate);
- 
- 
-
-    var msgs = ['I think', 'I feel', 'I wonder', 'I know', 'I want'];
-    //var msgs = ['Revolutionary', 'Extraordinary', 'Bodacious', 'Scrumptious', 'Delicious'];
-    function updatePrompt() {
-        var l = msgs[parseInt(Math.random() * msgs.length)];
-        $('.nameInput').attr('placeholder', l + '...');
-    }
-    setInterval(updatePrompt, 7000);
-    updatePrompt();
-        
-    $.getScript('theme.mobile.js', function(data) {
-        doUpdate();
-    });
-}
 
 var lastView = null;
 var currentView = null;
@@ -248,10 +217,38 @@ $(document).ready(function() {
                 $('#ViewControls #' + self.get('currentView')).attr('checked', true);
                 $('#ViewControls').buttonset('refresh');
                 
-                initUI();
+                $('body').timeago();
+                updateView = _.throttle(_updateView, 650);
+
+                function doUpdate() {
+                    later(function() {
+                        updateView();
+                    });        
+                }
+
+                self.on('change:attention', doUpdate);    
+                self.on('change:layer', doUpdate);
+                self.on('change:currentView', doUpdate);
+                self.on('change:tags', doUpdate);
+
+
+
+                var msgs = ['I think', 'I feel', 'I wonder', 'I know', 'I want'];
+                //var msgs = ['Revolutionary', 'Extraordinary', 'Bodacious', 'Scrumptious', 'Delicious'];
+                function updatePrompt() {
+                    var l = msgs[parseInt(Math.random() * msgs.length)];
+                    $('.nameInput').attr('placeholder', l + '...');
+                }
+                setInterval(updatePrompt, 7000);
+                updatePrompt();
+
+                $.getScript(configuration.ui, function(data) {
+                    doUpdate();
+
+                    $('#View').show();
+                    $('#LoadingSplash2').hide();
+                });
                 
-                $('#View').show();
-                $('#LoadingSplash2').hide();                
                 /*if (isAuthenticated()) {
                           $.pnotify({
                             title: 'Authorized',

@@ -1,6 +1,7 @@
 /* Netention Client Configuration */
 
 var configuration = {
+    ui: 'ui.mobile.js',
     initialView: 'self',
     initialDisplayAvatarMenu: false,
     enableAnonymous: true,
