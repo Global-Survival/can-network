@@ -313,6 +313,8 @@ function netention(f) {
             },
                     
             saveLocal: function() {
+                //DEPRECATED delete this function
+                
                 //console.log('SAVING');
                 //localStorage.self = JSON.stringify(this.attributes);
             },
