@@ -311,7 +311,17 @@ function netention(f) {
                     });*/
                 }
             },
-            
+            loadSchemaJSON : function(url, f) {
+                var that = this;
+                
+                $.getJSON(url, function(schema) {
+                    that.addProperties(schema['properties']);
+                    that.addTags(schema['tags']);
+                    f();
+                });
+        
+            },
+                    
             saveLocal: function() {
                 localStorage.self = JSON.stringify(this.attributes);
             },

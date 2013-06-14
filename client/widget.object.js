@@ -256,7 +256,31 @@ function newObjectEdit(ix, editable) {
             <button class="btn" data-dismiss="modal" aria-hidden="true">OK</button>
         </div>
 
-         *                                    */
+//function cloneFocus() {
+//    var y = getEditedFocus();
+//    var oldURI = y.id;
+//    y.id = uuid();
+//    y.author = window.self.id();
+//    commitFocus(y);
+//    saveObject(y);
+//
+//    $.pnotify({
+//        title: 'Cloning...',
+//        text: oldURI + ' -> ' + y.id
+//    });
+//    return y;
+//}
+//
+//function deleteFocus() {
+//    var f = window.self.focus();
+//
+//    $.pnotify({
+//        title: 'Delete coming soon',
+//        text: f.uri
+//    });
+//
+//}
+                                             */
 
         d.addClass('ObjectEditDiv');
         
@@ -291,14 +315,59 @@ function newObjectEdit(ix, editable) {
 
         var whoButton = $('<button disabled title="Who?" id="AddWhoButton"><img src="/icon/rrze/categories/user-group.png"></button>');
         d.append(whoButton);
+        
+        var uploadButton = $('<button disabled title="Upload"><img src="/icon/rrze/actions/dial-in.png"/></button>');
+        uploadButton.click(function() {
+            var bar = $('.FocusUploadBar');
+            var percent = $('.FocusUploadPercent');
+            var status = $('#FocusUploadStatus');
+
+            $('#FocusUploadForm').ajaxForm({
+                beforeSend: function() {
+                    status.empty();
+                    var percentVal = '0%';
+                    bar.width(percentVal)
+                    percent.html(percentVal);
+                },
+                uploadProgress: function(event, position, total, percentComplete) {
+                    var percentVal = percentComplete + '%';
+                    bar.width(percentVal)
+                    percent.html(percentVal);
+                },
+                complete: function(xhr) {
+                    var url = xhr.responseText;
+                    status.html($('<a>File uploaded</a>').attr('href', url));
+                    var ab = $('<button>Add Image To Description</button>');
+                    var absURL = url.substring(1);
+                    ab.click(function() {
+                        var f = renderedFocus.getEditedFocus();
+                        objAddDescription(f, '<a href="' + absURL + '"><img src="' + absURL + '"></img></a>');
+                        commitFocus(f);
+                    });
+                    status.append('<br/>');
+                    status.append(ab);
+                }
+            });
+            
+        });
+        
 
         var saveButton = $('<button><b>Save/Share</b></button>');
         saveButton.click(function() {
-            var x = getEditedFocus();
-            self.pub(x);
-            $.pnotify({
-               title: 'Saved.',
-               text: '<button disabled>Goto: ' + x.name + '</button>'  //TODO button to view object           
+            x.author = self.id();
+            objTouch(x);
+            self.pub(x, function(err) {
+                $.pnotify({
+                    title: 'Unable to save.',
+                    text: x.name,
+                    type: 'Error'            
+                });                
+            }, function() {
+                $.pnotify({
+                    title: 'Saved (' + x.id.substring(0,6) + ')' ,
+                    text: '<button disabled>Goto: ' + x.name + '</button>'  //TODO button to view object           
+                });        
+                self.notice(x);
             });
             d.parent().dialog('close');
         });

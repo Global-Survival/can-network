@@ -1,368 +1,30 @@
 /*!
- * index.js v1.31 - 5-26-2013
+ * index.js
  */
 
 "use strict";
 
 var MAX_INITIAL_OBJECTS = 1024;
 
-
-
-function updateLayers() {
-        
-    var l = self.layer();
-    if (!l.include) 
-        l.include = { };
-    if (!l.exclude)
-        l.exclude = { };
-    if (!l.kml)
-        l.kml = [ ];
-
-    var p = {
-        target: $('#Layer'),
-        addToTree: function(T) {
-            function kmlsubtree(root) {
-                var kmlFolder = {
-                    label: 'Map Layer',
-                    children: []
-                };      
-
-                function addKML(label, url) {
-                    kmlFolder.children.push({
-                        label: ('<span url="' + url + '" class="KMLLayer">' + label + '</span>'),
-                    });
-                }
-                addKML('HAARP', '/kml/haarp.kml');
-                addKML('HPM', '/kml/hpm-radars.kml');
-                addKML('NUKE', '/kml/nuke-explosions.kml');
-
-                root.push(kmlFolder);
-            }
-            function externalsubtree(root) {
-                var extFolder = {
-                    label: 'External Link',
-                    children: []
-                }; 
-                var t = [
-                    {
-                        label: 'Global Alerts',
-                        children: [
-                            {
-                                label: 'ClimateViewer 3D',
-                                url: 'http://climateviewer.com/3D/'
-                            },
-                            {
-                                label: 'RSOE EDIS',
-                                url: 'http://hisz.rsoe.hu/alertmap/index2.php'
-                            }
-                        ]
-                    }
-                ];
-                root.push(extFolder);        
-            }
-
-            kmlsubtree(T);
-            externalsubtree(T);        
-    
-        },
-        newTagDiv: function(id, content) {
-            var ti = getTagIcon(id);
-            if (ti)
-                content = '<img style="height: 1em" src="' + ti + '"/>' + content;
-            return {
-                label: ('<span id="' + id + '" class="TagLayer">' + content + '</span>')
-            };
-        }        
-    };
-    newTagTree(p);
-    
-    function commitLayer() {
-        self.set('layer', l);
-        self.trigger('change:layer');
-        updateLayers();
-    }
-    
-    if (_.size(l.include) > 0) {
-        $('.TagLayer').addClass('TagLayerFaded');
-    }
-    
-    $('.TagLayer').each(function(x) {
-        var t = $(this);
-        var id = t.attr('id');
-        var included = l.include[id]; 
-        var excluded = l.exclude[id];
-        
-        if (included) {
-            t.addClass('TagLayerInclude');
-        }
-        else if (excluded) {
-            t.addClass('TagLayerExclude');
-        }
-        
-        t.click(function() {
-            later(function() {
-                if ((!included) && (!excluded)) {
-                    //make included
-                    l.include[id] = true;
-                    delete l.exclude[id];
-                    commitLayer();
-                }
-                else if (included) {
-                    //make excluded
-                    delete l.include[id];
-                    l.exclude[id] = true;
-                    commitLayer();
-                }
-                else {
-                    //make neither
-                    delete l.include[id];
-                    delete l.exclude[id];
-                    commitLayer();
-                }                
-            });
-        });
-    });
-    $('.KMLLayer').each(function(x) {
-        var t = $(this);        
-        var url = t.attr('url');
-        
-        var included = _.contains(l.kml, url);
-        if (included) {
-            t.addClass('TagLayerInclude');
-        }
-        t.click(function() {
-            if (included) {
-                //uninclude
-                l.kml = _.without(l.kml, url);
-                commitLayer();
-            }
-            else {
-                //include
-                l.kml.push(url);
-                commitLayer();
-            }
-        });
-    });
-    
-//    a.delegate("a", "click", function(e) {
-//        /*if ($(e.currentTarget).blur().attr('href').match('^#$')) {
-//            $("#layer-tree").jstree("open_node", this);
-//            return false;
-//        } else {
-//            var embedLocation = (this).href;
-//            $('#View').html('');
-//            $('#View').html('<iframe src="' + embedLocation + '" frameBorder="0" id="embed-frame"></iframe>');
-//            $("#View").removeClass("ui-widget-content");
-//            var vm = $('#ViewMenu');
-//            var shown = vm.is(':visible');
-//            showAvatarMenu(!shown);
-//            e.preventDefault();
-//            return false;
-//        }*/
-//    });
-                   
-    
-    /*
-    //update display of type counts and other type metadata
-    function updateTypeCounts() {
-        for (var t in stc) {
-            $('a:contains("' + t + '")').append(' '+ stc[t]);
-        }    
-    }
-    */
-
-}
-
-
-function saveObject(p) {
-    p.author = self.id();
-    objTouch(p);
-    self.pub(p, function(err) {
-        $.pnotify({
-            title: 'Unable to save.',
-            text: p.name,
-            type: 'Error'            
-        });                
-    }, function() {
-        $.pnotify({
-            title: 'Saved (' + p.id.substring(0,6) + ')' ,
-            text: p.name
-        });        
-        self.notice(p);
-    });
-}
-
-//DEPR?
-function initDescriptionRichText() {
-    $('#FocusDescriptionSection').html('<textarea id="FocusDescription"></textarea>');
-    $('#FocusDescription').wysihtml5();
-}
-
 var updateView;
-
 
 function initUI() {
 
     $('body').timeago();
     updateView = _.throttle(_updateView, 650);
 
-    self.on('change:attention', function() {
+    function doUpdate() {
         later(function() {
             updateView();
-        });
-    });
-    self.on('change:layer', function() {
-        later(function() {
-            updateView();
-        });
-    });
-
-    self.on('change:currentView', function() {
-        later(function() {
-            updateView();
-        });
-    });
-
-    self.on('change:tags', function() {
-        later(function() {
-            updateLayers();
-        });
-    });
-    $('#SelectProfileButton').click(function() {
-        var d = newPopup('Profiles', {width: '450px' });
-                
-        function closeDialog() {
-            d.dialog('close');            
-        }
-        
-        function become(u) {
-            self.become(u);             
-        }
-        
-        var selector = $('<select/>');
-        var okButton = $('<button><b>Become</b></button>');
-        var deleteButton = $('<button>Delete</button>');
-        
-        var otherSelves = self.get('otherSelves');
-        if (!otherSelves) {
-            selector.append('<option>' + self.myself().name + '</option>');
-            selector.attr('disabled', 'disabled');
-            okButton.attr('disabled', 'disabled');
-            deleteButton.attr('disabled', 'disabled');
-        }
-        else {
-            for (var i = 0; i < otherSelves.length; i++) {
-                var s = otherSelves[i];
-                if (s.indexOf('Self-')==0)
-                    s = s.substring(5);
-                var o = self.getSelf(s);
-                if (o) {                    
-                    var n = o.name;
-                    var selString = (o.id.substring(5) === self.id()) ? 'selected' : '';
-                    selector.append('<option value="' + s + '" ' + selString + '>' + n + '</option>');
-                }
-                else {
-                    //console.log('unknown self: ' + s);
-                }
-                
-            }
-        }
-        
-        d.append(selector);
-        
-        d.append(okButton);
-        okButton.click(function() {
-            var id = selector.val();
-            become(self.getSelf(id));
-            closeDialog();
-        });
-        
-        d.append(deleteButton);
-        deleteButton.click(function() {
-            if (confirm('Permanently delete?')) {
-                self.deleteSelf(selector.val());
-                closeDialog();
-            }
-        });
-        
-        
-        d.append('<hr/>');
-        
-        var newButton = $('<button>New Profile...</button>');
-        newButton.click(function() {
-            var name = prompt("New Profile Name", "Anonymous");
-            if (name) {
-                var u = uuid();
-                var uo = 'Self-' + u;
-                var o = objNew(uo, name);
-                objAddTag(o, 'Human');
-                objAddTag(o, 'User');            
-                become(o);
-                closeDialog();
-            }
-        });
-        d.append(newButton);        
-    });
-
-    $('#ViewMenu input').click(function(x) {
-        var b = $(this);
-        var v = b.attr('id');
-        if ((b.attr('type')==='text') || (b.attr('type')==='checkbox'))
-            return;
-        $('#ViewControls').buttonset('refresh');
-        self.set('currentView', v);
-        showAvatarMenu(false);
-    });
-    
-    $('#GeographicToggle').change(function(e) {
-        var isGeographic = $('#GeographicToggle').is(':checked');
-        updateLayers();
-    });
-
-
-    //TODO move this to focus.semantic.js when dynamically generating the focus UI
-    $('#SaveButton').click(function() {
-        var p = renderedFocus.getEditedFocus();
-        later(function() {
-            saveObject(p);
-        });
-    });
-
-
-    {
-
-        var bar = $('.FocusUploadBar');
-        var percent = $('.FocusUploadPercent');
-        var status = $('#FocusUploadStatus');
-
-        $('#FocusUploadForm').ajaxForm({
-            beforeSend: function() {
-                status.empty();
-                var percentVal = '0%';
-                bar.width(percentVal)
-                percent.html(percentVal);
-            },
-            uploadProgress: function(event, position, total, percentComplete) {
-                var percentVal = percentComplete + '%';
-                bar.width(percentVal)
-                percent.html(percentVal);
-            },
-            complete: function(xhr) {
-                var url = xhr.responseText;
-                status.html($('<a>File uploaded</a>').attr('href', url));
-                var ab = $('<button>Add Image To Description</button>');
-                var absURL = url.substring(1);
-                ab.click(function() {
-                    var f = renderedFocus.getEditedFocus();
-                    objAddDescription(f, '<a href="' + absURL + '"><img src="' + absURL + '"></img></a>');
-                    commitFocus(f);
-                });
-                status.append('<br/>');
-                status.append(ab);
-            }
-        });
+        });        
     }
-
+    
+    self.on('change:attention', doUpdate);    
+    self.on('change:layer', doUpdate);
+    self.on('change:currentView', doUpdate);
+    self.on('change:tags', doUpdate);
+ 
+ 
 
     var msgs = ['I think', 'I feel', 'I wonder', 'I know', 'I want'];
     //var msgs = ['Revolutionary', 'Extraordinary', 'Bodacious', 'Scrumptious', 'Delicious'];
@@ -370,16 +32,11 @@ function initUI() {
         var l = msgs[parseInt(Math.random() * msgs.length)];
         $('.nameInput').attr('placeholder', l + '...');
     }
-
-    {
-        setInterval(updatePrompt, 7000);
-        updatePrompt();
-    }
-    
-    updateLayers();
-    
-    later(function() {
-        updateView();
+    setInterval(updatePrompt, 7000);
+    updatePrompt();
+        
+    $.getScript('theme.mobile.js', function(data) {
+        doUpdate();
     });
 }
 
@@ -402,11 +59,9 @@ function _updateView(force) {
 
     updateBrand();
 
-    s.saveLocal();
+    //s.saveLocal();
 
     var view = s.get('currentView');
-    /*if (lastView==view)
-     return;*/
 
     var o = $('#ViewOptions');
     var v = $('#View');
@@ -478,30 +133,7 @@ function _updateView(force) {
 }
 
 
-//function cloneFocus() {
-//    var y = getEditedFocus();
-//    var oldURI = y.id;
-//    y.id = uuid();
-//    y.author = window.self.id();
-//    commitFocus(y);
-//    saveObject(y);
-//
-//    $.pnotify({
-//        title: 'Cloning...',
-//        text: oldURI + ' -> ' + y.id
-//    });
-//    return y;
-//}
-//
-//function deleteFocus() {
-//    var f = window.self.focus();
-//
-//    $.pnotify({
-//        title: 'Delete coming soon',
-//        text: f.uri
-//    });
-//
-//}
+
 
 function setTheme(t) {
     if (!t)
@@ -536,27 +168,7 @@ function setTheme(t) {
     
 }
 
-function confirmClear() {
-    if (confirm('Clear local memory?'))
-        window.self.clear();
-}
 
-function showAvatarMenu(b) {
-    var vm = $('#ViewMenu');
-    if (!b) {
-        $('#close-menu').hide();
-        $('#AvatarButton').hide();
-        vm.fadeOut();
-        $('#toggle-menu').show();
-    }
-    else {
-        $('#toggle-menu').hide();
-        vm.fadeIn();
-        $('#close-menu').show();
-        $('#AvatarButton').show();
-        vm.show();        
-    }
-}
 
 function popupAboutDialog() {
     $.get('/about.html', function(d) {
@@ -584,10 +196,7 @@ $(document).ready(function() {
 
         self.clear();
 
-        $.getJSON('/schema/json', function(schema) {
-            self.addProperties(schema['properties']);
-            self.addTags(schema['tags']);
-
+        self.loadSchemaJSON('/schema/json', function() {            
 
             self.getLatestObjects(MAX_INITIAL_OBJECTS, function() {
 
@@ -607,20 +216,6 @@ $(document).ready(function() {
                         "example": "completeExample"
                                 //"search/:query/:page":  "query"   // #search/kiwis/p7
                     },
-                    /*
-                     newWithTags : function(ts) {                              
-                     //'/new/with/tags/' + ts
-                     ts = ts.split(',');
-                     var tss = [];
-                     for (var i = 0; i < ts.length; i++)
-                     tss.push(1.0);
-                     
-                     commitFocus({
-                     id: uuid(),
-                     tag: ts,
-                     tagStrength: tss
-                     });
-                     },*/
 
                     me: function() {
                         commitFocus(self.myself());
@@ -628,24 +223,6 @@ $(document).ready(function() {
                     completeExample: function() {
                         commitFocus(exampleObject);
                     },
-                    /*
-                     help: function() {
-                     commitFocus({
-                     uri: uuid(),
-                     tag: [ 'help '], tagStrength: [ 1.0 ]
-                     });
-                     },*/
-
-                    /*tag: function(tag) {
-                        self.set('list-semantic', 'Relevant');
-                        commitFocus(objAddTag(objNew(), tag));
-                    },
-                    query: function(query) {
-                        commitFocus({
-                            id: uuid(),
-                            name: query
-                        });
-                    },*/
                     showObject: function(id) {
                         var x = self.getObject(id);
                         if (x) {
@@ -657,30 +234,13 @@ $(document).ready(function() {
                                 text: id.substring(0, 4) + '...'
                             });*/
                         }
-                    },
-                    focus: function(id) {
-                        self.set('list-semantic', 'Relevant');
-                        commitFocus(self.getObject(id));
-                        updateView();
-
                     }
 
                 });
 
-
-
-
-
                 var w = new Workspace();
                 Backbone.history.start();
 
-
-                /*if (!self.get('currentView')) {
-                    self.set('currentView', 'grid');
-                }
-                else {
-                    //updateView();
-                }*/
                 if (configuration.initialView) {
                     self.set('currentView', configuration.initialView);
                 }
@@ -688,18 +248,17 @@ $(document).ready(function() {
                 //select the current view in the ViewControls
                 $('#ViewControls #' + self.get('currentView')).attr('checked', true);
                 $('#ViewControls').buttonset('refresh');
-
                 
                 initUI();
                 
                 $('#View').show();
                 $('#LoadingSplash2').hide();                
                 /*if (isAuthenticated()) {
-                      $.pnotify({
-                        title: 'Authorized',
-                        text: self.myself().name
-                     });
-                }*/
+                          $.pnotify({
+                            title: 'Authorized',
+                            text: self.myself().name
+                         });
+                        }*/
                 
             });
         });
@@ -708,20 +267,6 @@ $(document).ready(function() {
     });
 
 
-    $('#FocusTabs').tabs();
-    $('#toggle-menu').click(function() {
-        var vm = $('#ViewMenu');
-        var shown = vm.is(':visible');
-        showAvatarMenu(!shown);
-    });
-    $('#close-menu').click(function() {
-        var vm = $('#ViewMenu');
-        var shown = vm.is(':visible');
-        showAvatarMenu(!shown);
-    });
-    $('#AvatarButton').click(function() {
-        showAvatarMenu(false);
-    });
 
     $('#logout').hover(
 		function() { $(this).addClass('ui-state-hover');$(this).addClass('shadow'); },
@@ -740,112 +285,6 @@ $(document).ready(function() {
     $('#close-menu').button();
     $("#ViewControls").buttonset();
     
-
-    //KML
-    {        
-        if (self.layer)
-            delete self.layer().kml;
-        
-        $("#KMLLayers input").change(function() {
-           var t = $(this);
-           var url = t.attr('url');
-           var checked = t.is(':checked');
-           
-           var l = self.layer();
-           
-           if (!l.kml) l.kml = [];
-           
-           if (checked) {
-               l.kml.push(url);
-               l.kml = _.unique( l.kml );
-           }
-           else {
-               l.kml = _.without( l.kml, url);
-           }                      
-           
-           self.set('layer', l);
-           self.trigger('change:layer');
-        });
-    }
-
-    /* IFRAME EMBED */
-
-    //$("#url-tree").jstree({"plugins": ["html_data", "ui", "themeroller"]});
-
-    /*
-    $("#url-tree").delegate("a", "click", function(e) {
-        if ($(e.currentTarget).blur().attr('href').match('^#$')) {
-            $("#url-tree").jstree("open_node", this);
-            return false;
-        } else {
-
-            var embedLocation = (this).href;
-            $('#View').html('');
-            $('#View').html('<iframe src="' + embedLocation + '" frameBorder="0" id="embed-frame"></iframe>');
-            $("#View").removeClass("ui-widget-content");
-            $('#View').addClass('view-indented');
-            
-            $('#close-iframe').show();
-            
-            var vm = $('#ViewMenu');
-
-            var shown = vm.is(':visible');
-            showAvatarMenu(!shown);
-            e.preventDefault();
-            return false;
-        }
-    });
-     */
-
-    $('#close-iframe').click(function() {
-        updateView(true);
-        $('#close-iframe').hide();
-    });
-
-    /*
-    $("#expand-url-tree").click(function() {
-        $("#url-tree").jstree("open_all");
-    });
-
-    $("#close-url-tree").click(function() {
-        $("#url-tree").jstree("close_all");
-    });
-    */
-
-
-/*
-    $('.ext-link').click(function(e) {
-        var linkLocation = (this).value;
-        $('#View').html('');
-        $('#View').html('<iframe src="' + linkLocation + '" frameBorder="0" id="embed-frame"></iframe>');
-        var vm = $('#ViewMenu');
-        var shown = vm.is(':visible');
-        showAvatarMenu(!shown);
-        
-        
-    });
-*/
-
-    $('#AddContentButton').click(function() {
-        newPopup('Add...', { }).append(newObjectEdit(objNew(), true));
-        //showAvatarMenu(false);        
-    });
-
-    $('#FocusButton').click(function() {
-        /*
-                            <div id="Layer" class="ui-widget-header overthrow">
-                            </div>
-                            <span>
-                                <input type="text" placeholder="Filter" disabled/>
-                                <input type="checkbox" id="GeographicToggle">Exclude Un-Mappable</input>
-                            </span>                                                        
-*/
-    });
-
-    if (configuration.initialDisplayAvatarMenu)
-        showAvatarMenu(true);
-    else
-        showAvatarMenu(false);
 
 });
 
