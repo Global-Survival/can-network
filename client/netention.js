@@ -616,7 +616,6 @@ function netention(f) {
                 self.set(key, value);
                 var k = localStorePrefix + key;
                 localStorage[k] = JSON.stringify(value);
-                self.trigger('change:' + key);
             }
 
             

@@ -134,7 +134,7 @@ function renderItems(s, o, v, maxItems, perItems) {
     }
     perItems(s, v, xxrr);
     
-    var semanticFilter = $('<select><option>Any</option><option>Relevant</option></select>');
+    /*var semanticFilter = $('<select><option>Any</option><option>Relevant</option></select>');
     semanticFilter.change(function() {
     	var v = $(this).val();
         s.set('list-semantic', v);
@@ -150,7 +150,7 @@ function renderItems(s, o, v, maxItems, perItems) {
 		updateView();
 	});
     sortSelect.val(sort);
-	o.append(sortSelect);
+	o.append(sortSelect);*/
 	
     /*
 	var proxFilter = $('<select><option>Anywhere</option><option>Near 1km</option><option>Near 5km</option></select>');
@@ -165,7 +165,7 @@ function renderItems(s, o, v, maxItems, perItems) {
 	});
 	o.append(timeFilter);
 	*/
-    
+    /*
 	var authorFilter = $('<select><option>Public</option><option>Mine</option><option>Others</option></select>');
 	authorFilter.change(function() {
     	var v = $(this).val();
@@ -174,7 +174,7 @@ function renderItems(s, o, v, maxItems, perItems) {
 	});
     authorFilter.val(scope);
 	o.append(authorFilter);
-    
+    */
 
 }
 

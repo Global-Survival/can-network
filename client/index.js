@@ -231,8 +231,6 @@ $(document).ready(function() {
                 self.on('change:currentView', doUpdate);
                 self.on('change:tags', doUpdate);
 
-
-
                 var msgs = ['I think', 'I feel', 'I wonder', 'I know', 'I want'];
                 //var msgs = ['Revolutionary', 'Extraordinary', 'Bodacious', 'Scrumptious', 'Delicious'];
                 function updatePrompt() {
