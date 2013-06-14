@@ -71,8 +71,7 @@ function newLayersWidget() {
     newTagTree(p);
     
     function commitLayer() {
-        self.set('layer', l);
-        self.trigger('change:layer');
+        self.save('layer', l);
         updateLayers();
     }
     
@@ -190,7 +189,7 @@ function newLayersWidget() {
                l.kml = _.without( l.kml, url);
            }                      
            
-           self.set('layer', l);
+           self.save('layer', l);
            self.trigger('change:layer');
         });
     }

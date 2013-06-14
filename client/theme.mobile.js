@@ -26,7 +26,7 @@ $('#ViewMenu input').click(function(x) {
     if ((b.attr('type') === 'text') || (b.attr('type') === 'checkbox'))
         return;
     $('#ViewControls').buttonset('refresh');
-    self.set('currentView', v);
+    self.save('currentView', v);
     showAvatarMenu(false);
 });
 

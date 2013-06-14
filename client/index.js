@@ -143,8 +143,7 @@ function setTheme(t) {
 
     var oldTheme = window.self.get('theme');
     if (oldTheme !== t) {
-        window.self.set('theme', t);
-        window.self.saveLocal();
+        self.save('theme', t);
     }
 
     $('.themecss').remove();
@@ -242,7 +241,7 @@ $(document).ready(function() {
                 Backbone.history.start();
 
                 if (configuration.initialView) {
-                    self.set('currentView', configuration.initialView);
+                    self.save('currentView', configuration.initialView);
                 }
 
                 //select the current view in the ViewControls

@@ -1,18 +1,17 @@
 /*!
- * netention.js v1.1
+ * netention.js v1.2
  * Attentionated by @automenta and @rezn8d
  */
 //Measurement types:
 //<select class="ucw_selector" id="ucw_cs"><option value="Temperature">Temperature</option><option value="Length">Length</option><option value="Mass">Mass</option><option value="Speed">Speed</option><option value="Volume">Volume</option><option value="Area">Area</option><option value="Fuel consumption">Fuel consumption</option><option value="Time">Time</option><option value="Digital Storage">Digital Storage</option></select>
 
+var localStorePrefix = 'n.';
 
 window.authenticated = getCookie('authenticated') !== 'false';
 function isAuthenticated() {
     return window.authenticated;
 }
             
-
-
 function loadCSS(url, med) {
     $(document.head).append(
         $("<link/>")
@@ -49,24 +48,14 @@ function netention(f) {
                 
         Self = Backbone.Model.extend({
             
-            defaults: {
-                tags: { },
-                properties: { },
-                attention: { },
-                deleted: { },
-                replies: { }, //reply index
-                layer: { },
-                focus: { }
-            },
-            
             clear : function() {
                 this.set('tags', { });
                 this.set('properties', { });    
                 this.set('attention', { });    
                 this.set('deleted', { });    
                 this.set('replies', { });
+                this.set('layer', { include: [], exclude: [] });
                 this.set('focus', null );    
-                //this.socket.emit('connectSelf', this.get('clientID'));
             },
             
             id : function() { return this.get('clientID'); },
@@ -199,8 +188,8 @@ function netention(f) {
                             s.connect(target, function() {
                                 var os = self.get('otherSelves');
                                 os.push('Self-' + nextID);
-                                self.set('otherSelves', _.unique(os));
-                                self.saveLocal();
+                                
+                                self.save('otherSelves', _.unique(os));
                                 
                                 s.trigger('change:attention');
                                 updateBrand(); //TODO use backbone Model instead of global fucntion                                
@@ -242,7 +231,7 @@ function netention(f) {
                     }
                 }
                 else {                
-                    self.set('clientID', targetID);
+                    self.save('clientID', targetID);
                 }
                                     
                 var socket = this.socket
@@ -302,14 +291,15 @@ function netention(f) {
             },
             
             loadLocal: function() {
-                if (localStorage.self) {
-                    this.set(JSON.parse(localStorage.self));                            
-            	    console.log('Self loaded');
-                    /*$.pnotify({
-                        title: 'Loaded.',
-                        text: JSON.stringify(this.myself(), null, 4)
-                    });*/
+                var entries = 0;
+                for (var k in localStorage) {
+                    if (k.indexOf(localStorePrefix) == 0) {
+                        var key = k.substring(localStorePrefix.length);
+                        this.set(key, JSON.parse(localStorage[k]));
+                        entries++;
+                    }
                 }
+                console.log('Self loaded (' + entries + ')');                
             },
             loadSchemaJSON : function(url, f) {
                 var that = this;
@@ -323,7 +313,8 @@ function netention(f) {
             },
                     
             saveLocal: function() {
-                localStorage.self = JSON.stringify(this.attributes);
+                //console.log('SAVING');
+                //localStorage.self = JSON.stringify(this.attributes);
             },
 
             addProperty : function(p) {
@@ -618,6 +609,12 @@ function netention(f) {
                 $.getJSON('/attention', function(attention) {
                     withResults(attention);
                 }); 
+            },
+            save: function(key, value) {
+                self.set(key, value);
+                var k = localStorePrefix + key;
+                localStorage[k] = JSON.stringify(value);
+                self.trigger('change:' + key);
             }
 
             
@@ -627,7 +624,10 @@ function netention(f) {
 	console.log('Scripts loaded');
 		
         var s = new Self();
+        
+        s.clear();
         s.loadLocal();
+                 
         //console.log('loaded clientID: ' + s.get('clientID'));
         var oldCID = s.get('clientID');
         var nextCID = window.clientID;
@@ -645,71 +645,6 @@ function netention(f) {
 		
 	
 }
-
-
-/*
-
-function showHelp() {
-    $('#help').html('<center>Loading...</center>');
-    $("#help").dialog({
-    		height: 650,
-            width: '90%',
-            zIndex: 5000,
-            title: 'Help',
-			modal: true
-	});
-    $('#help').load('help.html');
-}
-    
-   
-
-function removeMapLayers() {
-    for (i = 0; i < layers.length; i++) {
-        theMap.removeLayer(layers[i]);
-    }
-    layers = [];
-}            
-
-function addMapLayer(l) {
-    layers.push(l);
-    theMap.addLayer(l);
-}
-
-var heatmapOpacity = 0;
-function updateHeatmapOpacity(o) { 
-    heatmapOpacity = o;
-    if (o == 0) {
-        $('#mapHeat').hide();
-}
-else {
-    $('#mapHeat').show();                    
-}
-$('#mapHeat').css('opacity', o/100.0); 
-}
-
-function updateHeatmapDetail(d) {
-heatMapDetailLevel = d;
-update();
-}
-var layers = [];
-
-*/
-
-/*
-function applyTemplate(template, params, target) {
-    $( template ).tmpl( params).appendTo( target );                          
-}
-
-function templatize(template, params) {
-    return $( template ).tmpl( params);
-}
-
-function addMenu(afterLoaded) {                
-    var hw = $('<div/>');
-	hw.load('/menu.html', afterLoaded);
-	$('body').prepend(hw);            	
-}
-*/
 
 
 //apparently is faster than $('<div/>');
