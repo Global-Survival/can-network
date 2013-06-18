@@ -27,25 +27,27 @@ function newTagger(selected, onFinished) {
     }
     
     var selectBar = newDiv();
-    selectBar.attr('style', 'width: 50%; float: left;');
+    selectBar.attr('style', 'width: 70%; float: left;');
     {
-        var b1 = $('<button>Wiki</button>');
-        b1.click(function() { loadBrowser(newWikiBrowser); });
-        selectBar.append(b1);
-        var b2 = $('<button>Tree</button>');
-        b2.click(function() { loadBrowser(newTreeBrowser); });
-        selectBar.append(b2);
-        var b3 = $('<button disabled>Who</button>');
-        selectBar.append(b3);
-        var b4 = $('<button disabled>Emotion</button>');
-        selectBar.append(b4);
-        var b5 = $('<button disabled>Body</button>');
-        selectBar.append(b5);
+        function addButton(label, browserFunction) {
+            var b = $('<button>' + label + '</button>');
+            b.click(function() {
+               loadBrowser(browserFunction); 
+            });
+            selectBar.append(b);
+        }
+        addButton('Tree', newTreeBrowser);
+        addButton('Wiki', newWikiBrowser);
+        addButton('Who', newNullBrowser);
+        addButton('Emotion', newEmotionBrowser);
+        addButton('Body', newBodyBrowser);
+        addButton('Needs', newNeedsBrowser);
+        
     }
     d.append(selectBar);
     
     var saveBar = newDiv();
-    saveBar.attr('style', 'width: 50%; float: right; text-align: right');
+    saveBar.attr('style', 'width: 30%; float: right; text-align: right');
     {
         tagsCombo.update();
         saveBar.append(tagsCombo);
@@ -86,6 +88,33 @@ function newTagger(selected, onFinished) {
     
     
     return d;
+}
+
+function newNullBrowser() {
+    var e = newDiv();
+    e.append('Not available yet');
+    return e;    
+}
+function newEmotionBrowser() {
+    var e = newDiv();
+    var i = $('<img src="/icon/plutchik_emotion_wheel.svg"/>');
+    i.click(function() { alert('Not available yet.'); });
+    e.append(i);
+    return e;    
+}
+function newBodyBrowser() {
+    var e = newDiv();
+    var i = $('<img src="/icon/human_body_chart.jpg"/>');
+    i.click(function() { alert('Not available yet.'); });
+    e.append(i);
+    return e;    
+}
+function newNeedsBrowser() {
+    var e = newDiv();
+    var i = $('<img src="/icon/resiliencemaps.org.simple_critical_infrastructure.png"/>');
+    i.click(function() { alert('Not available yet.'); });
+    e.append(i);
+    return e;    
 }
 
 function newTreeBrowser(selected, onTagAdded) {
