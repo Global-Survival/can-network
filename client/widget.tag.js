@@ -36,7 +36,7 @@ function newTagger(selected, onFinished) {
             });
             selectBar.append(b);
         }
-        addButton('Tree', newTreeBrowser);
+        addButton('Index', newTreeBrowser);
         addButton('Wiki', newWikiBrowser);
         addButton('Who', newNullBrowser);
         addButton('Emotion', newEmotionBrowser);

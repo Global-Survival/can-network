@@ -58,8 +58,11 @@ function _updateView(force) {
     v.removeClass('overflow-hidden');
     v.removeClass('nobg');
     
+    function indent() {
+        v.addClass('overthrow ui-widget-content view-indented');        
+    }
     if (view === 'list') {
-        v.addClass('overthrow ui-widget-content view-indented');
+        indent();
         currentView = renderList(s, o, v);
     }
     else if (view === 'map') {
@@ -68,7 +71,7 @@ function _updateView(force) {
         currentView = renderMap(s, o, v);
     }
     else if (view === 'trends') {
-        v.addClass('overthrow ui-widget-content view-indented');
+        indent();
         currentView = renderTrends(s, o, v);
     }
     else if (view == 'graph') {
@@ -79,20 +82,24 @@ function _updateView(force) {
         currentView = renderSlides(s, o, v);
     }*/
     else if (view == 'grid') {
-        v.addClass('overthrow ui-widget-content view-indented');
+        indent();
         currentView = renderGrid(s, o, v);
     }
     else if (view == 'self') {
-        v.addClass('overthrow ui-widget-content view-indented');
+        indent();
         currentView = renderSelf(s, o, v);
     }
     else if (view == 'plan') {
-        v.addClass('overthrow ui-widget-content view-indented');
+        indent();
         currentView = renderPlan(v);
     }
     else if (view == 'options') {
-        v.addClass('overthrow ui-widget-content view-indented');
+        indent();
         currentView = renderOptions(s, o, v);
+    }
+    else if (view == 'chat') {
+        indent();
+        currentView = renderChat(v);        
     }
     else {
         v.html('Unknown view: ' + view);
