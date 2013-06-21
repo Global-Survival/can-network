@@ -650,7 +650,11 @@ function netention(f) {
 
 //apparently is faster than $('<div/>');
 function newDiv() {
-    return $(document.createElement('div'));
+    return newEle('div');
+}
+
+function newEle(e) {
+    return $(document.createElement(e));    
 }
 
 function newPopup(title,p) {

@@ -1,3 +1,106 @@
 function renderChat(v) {
-    v.html('');
+    var frame = newDiv();
+    
+    var roster = newRoster().attr('class', 'ChatViewRoster');    
+    var content = newDiv().attr('class', 'ChatViewContent');    
+    var input = newChatInput(function(x) {
+        var o = objNew();
+        o.author = self.id();
+        objName(o, x);
+        self.pub(o, function(err) {
+            $.pnotify({
+                title: 'Unable to save message.',
+                type: 'Error'            
+            });                
+        }, function() {
+            $.pnotify({
+                title: 'Saved (' + x.id.substring(0,6) + ')'
+            });        
+            self.notice(o);
+        });
+
+    }).attr('class', 'ChatViewInput');
+    
+    frame.append(content);
+    frame.append(roster);
+    frame.append(input);
+    
+    v.append(frame);
+    
+    function updateContent() {
+        content.html('');
+        
+        var sort = 'Recent';
+        var scope = 'Public';
+        var semantic = 'Any';
+        var maxItems = 75;
+        var s = self;
+        var o = newDiv();
+        
+        var rel = getRelevant(sort, scope, semantic, s, o, maxItems);
+        var rr = rel[0];
+        if (rr.length == 0) {
+            content.html('No messages.');
+            return;
+        }
+        for (var i = rr.length-1; i >=0 ; i--) {
+            var x = self.object(rr[i]);
+            content.append(newObjectLogLine(x));
+            content.append(newEle('br'));
+        }
+        
+    }
+        
+    frame.onChange = function() {
+        updateContent();
+    };
+    
+    frame.onChange();
+    
+    return frame;
+}
+
+function newInlineSelfButton(s) {
+    var x = newEle('a').attr('class', 'InlineSelfButton');
+    x.click(function() {
+        newPopupObjectView(s.id);
+    });
+    x.append(s.name);
+    return x;
+}
+
+function newObjectLogLine(x) {    
+    var d = newEle('span');
+    if (x.author) {
+        var a = self.getSelf(x.author);
+        if (a) {
+            d.append(newInlineSelfButton(a));
+        }
+        else {
+            d.append(x.author);
+        }
+        d.append(':&nbsp;');
+    }
+    d.append(x.name);
+    return d;
+}
+
+function newChatInput(onSend) {
+    var d = newDiv();   
+    
+    var inputBar = $('<input class="nameInput" x-webkit-speech/>');
+    inputBar.keyup(function(event){
+        if(event.keyCode == 13) {
+            if (onSend)
+                onSend(inputBar.val());
+            inputBar.val('');
+        }
+        
+    });
+    d.append(inputBar);
+
+    /*var whatButton = $('<button>What</button>');
+    d.append(whatButton);*/
+        
+    return d;
 }
