@@ -49,6 +49,8 @@ function renderChat(v) {
             content.append(newEle('br'));
         }
         
+        content.scrollTop(content.prop("scrollHeight"));
+
     }
         
     frame.onChange = function() {
