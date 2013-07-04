@@ -54,6 +54,7 @@ var generalTags = [
 		    'startsAt': { name: 'Starts At', type: 'text' /*datetime*/ },
 		    'stopsAt': { name: 'Stops At', type: 'text' /*datetime*/ },
 		    'maxAttendance': { name: 'Maximum Attendance', type: 'integer' /*datetime*/ }
+		    //Inviting (person)
 		//Completed?
 	        //RSVP by
 		//Reason (why)

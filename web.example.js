@@ -15,7 +15,7 @@ require('./server/web.js').start(
         server.permissions['authenticate_to_create_objects'] = false;
         server.permissions['authenticate_to_delete_objects'] = false;
         server.permissions['authenticate_to_proxy_http'] = false;
-        Server.permissions['authenticate_to_create_profiles'] = false;
+        server.permissions['authenticate_to_create_profiles'] = false;
         
         //server.permissions['twitter_key'] = 'CONSUMER_KEY:CONSUMER_SECRET';
     }

@@ -748,7 +748,7 @@ exports.start = function(host, port, dbURL, init) {
     //express.use(expressm.staticCache());
     express.use("/plugin", expressm.static('./plugin' , staticContentConfig ));
     express.use("/doc", expressm.static('./doc' , staticContentConfig ));
-    express.use("/kml", expressm.static('./client/kml' , staticContentConfig ));
+    //express.use("/kml", expressm.static('./client/kml' , staticContentConfig ));
     express.use("/", expressm.static('./client' , staticContentConfig));        
 
     express.post('/upload', function(req, res) {
