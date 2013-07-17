@@ -7,6 +7,27 @@ http://en.wikipedia.org/wiki/Allergy
 http://openfoodweb.org
 http://en.openfoodfacts.org
 
+http://en.wikipedia.org/wiki/Food_insurance
+    Food Insurance was initially started following Hurricane Katrina and other global disasters.Originally, Food Insurance only offered emergency kits to help people follow FEMA's guidelines. It has since expanded its product offering to include long-term emergency food supplies and non-food emergency supplies.
+    The food in Food Insurance's long-term meal plans are made from Freeze-dried food.
+    This is the same type of food used by NASA and the U.S. military. For the same reasons that this food is beneficial for astronauts and soldiers it is also ideal for a survival situation. Freeze-dried food requires only water to reconstitute and can have up to a 25-year shelf-life.[14] It is also very compact and light-weight.[15]
+    Along with the complete meals Food Insurance also has individual freeze-dried ingredients. This ingredients range from fruits and vegetables to meats and drink mixes. Food Insurance also sells emergency supplies such as water filters, and emergency stoves.
+    The emergency kits Food Insurance offers generally have a two-week supply of food for one adult, a heat source, a first-aid kit, and a water filter. These kits were designed to help people follow FEMA's guidelines for having a disaster kit. Of course, it will be necessary to personal the disaster kit with items such as medicines, clothes, local maps and cell phone chargers.
+    
+    Product list
+        The Emergency Plus Kit
+        The Essentials Kit
+        Gluten-Free Kit
+        632 Entrée Meal Plan
+        948 Entrée Meal Plan
+        1264 Entée Meal Plan
+        1896 Entrée Meal Plan
+        2528 Entrée Meal Plan
+        3792 Entrée Meal Plan
+        Water Filters
+        Freeze-Dried Fruits
+        Freeze-Dried Meats
+        Freeze-Dried Vegetables
 
 	Nutrient objects (the various macronutrients, vitamins, minerals, adaptogens, nootropics)
 
