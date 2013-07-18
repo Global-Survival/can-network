@@ -492,6 +492,14 @@ function netention(f) {
                 }    
             },
             
+            setFocus : function(f) {
+                this.pub(f, function(err) { 
+                    console.log(err);
+                }, function() {
+                    $.pnotify({title: 'Focus noticed.'});
+                });
+            },
+                    
             notice: function(x) {
                 
             	if (!Array.isArray(x)) {

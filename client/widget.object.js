@@ -136,7 +136,10 @@ function newObjectEdit(ix, editable, hideWidgets) {
 
         function getEditedFocus() {
             if (!editable)
-                return x;            
+                return x;     
+            
+            var na = nameInput ? nameInput.val() : "";
+            
             var n = objNew( x.id, nameInput.val() );
             n.createdAt = x.createdAt;
             n.author = x.author;
@@ -223,9 +226,11 @@ function newObjectEdit(ix, editable, hideWidgets) {
             }
 
         }
-
-        if (editable)
-            ontoSearcher = setInterval(search, 500);
+        
+        if (hideWidgets!=true) {
+            if (editable)
+                ontoSearcher = setInterval(search, 500);
+        }
 
         d.getEditedFocus = getEditedFocus;
 

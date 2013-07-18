@@ -1231,7 +1231,6 @@ exports.start = function(host, port, dbURL, init) {
             unsub(socket, channel);
         });
 
-
         socket.on('pub', function(message, err, success) {
             if (Server.permissions['authenticate_to_create_objects'] != false) {
                 if (!isAuthenticated(session)) {

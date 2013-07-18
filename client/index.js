@@ -301,6 +301,8 @@ $(document).ready(function() {
     clearFocus();
     
     function renderFocus() {
+        self.setFocus(focusValue);
+        
         var fe = $('#FocusEdit');
         fe.html('');
         var noe = newObjectEdit(focusValue, true, true);
@@ -309,6 +311,7 @@ $(document).ready(function() {
             fe.append(focusValue.tags[i]);
         }*/
     }
+    
     $('#FocusClearButton').click(function() {
         clearFocus();
         renderFocus();
