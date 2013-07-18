@@ -126,7 +126,7 @@ function newReplyWidget(onReply, onCancel) {
  *  focus - a function that returns the current focus
  *  commitFocus - a function that takes as parameter the next focus to save
  */
-function newObjectEdit(ix, editable) {
+function newObjectEdit(ix, editable, hideWidgets) {
     var d = newDiv();
 
     
@@ -169,13 +169,15 @@ function newObjectEdit(ix, editable) {
         d.html('');
         
         if (editable) {
-            nameInput = $('<input/>').attr('type', 'text').attr('x-webkit-speech', 'x-webkit-speech').addClass('nameInput');
-            nameInput.val(objName(x));
-            d.append(nameInput);
+            if (hideWidgets!=true) {
+                nameInput = $('<input/>').attr('type', 'text').attr('x-webkit-speech', 'x-webkit-speech').addClass('nameInput');
+                nameInput.val(objName(x));
+                d.append(nameInput);
 
-            whenSaved.push(function(y) {
-               objName(y, nameInput.val());
-            });
+                whenSaved.push(function(y) {
+                   objName(y, nameInput.val());
+                });
+            }
         }
         else {
             d.append('<h1>' + objName(x) + '</h1>');
@@ -287,104 +289,106 @@ function newObjectEdit(ix, editable) {
 
         d.addClass('ObjectEditDiv');
         
-        var whatButton = $('<button title="What?"><img src="/icon/rrze/emblems/information.png"></button>');
-        whatButton.click(function() {
-            var p = newPopup('Select Tags for ' + nameInput.val(), { modal: true } );
-            p.append(newTagger([], function(t) {
-                var y = getEditedFocus();
-                for (var i = 0; i < t.length; i++) {
-                    objAddTag(y, t[i]); 
-                }
-                update(y);
-                p.dialog('close');
-            }));
-        });
-        d.append(whatButton);
-
-        var howButton = $('<button title="How/Why?" id="AddDescriptionButton"><img src="/icon/rrze/actions/quote.png"></button>');
-        howButton.click(function() {
-            update(objAddValue(getEditedFocus(), 'textarea', ''));            
-        });
-        d.append(howButton);
-
-        var whenButton = $('<button disabled title="When?" id="AddWhenButton" ><img src="/icon/clock.png"></button>');
-        d.append(whenButton);
-        
-        var whereButton = $('<button title="Where?"><img src="/icon/rrze/emblems/globe.png"></button>');
-        whereButton.click(function() {
-            update(objAddValue(getEditedFocus(), 'spacepoint', ''));            
-        });
-        d.append(whereButton);
-
-        var whoButton = $('<button disabled title="Who?" id="AddWhoButton"><img src="/icon/rrze/categories/user-group.png"></button>');
-        d.append(whoButton);
-        
-        var uploadButton = $('<button disabled title="Upload"><img src="/icon/rrze/actions/dial-in.png"/></button>');
-        uploadButton.click(function() {
-            var bar = $('.FocusUploadBar');
-            var percent = $('.FocusUploadPercent');
-            var status = $('#FocusUploadStatus');
-
-            $('#FocusUploadForm').ajaxForm({
-                beforeSend: function() {
-                    status.empty();
-                    var percentVal = '0%';
-                    bar.width(percentVal)
-                    percent.html(percentVal);
-                },
-                uploadProgress: function(event, position, total, percentComplete) {
-                    var percentVal = percentComplete + '%';
-                    bar.width(percentVal)
-                    percent.html(percentVal);
-                },
-                complete: function(xhr) {
-                    var url = xhr.responseText;
-                    status.html($('<a>File uploaded</a>').attr('href', url));
-                    var ab = $('<button>Add Image To Description</button>');
-                    var absURL = url.substring(1);
-                    ab.click(function() {
-                        var f = renderedFocus.getEditedFocus();
-                        objAddDescription(f, '<a href="' + absURL + '"><img src="' + absURL + '"></img></a>');
-                        commitFocus(f);
-                    });
-                    status.append('<br/>');
-                    status.append(ab);
-                }
+        if (hideWidgets!=true) {
+            var whatButton = $('<button title="What?"><img src="/icon/rrze/emblems/information.png"></button>');
+            whatButton.click(function() {
+                var p = newPopup('Select Tags for ' + nameInput.val(), { modal: true } );
+                p.append(newTagger([], function(t) {
+                    var y = getEditedFocus();
+                    for (var i = 0; i < t.length; i++) {
+                        objAddTag(y, t[i]); 
+                    }
+                    update(y);
+                    p.dialog('close');
+                }));
             });
-            
-        });
-        
+            d.append(whatButton);
 
-        var saveButton = $('<button><b>Save/Share</b></button>');
-        saveButton.click(function() {
-            var e = getEditedFocus();
-            e.author = self.id();
-            objTouch(e);
-            self.pub(e, function(err) {
+            var howButton = $('<button title="How/Why?" id="AddDescriptionButton"><img src="/icon/rrze/actions/quote.png"></button>');
+            howButton.click(function() {
+                update(objAddValue(getEditedFocus(), 'textarea', ''));            
+            });
+            d.append(howButton);
+
+            var whenButton = $('<button disabled title="When?" id="AddWhenButton" ><img src="/icon/clock.png"></button>');
+            d.append(whenButton);
+
+            var whereButton = $('<button title="Where?"><img src="/icon/rrze/emblems/globe.png"></button>');
+            whereButton.click(function() {
+                update(objAddValue(getEditedFocus(), 'spacepoint', ''));            
+            });
+            d.append(whereButton);
+
+            var whoButton = $('<button disabled title="Who?" id="AddWhoButton"><img src="/icon/rrze/categories/user-group.png"></button>');
+            d.append(whoButton);
+
+            var uploadButton = $('<button disabled title="Upload"><img src="/icon/rrze/actions/dial-in.png"/></button>');
+            uploadButton.click(function() {
+                var bar = $('.FocusUploadBar');
+                var percent = $('.FocusUploadPercent');
+                var status = $('#FocusUploadStatus');
+
+                $('#FocusUploadForm').ajaxForm({
+                    beforeSend: function() {
+                        status.empty();
+                        var percentVal = '0%';
+                        bar.width(percentVal)
+                        percent.html(percentVal);
+                    },
+                    uploadProgress: function(event, position, total, percentComplete) {
+                        var percentVal = percentComplete + '%';
+                        bar.width(percentVal)
+                        percent.html(percentVal);
+                    },
+                    complete: function(xhr) {
+                        var url = xhr.responseText;
+                        status.html($('<a>File uploaded</a>').attr('href', url));
+                        var ab = $('<button>Add Image To Description</button>');
+                        var absURL = url.substring(1);
+                        ab.click(function() {
+                            var f = renderedFocus.getEditedFocus();
+                            objAddDescription(f, '<a href="' + absURL + '"><img src="' + absURL + '"></img></a>');
+                            commitFocus(f);
+                        });
+                        status.append('<br/>');
+                        status.append(ab);
+                    }
+                });
+
+            });
+
+
+            var saveButton = $('<button><b>Save/Share</b></button>');
+            saveButton.click(function() {
+                var e = getEditedFocus();
+                e.author = self.id();
+                objTouch(e);
+                self.pub(e, function(err) {
+                    $.pnotify({
+                        title: 'Unable to save.',
+                        text: x.name,
+                        type: 'Error'            
+                    });                
+                }, function() {
+                    $.pnotify({
+                        title: 'Saved (' + x.id.substring(0,6) + ')' ,
+                        text: '<button disabled>Goto: ' + x.name + '</button>'  //TODO button to view object           
+                    });        
+                    self.notice(e);
+                });
+                d.parent().dialog('close');
+            });
+            d.append(saveButton);
+
+            var exportButton = $('<button>Export</button>');
+            exportButton.click(function() {
                 $.pnotify({
-                    title: 'Unable to save.',
-                    text: x.name,
-                    type: 'Error'            
-                });                
-            }, function() {
-                $.pnotify({
-                    title: 'Saved (' + x.id.substring(0,6) + ')' ,
-                    text: '<button disabled>Goto: ' + x.name + '</button>'  //TODO button to view object           
-                });        
-                self.notice(e);
+                   title: x.id,
+                   text: JSON.stringify(x, null, 4)
+                });
             });
-            d.parent().dialog('close');
-        });
-        d.append(saveButton);
-
-        var exportButton = $('<button>Export</button>');
-        exportButton.click(function() {
-            $.pnotify({
-               title: x.id,
-               text: JSON.stringify(x, null, 4)
-            });
-        });
-        d.append(exportButton);
+            d.append(exportButton);
+        }
 
     }
     

@@ -296,15 +296,18 @@ $(document).ready(function() {
     var focusValue;
     function clearFocus() {
         focusValue = { tags: [], when: null, where: null };
+       
     }
     clearFocus();
     
     function renderFocus() {
         var fe = $('#FocusEdit');
         fe.html('');
-        for (var i = 0; i < focusValue.tags.length; i++) {
+        var noe = newObjectEdit(focusValue, true, true);
+        fe.append(noe);
+        /*for (var i = 0; i < focusValue.tags.length; i++) {
             fe.append(focusValue.tags[i]);
-        }
+        }*/
     }
     $('#FocusClearButton').click(function() {
         clearFocus();
@@ -314,7 +317,9 @@ $(document).ready(function() {
     $('#FocusWhatButton').click(function() {
         var d = newPopup("Focus on Tags", {width: 800, height: 600, modal: true});
         d.append(newTagger([], function(x) {
-            focusValue.tags = focusValue.tags.concat(x);
+            for (var i = 0; i < x.length; i++)
+                objAddTag(focusValue, x[i]);
+            
             renderFocus();
             d.dialog('close');
         })); 
