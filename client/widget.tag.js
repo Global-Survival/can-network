@@ -4,6 +4,8 @@ function newTagger(selected, onFinished) {
     
     var d = newDiv();
     var t = newDiv(); //target for the browser instances
+    t.attr('id', 'TagSelectWidget');
+    
     var currentBrowser = null;
     
     var tags = selected;

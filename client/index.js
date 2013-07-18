@@ -284,18 +284,40 @@ $(document).ready(function() {
     }
 
     $('#close-menu').button();
-    $("#ViewControls").buttonset();
-    
-
-});
-
-$(document).ready(function() {
+    $("#ViewControls").buttonset();   
 	
-	$('#about-toggle').click(function() {
-		$('#about-netention').fadeIn();
-	});
-	$('#openid-toggle').click(function() {
-		$('#openid-login').fadeIn();
-	});
+    $('#about-toggle').click(function() {
+            $('#about-netention').fadeIn();
+    });
+    $('#openid-toggle').click(function() {
+            $('#openid-login').fadeIn();
+    });
+    
+    var focusValue;
+    function clearFocus() {
+        focusValue = { tags: [], when: null, where: null };
+    }
+    clearFocus();
+    
+    function renderFocus() {
+        var fe = $('#FocusEdit');
+        fe.html('');
+        for (var i = 0; i < focusValue.tags.length; i++) {
+            fe.append(focusValue.tags[i]);
+        }
+    }
+    $('#FocusClearButton').click(function() {
+        clearFocus();
+        renderFocus();
+    });
+
+    $('#FocusWhatButton').click(function() {
+        var d = newPopup("Focus on Tags", {width: 800, height: 600, modal: true});
+        d.append(newTagger([], function(x) {
+            focusValue.tags = focusValue.tags.concat(x);
+            renderFocus();
+            d.dialog('close');
+        })); 
+    });
 
 });

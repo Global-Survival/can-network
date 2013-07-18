@@ -747,7 +747,9 @@ font-size:.8em;
 
 div.olControlZoom { top:auto !important; bottom:8px !important; }
 
+#TagSelectWidget {
 
+}
 
 .PluginID {
     width: 14%;
