@@ -301,7 +301,6 @@ $(document).ready(function() {
     clearFocus();
     
     function renderFocus() {
-        console.log(focusValue);
         self.setFocus(focusValue);
         
         var fe = $('#FocusEdit');

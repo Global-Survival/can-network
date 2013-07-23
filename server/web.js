@@ -36,6 +36,7 @@ exports.start = function(host, port, dbURL, init) {
     Server.databaseURL = dbURL;
 
     var focusHistory = [ ];
+    var focusHistoryMaxAge = 24*60*60; //in seconds
     
     var plugins = {};
 
@@ -1256,7 +1257,15 @@ exports.start = function(host, port, dbURL, init) {
             if ((message.focus) && (message.author)) {
                 var m = util.objExpand(message);
                 focusHistory.push(m);
+
                 console.log('Focus', m.author, m.value);
+                
+                //remove elements in focusHistory that are older than focusHistoryMaxAge (seconds)
+                var now = Date.now();
+                focusHistory = _.filter(focusHistory, function(f) {
+                    return f.whenCreated > (now - focusHistoryMaxAge*1000); 
+                });
+        
             }
             
             

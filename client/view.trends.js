@@ -9,6 +9,9 @@ function renderTrends(s, o, v) {
     var xu = uuid();
     var xx = $('<div></div>').attr('id', xu);
     v.append(xx);
+    
+    var yy = $('<div></div>');
+    v.append(yy);
         
     var serverTagCount = { };
     var localTagCount = s.getTagCount();
@@ -81,5 +84,17 @@ function renderTrends(s, o, v) {
         serverTagCount = r;
         display();
     });
+    
+    var updateFocusInterval = 5 * 1000;
+    var focusHistory = 60 * 10; //10 mins
+    
+    function updateFocus() {
+        //yy
+        $.getJSON('/focus/' + focusHistory, function(result) {
+            yy.html(JSON.stringify(result, null, 4));
+        });
+    }
+    setTimeout(updateFocus, updateFocusInterval);
+    updateFocus();
        
 }

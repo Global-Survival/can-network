@@ -497,6 +497,11 @@ function netention(f) {
                 f.focus = 'change';
                 f.whenCreated = Date.now();
                 f.author = this.id();
+                if (f.when==null) delete f.when;
+                if (f.where==null) delete f.where;
+                if (f.tags)
+                    if (f.tags.length == 0) delete f.tags;
+                
                 this.pub( f, function(err) { 
                     console.log(err);
                 }, function() {

@@ -219,6 +219,7 @@ function objTagStrength(x, normalize, noProperties) {
     
   for (var i = 0; i < x.value.length; i++) {
     var vv = x.value[i];
+    if (!vv) continue;
     var ii = vv.id;
     if (isPrimitive(ii))
         continue;
