@@ -35,6 +35,8 @@ exports.start = function(host, port, dbURL, init) {
     Server.port = port;  
     Server.databaseURL = dbURL;
 
+    var focusHistory = [ ];
+    
     var plugins = {};
 
     var that = {};
@@ -1081,6 +1083,18 @@ exports.start = function(host, port, dbURL, init) {
             sendJSON(res, x, false);
         });
     });
+    express.get('/focus/:historyLengthSeconds', function(req, res) {        
+        var historyLength = req.params.historyLengthSeconds;
+        var now = Date.now();
+        var oldestAllowedDate = now - historyLength*1000/*ms*/;
+        
+        //remove elements in focusHistory that are older than history_length        
+        var result = _.filter(focusHistory, function(f) {
+           return f.whenCreated > oldestAllowedDate; 
+        });
+        
+        sendJSON(res, result, false);
+    });
     express.get('/save', function(req, res) {
         sendJSON(res, 'Saving');
         saveState(
@@ -1239,11 +1253,10 @@ exports.start = function(host, port, dbURL, init) {
         });
 
         socket.on('pub', function(message, err, success) {
-            if (!message.id) {
-                if ((message.focus) && (message.author)) {
-                    var m = util.objExpand(message);
-                    console.log('Focus', message.author, message.value);
-                }
+            if ((message.focus) && (message.author)) {
+                var m = util.objExpand(message);
+                focusHistory.push(m);
+                console.log('Focus', m.author, m.value);
             }
             
             
