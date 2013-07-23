@@ -268,6 +268,8 @@ exports.start = function(host, port, dbURL, init) {
         if (o._id)
             delete o._id;
 
+        o = util.objExpand(o);
+        
         if (o.modifiedAt === undefined)
             o.modifiedAt = o.createdAt;
 
@@ -907,7 +909,12 @@ exports.start = function(host, port, dbURL, init) {
         var db = mongo.connect(getDatabaseURL(), collections);
         db.obj.find().limit(n).sort({modifiedAt: -1}, function(err, objs) {
             removeMongoID(objs);
-            sendJSON(res, objs);
+            
+            function compactObjects(list) {
+                return _.map(list,  function(o) { return util.objCompact(o); } );
+            }
+            
+            sendJSON(res, compactObjects(objs));
             db.close();
         });
     });
@@ -1188,6 +1195,8 @@ exports.start = function(host, port, dbURL, init) {
                         targets[i] = '';
             }
         }
+        
+        message = util.objCompact(message);
 
 
         for (var t in targets) {

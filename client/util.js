@@ -946,3 +946,75 @@ function objCompare(a, b) {
     return c;
 }
 exports.objCompare = objCompare;
+
+
+function objCompact( o ) {
+    if (o.modifiedAt)
+        if (o.modifiedAt == o.createdAt)
+            delete o.modifiedAt;
+    
+    if (!o.value)
+        return o;
+    //console.log(o.name);
+    //console.log(  o);
+
+    var y = _.clone(o);
+    var newValues = [];
+
+    //console.log(o.value.length + ' values');
+    for (var i = 0; i < o.value.length; i++) {
+        var v = o.value[i];
+        //console.log(i + '//' + v);
+        if ((v.value) && (v.value.lat)) {
+            newValues.push(v);
+        }
+        else {
+            var ia = v.id;
+            var va = v.value || null;
+            var s = v.strength || null;
+            if (s)
+                newValues.push([ia, va, s]);
+            else if (va)
+                newValues.push([ia, va]);
+            else 
+                newValues.push( ia );
+        }
+    }
+    y.value = newValues;
+    //console.log('newValue:: ' + newValues);
+    //console.dir(y.value);
+    //console.log('-----');
+    return y;
+}
+exports.objCompact = objCompact;
+
+function objExpand( o ) {
+    if (!o.value)
+        return o;
+
+    var y = _.clone(o);
+    var newValues = [];
+    for (var i = 0; i < o.value.length; i++) {
+        var v = o.value[i];
+        if (typeof v === 'object') {
+            newValues.push(v);
+        }
+        else if ( Array.isArray(v) ) {
+            var r =  { id: v[0] };
+            if (v[1])
+                r.value = v[1];
+            if (v.length > 2)
+                r.strength = v[2];
+            newValues.push( r );                
+        }
+        else if (typeof v === 'string') {
+            newValues.push( { id: v } );
+        }
+        else {
+            newValues.push(v);
+        }
+    }
+    y.value = newValues;
+    return y;
+}
+exports.objExpand = objExpand;

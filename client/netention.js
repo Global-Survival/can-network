@@ -512,8 +512,10 @@ function netention(f) {
                 var that = this;
                 
             	function n(y) {
-            		if (!y)
-            			return;
+                    if (!y)
+            		return;
+                    
+                    var y = objExpand(y);
             		
                     if (y.removed) {
                         that.deleteObject(y, true);
@@ -575,7 +577,7 @@ function netention(f) {
             },
             
             pub: function(object, onErr, onSuccess) {
-                this.socket.emit('pub', object, function(err) {
+                this.socket.emit('pub', objCompact(object), function(err) {
                     if (onErr)
                         onErr(object);
                     $.pnotify({title: 'Error saving:', text: err, type:'error'});
