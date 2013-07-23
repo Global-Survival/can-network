@@ -493,7 +493,11 @@ function netention(f) {
             },
             
             setFocus : function(f) {
-                this.pub(f, function(err) { 
+                f.id = uuid();
+                f.focus = 'change';
+                f.whenCreated = Date.now();
+                f.author = this.id();
+                this.pub( f, function(err) { 
                     console.log(err);
                 }, function() {
                     $.pnotify({title: 'Focus noticed.'});

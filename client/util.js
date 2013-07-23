@@ -185,6 +185,16 @@ exports.objIncidentTags= objIncidentTags;
 function objTags(x) {
   // objTags(x) -> array of tags involved
   if (!x.value) return [];
+  
+  //HACK to handlle when values are null, which they shouldnt bve
+  var newValues = [];
+  for (var i = 0; i < x.value.length; i++) {
+      var vv = x.value[i];
+      if (vv) 
+        if (vv.id)
+          newValues.push(vv);
+  }
+  x.value = newValues;
   return _.uniq( _.filter( _.pluck(x.value, 'id'), function(t) { return !isPrimitive(t) } ) );
 }
 exports.objTags = objTags;
@@ -964,6 +974,8 @@ function objCompact( o ) {
     //console.log(o.value.length + ' values');
     for (var i = 0; i < o.value.length; i++) {
         var v = o.value[i];
+        if (!v) continue;
+        
         //console.log(i + '//' + v);
         if ((v.value) && (v.value.lat)) {
             newValues.push(v);

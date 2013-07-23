@@ -261,9 +261,7 @@ exports.start = function(host, port, dbURL, init) {
     }
     that.noticeAll = noticeAll;
 
-    function notice(o, whenFinished) {
-        if (!o.id)
-            return;
+    function notice(o, whenFinished, socket) {       
 
         if (o._id)
             delete o._id;
@@ -1176,7 +1174,7 @@ exports.start = function(host, port, dbURL, init) {
     var channelListeners = {};
 
     function broadcast(socket, message, whenFinished) {
-        notice(message, whenFinished);
+        notice(message, whenFinished, socket);
 
         if (socket)
             nlog(socket.clientID + ' broadcast: ' + JSON.stringify(message, null, 4));
@@ -1241,6 +1239,14 @@ exports.start = function(host, port, dbURL, init) {
         });
 
         socket.on('pub', function(message, err, success) {
+            if (!message.id) {
+                if ((message.focus) && (message.author)) {
+                    var m = util.objExpand(message);
+                    console.log('Focus', message.author, message.value);
+                }
+            }
+            
+            
             if (Server.permissions['authenticate_to_create_objects'] != false) {
                 if (!isAuthenticated(session)) {
                     if (err)
@@ -1345,6 +1351,7 @@ exports.start = function(host, port, dbURL, init) {
             }
 
         });
+        
         socket.on('connect', function(cid, callback) {
             var key = null, email = null;
             if (session) {
