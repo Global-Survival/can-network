@@ -126,7 +126,7 @@ function newReplyWidget(onReply, onCancel) {
  *  focus - a function that returns the current focus
  *  commitFocus - a function that takes as parameter the next focus to save
  */
-function newObjectEdit(ix, editable, hideWidgets) {
+function newObjectEdit(ix, editable, hideWidgets, onTagRemove) {
     var d = newDiv();
 
     
@@ -140,7 +140,7 @@ function newObjectEdit(ix, editable, hideWidgets) {
             
             var na = nameInput ? nameInput.val() : "";
             
-            var n = objNew( x.id, nameInput.val() );
+            var n = objNew( x.id, na );
             n.createdAt = x.createdAt;
             n.author = x.author;
             for (var i = 0; i < whenSaved.length; i++) {
@@ -154,7 +154,10 @@ function newObjectEdit(ix, editable, hideWidgets) {
             update(objAddValue(getEditedFocus(), tag, value));
         };
         var onRemove = function(i) {                                
-            update(objRemoveValue( getEditedFocus(), i));
+   	    var rr = objRemoveValue( getEditedFocus(), i);
+	    if (onTagRemove)
+		    onTagRemove(rr);
+            update(rr);
         };
         var onStrengthChange = function(i, newStrength) {        
             var y = getEditedFocus();

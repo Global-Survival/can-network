@@ -305,7 +305,10 @@ $(document).ready(function() {
         
         var fe = $('#FocusEdit');
         fe.html('');
-        var noe = newObjectEdit(focusValue, true, true);
+        var noe = newObjectEdit(focusValue, true, true, function(xx) {
+		focusValue = xx;
+		renderFocus();
+	});
         fe.append(noe);
         /*for (var i = 0; i < focusValue.tags.length; i++) {
             fe.append(focusValue.tags[i]);
