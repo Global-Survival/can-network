@@ -1,5 +1,5 @@
 /*!
- * netention.js v1.2
+ * netention.js v1.2 - client-side functionality
  * Attentionated by @automenta and @rezn8d
  */
 //Measurement types:

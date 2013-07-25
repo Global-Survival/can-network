@@ -7,20 +7,19 @@ function renderTrends(s, o, v) {
     v.append('<br/><br/>');
     
     var xu = uuid();
-    var xx = $('<div></div>').attr('id', xu);
-    v.append(xx);
     
     var yy = $('<div></div>');
     v.append(yy);
+    v.append('<br/>');
         
     var serverTagCount = { };
     var localTagCount = s.getTagCount();
     var selfTagCount = s.getTagCount(true);
     
     var labels = [];
-	var values = [];
+    var values = [];
     
-    function display() {
+    function displayTags() {
         var tags = _.union(_.keys(serverTagCount), _.keys(localTagCount), _.keys(selfTagCount));
         
         for (var k = 0; k < tags.length; k++) {
@@ -82,16 +81,57 @@ function renderTrends(s, o, v) {
     
     s.getServerAttention(function(r) {
         serverTagCount = r;
-        display();
+        displayTags();
     });
     
     var updateFocusInterval = 5 * 1000;
     var focusHistory = 60 * 10; //10 mins
+    var displayIntervals = 8;
     
+    function newFocusHistory(focuses) {
+	//JSON.stringify(result, null, 4)
+	var now = Date.now();
+	var whenCreated = function(f) { return f.whenCreated; };
+	var oldest = (_.min(focuses, whenCreated)).whenCreated;
+	var newest = (_.max(focuses, whenCreated)).whenCreated;
+
+	var focusBins = (newest == oldest) ? 
+		{ 0: focuses } :
+		_.groupBy(focuses, function(f) {
+			var t = f.whenCreated;
+			var prop = (t - oldest) / (newest - oldest);
+			var bin = Math.min(
+				Math.floor(prop * displayIntervals),
+				displayIntervals-1
+			);
+			return bin;
+		});
+	
+
+	var d = newDiv();
+	for (var i = 0; i < displayIntervals; i++) {
+		var e = newDiv();
+		e.attr('style', 'float: left; padding: 0.25em; margin: 0.1em; border: 1px solid gray;'); //TODO add CSS
+		var fs = focusBins[i];
+		if (!fs) continue;
+		for (var k = 0; k < fs.length; k++) {
+			var ff = fs[k];
+			var rv = (objCompact(ff)).value;
+			e.append(rv ? 
+				JSON.stringify(rv,null,4) + '&nbsp;' : 
+				'["Empty"]');
+
+		}
+		e.appendTo(d);
+	}
+
+	return d;
+    }
+
     function updateFocus() {
         //yy
         $.getJSON('/focus/' + focusHistory, function(result) {
-            yy.html(JSON.stringify(result, null, 4));
+            yy.html(newFocusHistory(result));
         });
     }
     setTimeout(updateFocus, updateFocusInterval);
