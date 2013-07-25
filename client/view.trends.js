@@ -2,9 +2,6 @@ function renderTrends(s, o, v) {
     var aa = s.get('attention');
                     
     //total objects
-    v.append('Known objects: ' + _.size(aa));
-    
-    v.append('<br/><br/>');
     
     var xu = uuid();
     
@@ -15,6 +12,12 @@ function renderTrends(s, o, v) {
     var serverTagCount = { };
     var localTagCount = s.getTagCount();
     var selfTagCount = s.getTagCount(true);
+
+    v.append('<br/><hr/><br/>');
+
+    v.append('Known objects: ' + _.size(aa));
+    v.append('<br/>');
+    
     
     var labels = [];
     var values = [];
@@ -89,7 +92,6 @@ function renderTrends(s, o, v) {
     var displayIntervals = 8;
     
     function newFocusHistory(focuses) {
-	//JSON.stringify(result, null, 4)
 	var now = Date.now();
 	var whenCreated = function(f) { return f.whenCreated; };
 	var oldest = (_.min(focuses, whenCreated)).whenCreated;
@@ -107,7 +109,6 @@ function renderTrends(s, o, v) {
 			return bin;
 		});
 	
-
 	var d = newDiv();
 	for (var i = 0; i < displayIntervals; i++) {
 		var e = newDiv();
@@ -129,7 +130,6 @@ function renderTrends(s, o, v) {
     }
 
     function updateFocus() {
-        //yy
         $.getJSON('/focus/' + focusHistory, function(result) {
             yy.html(newFocusHistory(result));
         });

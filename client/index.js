@@ -310,8 +310,32 @@ $(document).ready(function() {
         /*for (var i = 0; i < focusValue.tags.length; i++) {
             fe.append(focusValue.tags[i]);
         }*/
+
+	if (focusValue.when) {
+	}
+	if (focusValue.where) {
+		var uu = uuid();
+		var m = newDiv();
+		m.attr('id', uu);
+		m.attr('style', 'height: 150px; width: 95%');	//TODO use css
+		fe.append(m);
+		var lmap = initLocationChooserMap(uu, focusValue.where, 3);
+	}
     }
-    
+
+    $('#FocusWhereButton').click(function() {
+	if (!focusValue.where) {
+		focusValue.where = _.clone(objSpacePoint(self.myself()) || { lat: 40, lon: -79, planet: 'Earth'} );
+	        renderFocus();
+	}
+	else {
+		if(confirm("Remove 'Where'?")) {
+			focusValue.where = null;
+		        renderFocus();
+		}
+	}
+    });
+      
     $('#FocusClearButton').click(function() {
         clearFocus();
         renderFocus();
