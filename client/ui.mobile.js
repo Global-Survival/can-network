@@ -16,7 +16,7 @@ function showAvatarMenu(b) {
 }
 
 $('#SelectProfileButton').click(function() {
-    var d = newPopup('Profiles', {width: '450px'});
+    var d = newPopup('Profiles', {width: '450px', modal: true});
     d.append(newProfileWidget());
 });
 

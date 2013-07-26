@@ -1,7 +1,7 @@
 function newProfileWidget() {
     var d = newDiv();
     function closeDialog() {
-        d.dialog('close');            
+        d.parent().dialog('close');            
     }
 
     function become(u) {

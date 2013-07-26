@@ -668,8 +668,10 @@ function netention(f) {
 
 
 //apparently is faster than $('<div/>');
-function newDiv() {
-    return newEle('div');
+function newDiv(id) {
+    var e = newEle('div');
+    if (id) e.attr('id', id);
+    return e;
 }
 
 function newEle(e) {

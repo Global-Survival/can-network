@@ -310,16 +310,13 @@ $(document).ready(function() {
 		renderFocus();
 	});
         fe.append(noe);
-        /*for (var i = 0; i < focusValue.tags.length; i++) {
-            fe.append(focusValue.tags[i]);
-        }*/
+
 
 	if (focusValue.when) {
 	}
 	if (focusValue.where) {
 		var uu = uuid();
-		var m = newDiv();
-		m.attr('id', uu);
+		var m = newDiv(uu);
 		m.attr('style', 'height: 150px; width: 95%');	//TODO use css
 		fe.append(m);
 		var lmap = initLocationChooserMap(uu, focusValue.where, 3);
@@ -332,7 +329,7 @@ $(document).ready(function() {
 	        renderFocus();
 	}
 	else {
-		if(confirm("Remove 'Where'?")) {
+		if(confirm("Remove focus's 'Where'?")) {
 			focusValue.where = null;
 		        renderFocus();
 		}
