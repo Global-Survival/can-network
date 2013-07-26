@@ -1009,16 +1009,16 @@ function objExpand( o ) {
     var newValues = [];
     for (var i = 0; i < o.value.length; i++) {
         var v = o.value[i];
-        if (typeof v === 'object') {
-            newValues.push(v);
-        }
-        else if ( Array.isArray(v) ) {
+        if ( Array.isArray(v) ) {
             var r =  { id: v[0] };
             if (v[1])
                 r.value = v[1];
             if (v.length > 2)
                 r.strength = v[2];
             newValues.push( r );                
+        }
+        else if (typeof v === 'object') {
+            newValues.push(v);
         }
         else if (typeof v === 'string') {
             newValues.push( { id: v } );

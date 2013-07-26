@@ -270,7 +270,9 @@ exports.start = function(host, port, dbURL, init) {
             delete o._id;
 
         o = util.objExpand(o);
-        
+
+        //nlog('notice: ' + JSON.stringify(o, null, 4));
+
         if (o.modifiedAt === undefined)
             o.modifiedAt = o.createdAt;
 
@@ -1190,9 +1192,6 @@ exports.start = function(host, port, dbURL, init) {
 
     function broadcast(socket, message, whenFinished) {
         notice(message, whenFinished, socket);
-
-        if (socket)
-            nlog(socket.clientID + ' broadcast: ' + JSON.stringify(message, null, 4));
 
         var targets = {};
 
