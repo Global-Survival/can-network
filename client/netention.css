@@ -315,6 +315,13 @@ div.olMapViewport {
     width: 6em;
 }
 
+.Trends_FocusArea {
+	width: 30%; float: left;
+}
+.Trends_TagCountArea {
+	width: 64%; float: right;
+}
+
 #LoadingSplash {
     position: absolute;
     width: 100%;

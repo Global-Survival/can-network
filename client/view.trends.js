@@ -1,24 +1,21 @@
 function renderTrends(s, o, v) {
-    var aa = s.get('attention');
-                    
-    //total objects
-    
-    var xu = uuid();
-    
-    var yy = $('<div></div>');
-    v.append(yy);
-    v.append('<br/>');
-        
+    var aa = s.get('attention');                    
     var serverTagCount = { };
     var localTagCount = s.getTagCount();
     var selfTagCount = s.getTagCount(true);
 
-    v.append('<br/><hr/><br/>');
+    
+    var yy = newDiv();
+    yy.addClass('Trends_FocusArea');
 
-    v.append('Known objects: ' + _.size(aa));
-    v.append('<br/>');
-    
-    
+    var tagCountArea = newDiv();
+    tagCountArea.addClass('Trends_TagCountArea');
+    tagCountArea.append('Known objects: ' + _.size(aa));
+    tagCountArea.append('<br/>');
+
+    v.append(yy);
+    v.append(tagCountArea);
+        
     var labels = [];
     var values = [];
     
@@ -76,7 +73,7 @@ function renderTrends(s, o, v) {
             var total = (selfTagCount[ti]||0) + (localTagCount[ti] || 0) + (serverTagCount[ti] || 0);
             d.attr('style', 'font-size:' + 100.0 * (1.0 + Math.log( total + 1 ))*0.5 + '%');
             
-            v.append(vv);
+            tagCountArea.append(vv);
             
     	}
         
@@ -110,11 +107,16 @@ function renderTrends(s, o, v) {
 		});
 	
 	var d = newDiv();
-	for (var i = 0; i < displayIntervals; i++) {
-		var e = newDiv();
-		e.attr('style', 'float: left; padding: 0.25em; margin: 0.1em; border: 1px solid gray;'); //TODO add CSS
+	for (var i = displayIntervals-1; i >=0; i--) {
 		var fs = focusBins[i];
 		if (!fs) continue;
+
+		var e = newDiv();
+		e.attr('style', 'padding: 0.25em; margin-bottom: 0.25em; border: 1px solid gray;'); //TODO add CSS
+		if (displayIntervals-1 == i) {
+			e.append('Now:<br/>');
+		}
+
 		for (var k = 0; k < fs.length; k++) {
 			var ff = fs[k];
 			var rv = (objCompact(ff)).value;
