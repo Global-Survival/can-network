@@ -252,6 +252,11 @@ $(document).ready(function() {
 
                     $('#View').show();
                     $('#LoadingSplash2').hide();
+
+					if (isAnonymous()) {
+						//show profile chooser
+						openSelectProfileModal("Anonymous Profiles");
+					}
                 });
                 
                 /*if (isAuthenticated()) {

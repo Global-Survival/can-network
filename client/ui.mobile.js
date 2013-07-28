@@ -15,10 +15,13 @@ function showAvatarMenu(b) {
     }
 }
 
-$('#SelectProfileButton').click(function() {
-    var d = newPopup('Profiles', {width: '450px', modal: true});
+function openSelectProfileModal(title) {
+	if (!title) title = 'Profiles';
+    var d = newPopup(title, {width: '450px', modal: true});
     d.append(newProfileWidget());
-});
+}
+
+$('#SelectProfileButton').click(function() { openSelectProfileModal()  });
 
 $('#ViewMenu input').click(function(x) {
     var b = $(this);

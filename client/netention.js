@@ -687,6 +687,11 @@ function newPopup(title,p) {
     return d;    
 }
 
+function isAnonymous() {
+	var c = getCookie('authenticated');
+	return (c === 'anonymous');
+}
+
 function getCookie(name) {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
