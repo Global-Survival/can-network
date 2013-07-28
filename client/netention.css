@@ -314,13 +314,10 @@ div.olMapViewport {
     float: left;
     width: 6em;
 }
+.Trends_TimeSegmentBox { padding: 0.25em; margin-bottom: 0.25em; border: 1px solid gray; min-height: 1em; }
 
-.Trends_FocusArea {
-	width: 30%; float: left;
-}
-.Trends_TagCountArea {
-	width: 64%; float: right;
-}
+.Trends_FocusArea { 	width: 30%; float: left;  }
+.Trends_TagCountArea { 	width: 64%; float: right;  }
 
 #LoadingSplash {
     position: absolute;

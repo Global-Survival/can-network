@@ -16,7 +16,15 @@ require('./server/web.js').start(
         server.permissions['authenticate_to_delete_objects'] = false;
         server.permissions['authenticate_to_proxy_http'] = false;
         server.permissions['authenticate_to_create_profiles'] = false;
-        
+        server.permissions['anyone_to_enable_or_disable_plugin'] = true;
+
         //server.permissions['twitter_key'] = 'CONSUMER_KEY:CONSUMER_SECRET';
+
+		//Plugins to auto-enable
+		netention.enablePlugins =  [ /* 'earthquake.js', 'rss.js' */ ];
+
+		netention.nlog('READY!');
+
+
     }
 );

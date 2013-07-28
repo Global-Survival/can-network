@@ -16,6 +16,59 @@ var mongo = require("mongojs");
 var request = require('request');
 var _ = require('underscore');
 
+
+
+function plugin(netention, kv) {
+	var v = kv;
+    var p = require('../plugin/' + v).plugin;
+    var filename = v;
+    v = v.split('.js')[0];
+    v = v.split('/netention')[0];
+
+    if (p) {
+        if (p.name) {
+
+            var enabled = false;
+
+            if (!netention.server.plugins[kv]) {
+                netention.server.plugins[kv] = {
+                    valid: true,
+                    enabled: false
+                };
+            }
+
+            netention.server.plugins[kv].name = p.name;
+            netention.server.plugins[kv].description = p.description;
+            netention.server.plugins[kv].filename = filename;
+
+            //TODO add required plugins parameter to add others besides 'general'
+            if ((netention.server.plugins[kv].enabled) || (v == 'general')) {
+                p.start(netention, util);
+                enabled = true;
+            }
+
+            if (enabled) {
+                netention.nlog('Started plugin: ' + p.name);
+            }
+            else {
+                netention.nlog('Disabling plugin: ' + p.name);
+            }
+
+            return;
+        }
+    }
+    netention.server.plugins[v] = {};
+    netention.server.plugins[v].name = v;
+    netention.server.plugins[v].valid = false;
+    netention.server.plugins[v].filename = filename;
+
+
+    //TODO remove unused Server.plugins entries
+
+    console.log('Loaded invalid plugin: ' + v);
+}
+exports.plugin = plugin;
+
 /**
  * init - callback function that is invoked after the server is created but before it runs
  */
@@ -38,8 +91,6 @@ exports.start = function(host, port, dbURL, init) {
     var focusHistory = [ ];
     var focusHistoryMaxAge = 24*60*60; //in seconds
     
-    var plugins = {};
-
     var that = {};
 
     var tags = {};
@@ -113,54 +164,6 @@ exports.start = function(host, port, dbURL, init) {
         updateCentroids();
     }
     
-    function plugin(netention, v) {
-        var p = require('../plugin/' + v).plugin;
-        var filename = v;
-        v = v.split('.js')[0];
-        v = v.split('/netention')[0];
-        if (p) {
-            if (p.name) {
-
-                var enabled = false;
-
-                plugins[v] = p;
-                if (!Server.plugins[v]) {
-                    Server.plugins[v] = {
-                        valid: true,
-                        enabled: false
-                    };
-                }
-
-                Server.plugins[v].name = p.name;
-                Server.plugins[v].description = p.description;
-                Server.plugins[v].filename = filename;
-
-                //TODO add required plugins parameter to add others besides 'general'
-                if ((Server.plugins[v].enabled) || (v == 'general')) {
-                    p.start(netention, util);
-                    enabled = true;
-                }
-
-                if (enabled) {
-                    nlog('Started plugin: ' + p.name);
-                }
-                else {
-                    nlog('Loaded inactive plugin: ' + p.name);
-                }
-
-                return;
-            }
-        }
-        Server.plugins[v] = {};
-        Server.plugins[v].name = v;
-        Server.plugins[v].valid = false;
-        Server.plugins[v].filename = filename;
-
-
-        //TODO remove unused Server.plugins entries
-
-        console.log('Loaded invalid plugin: ' + v);
-    }
 
     function loadState(f) {
         var db = mongo.connect(getDatabaseURL(), collections);
@@ -1284,6 +1287,10 @@ exports.start = function(host, port, dbURL, init) {
         });
 
         socket.on('setPlugin', function(pid, enabled, callback) {
+			if (Server.permissions['anyone_to_enable_or_disable_plugin'] == false) {
+                callback('Plugin enabling and disabling not allowed');
+                return;
+			}
             if (Server.permissions['authenticate_to_configure_plugins'] != false) {
                 if (!isAuthenticated(session)) {
                     callback('Unable to configure plugins (not logged in)');
@@ -1600,8 +1607,26 @@ exports.start = function(host, port, dbURL, init) {
 
     require('./general.js').plugin.start(that);
 
+
+    that.permissions = Server.permissions;
+	that.server = Server;
+	that.nlog = nlog;
+	that.plugin = function(pluginfile, forceEnable) {
+		plugin(that, pluginfile, forceEnable);
+	};
+	that.saveState = saveState;
+
     function loadPlugins() {
-        fs.readdirSync("./plugin").forEach(function(file) {
+		if (that.enablePlugins)	
+			_.each(that.enablePlugins, function(x) {
+				if (!that.server.plugins[x])
+					that.server.plugins[x] = { };
+
+				that.server.plugins[x].enabled = true;
+			});
+
+        fs.readdirSync("./plugin").forEach(function(ifile) {
+			var file = ifile + '';
             if (file === 'README')
                 return;
 
@@ -1613,7 +1638,6 @@ exports.start = function(host, port, dbURL, init) {
         });
     }
 
-    that.permissions = Server.permissions;
 
     nlog('Ready');
 

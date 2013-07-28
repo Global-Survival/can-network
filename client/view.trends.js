@@ -109,10 +109,10 @@ function renderTrends(s, o, v) {
 	var d = newDiv();
 	for (var i = displayIntervals-1; i >=0; i--) {
 		var fs = focusBins[i];
-		if (!fs) continue;
+		if (!fs) fs = []; //continue;
 
 		var e = newDiv();
-		e.attr('style', 'padding: 0.25em; margin-bottom: 0.25em; border: 1px solid gray;'); //TODO add CSS
+		e.addClass('Trends_TimeSegmentBox');		
 		if (displayIntervals-1 == i) {
 			e.append('Now:<br/>');
 		}
