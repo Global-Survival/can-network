@@ -114,17 +114,26 @@ function renderTrends(s, o, v) {
 		var e = newDiv();
 		e.addClass('Trends_TimeSegmentBox');		
 		if (displayIntervals-1 == i) {
-			e.append('Now:<br/>');
+			e.append('<b>Now:</b><br/>');
 		}
 
-		for (var k = 0; k < fs.length; k++) {
-			var ff = fs[k];
-			var rv = (objCompact(ff)).value;
-			e.append(rv ? 
-				JSON.stringify(rv,null,4) + '&nbsp;' : 
-				'["Empty"]');
-
+		function getTagCloud(x) {
+			var t = { };
+			for (var i = 0; i < x.length; i++) {
+				var v = x[i].value;
+				if (!v) continue;
+				for (var k = 0; k < v.length; k++) {
+					var strength = 1.0;	//TODO get value item strength;
+					var id = v[k].id;
+					if (!t[id]) t[id] = 0;
+					t[id] += strength;					
+				}
+			}
+			return t;
 		}
+
+		var tagCloud = getTagCloud(fs);
+		e.append(JSON.stringify(tagCloud,null,4));
 		e.appendTo(d);
 	}
 

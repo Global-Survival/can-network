@@ -1219,6 +1219,7 @@ exports.start = function(host, port, dbURL, init) {
         }
         io.sockets.in('*').emit('notice', message);
 
+		var plugins = that.plugins;
         for (var p in plugins) {
             var pp = plugins[p];
             if (Server.plugins[p].enabled) {
@@ -1403,11 +1404,13 @@ exports.start = function(host, port, dbURL, init) {
                 else {
                     //Authenticated and clientID specified, check that the user actually owns that clientID
                     var possibleClients = getClientSelves(session);
-                    if (_.contains(possibleClients, cid)) {
-                    }
-                    else {
-                        cid = possibleClients[possibleClients.length-1];
-                    }
+					if (possibleClients) {
+		                if (_.contains(possibleClients, cid)) {
+		                }
+		                else {
+		                    cid = possibleClients[possibleClients.length-1];
+		                }
+					}
                 }                
             }            
 
