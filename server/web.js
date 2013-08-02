@@ -1163,6 +1163,7 @@ exports.start = function(host, port, dbURL, init) {
             res.on('end', function() {
                 var cheerio = require('cheerio');
                 var $ = cheerio.load(page);
+				$('script').remove();
 
                 if (redirector)
                     $('#content').append('<div style="display:none" class="WIKIPAGEREDIRECTOR">' + redirector + '</div>');            
