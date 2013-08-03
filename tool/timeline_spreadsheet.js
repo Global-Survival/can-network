@@ -44,12 +44,13 @@ reader.addListener('data', function(e) {
 	//TODO parse shortcodes present in description that reference extra columns by their name
 	if (e.description)
 		e.description = e.description;
-
+	e.startdate = "1803-07-01 12:00";
+    e.enddate = "1803-07-01 12:00";
 	events.push(e);
 });
 reader.addListener('end', function() {
 	//console.log(events.length + ' events loaded.');
-	console.log( JSON.stringify(getTimeGliderJSON(events), null, 4) );
+	console.log( JSON.stringify([getTimeGliderJSON(events)], null, 4) );
 });
 
 
