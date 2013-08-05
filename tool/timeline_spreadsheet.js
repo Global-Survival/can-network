@@ -16,7 +16,7 @@
 	color
 	class
 
-	EXTRA CLASSES:
+	EXTRA COLUMNS:
 		Related Activities
 		Response
 		On-Site Location
@@ -34,23 +34,58 @@ reader.addListener('data', function(e) {
 
 	//TODO parse start_date and start_time into a Unix time
 	//TODO handle case when start_date present but start_time NOT present
-	if (e.start_date)
-		if (e.start_time)
-			e.start = e.start;
-	if (e.end_date)
-		if (e.end_time)
-			e.end = e.end;
 
-	//TODO parse shortcodes present in description that reference extra columns by their name
-	if (e.description)
-		e.description = e.description;
-	e.startdate = "1803-07-01 12:00";
-    e.enddate = "1803-07-01 12:00";
-	events.push(e);
+	function d(date, time) {
+		var ds = date.split('/');
+		var y = ds[2];
+		var m = ds[0];
+		var d = ds[1];
+
+		function p(x) {
+			if (x.length == 1) return '0' + x;
+			return x;
+		}
+
+		if (time.length == 7) time = '0' + time;	//pad prepending zero
+
+		return y + '-' + p(m) + '-' + p(d) + ' ' + time;
+	}
+
+
+	if (e.start_date) {
+		if (!e.start_time) {
+			e.start_time = '00:00:00'; 
+			e.end_time = '23:59:00';
+//			e.end_time = e.start_time; //+24hrs?
+		}
+
+		e.startdate = d(e.start_date, e.start_time);
+
+		if (!e.end_date)
+			e.end_date = e.start_date;
+		if (!e.end_time)
+			e.end_time = e.start_time;
+
+		e.enddate = d(e.end_date, e.end_time);
+
+		//TODO parse shortcodes present in description that reference extra columns by their name
+		if (e.description)
+			e.description = e.description;
+
+
+		events.push(e);
+	}
+
+
 });
 reader.addListener('end', function() {
+
 	//console.log(events.length + ' events loaded.');
-	console.log( JSON.stringify([getTimeGliderJSON(events)], null, 4) );
+
+	console.log( JSON.stringify([getTimeGliderJSON(events)]/*, null, 4*/) );
+
+	//console.log( JSON.stringify(getTimelineJSJSON(events)/*, null, 4*/) );
+
 });
 
 
@@ -103,7 +138,45 @@ function getTimeGliderJSON(events) {
 	return x;
 }
 
+//https://github.com/VeriteCo/TimelineJS
+function getTimelineJSJSON(events) {
 
-//http://enformable.com/timeline/fukushima2.html
-//  client: view-source:http://enformable.com/timeline/fukushima2.html
+	function u(dt) {
+		var d = (dt.split(' ')[0]).split('/');
+		var y = d[0];
+		var m = d[1];
+		var d = d[2];
+		return y+','+m+','+d;
+	}
+
+	function t(e) {
+		return {
+			startDate: u(e.start_date),
+			endDate: u(e.end_date),
+			headline: e.title,
+			text: e.description,
+			tag: '',
+			classname: e.class,
+			asset: {
+				//media: e.link,
+				thumbnail: e.image_link,
+				//caption: '',
+				//credit: ''
+			}		
+		};
+	}
+
+	return { timeline : {
+		headline: "Headline",
+		type: 'default',
+		text: 'Intro text',
+		asset: {
+            "media":"http://yourdomain_or_socialmedialink_goes_here.jpg",
+            "credit":"Credit Name Goes Here",
+            "caption":"Caption text goes here"
+		},
+		date: _.map(events, t)
+		//era: []
+	}};
+}
 

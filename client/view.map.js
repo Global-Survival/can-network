@@ -58,6 +58,7 @@ function renderMap(s, o, v) {
         planetSelect.append('<option>Moon</option>');
         planetSelect.append('<option>Mars</option>');
 
+		mapControl.append('Right click to Add');
         mapControl.append(typeSelect);
         mapControl.append(planetSelect);
 
@@ -114,6 +115,38 @@ function renderOLMap(s, o, v) {
         displayProjection: toProjection
         //numZoomLevels: 12
     });
+
+	var oClick = new OpenLayers.Control.Click({eventMethods:{
+	 'rightclick': function(e) {
+		//		  alert('rightclick at '+e.xy.x+','+e.xy.y);
+		var pixel = new OpenLayers.Pixel(e.xy.x,e.xy.y);
+		var lonlat = unproject(m.getLonLatFromPixel(pixel));
+		var n = objAddGeoLocation(objNew(), lonlat.lat, lonlat.lon);
+	    newPopup('Add...', {}).append(newObjectEdit(n, true));
+
+		
+	    //alert("Lat: " + lonlat.lat + " (Pixel.x:" + pixel.x + ")" + "\n" + "Lon: " + lonlat.lon + " (Pixel.y:" + pixel.y + ")" );
+	 },
+
+	 /*'dblclick': function(e) {
+	  alert('dblclick at '+e.xy.x+','+e.xy.y);
+	 },*/
+	 /*'click': function(e) {
+	  alert('click at '+e.xy.x+','+e.xy.y);
+	 },
+	 'dblrightclick': function(e) {
+	  alert('dblrightclick at '+e.xy.x+','+e.xy.y);
+	 }*/
+	}});
+	m.addControl(oClick);
+	oClick.activate();
+
+	document.getElementById(e).oncontextmenu = function(e){
+	 e = e?e:window.event;
+	 if (e.preventDefault) e.preventDefault(); // For non-IE browsers.
+	 else return false; // For IE browsers.
+	};
+
     
     
     var mapnik = new OpenLayers.Layer.OSM();
@@ -406,4 +439,28 @@ function renderOLMap(s, o, v) {
     return m;
 }
 
+// A control class for capturing click events...
+OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {                
 
+defaultHandlerOptions: {
+'single': true,
+'double': true,
+'pixelTolerance': 0,
+'stopSingle': false,
+'stopDouble': false
+},
+handleRightClicks:true,
+initialize: function(options) {
+this.handlerOptions = OpenLayers.Util.extend(
+{}, this.defaultHandlerOptions
+);
+OpenLayers.Control.prototype.initialize.apply(
+this, arguments
+); 
+this.handler = new OpenLayers.Handler.Click(
+this, this.eventMethods, this.handlerOptions
+);
+},
+CLASS_NAME: "OpenLayers.Control.Click"
+
+});

@@ -35,10 +35,13 @@ exports.plugin = {
                 util.objAddTag(eq, 'environment.EarthQuake');
                 util.objAddValue(eq, 'eqMagnitude', parseFloat( eq.name.substring(1, eq.name.indexOf(','))) );
                 
-                var depth = a['dc:subject'][2]['#'];
-                depth = parseFloat(depth.substring(0, depth.indexOf(' ')).trim())*1000.0;
-                util.objAddValue(eq, 'eqDepth', depth );
-                
+				if (a['dc:subject']) {
+					if (a['dc:subject'].length >= 2) {
+				        var depth = a['dc:subject'][2]['#'];
+				        depth = parseFloat(depth.substring(0, depth.indexOf(' ')).trim())*1000.0;
+				        util.objAddValue(eq, 'eqDepth', depth );
+		            }
+				}
                 
                 
                 netention.notice(eq);
