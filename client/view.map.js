@@ -122,8 +122,9 @@ function renderOLMap(s, o, v) {
 		var pixel = new OpenLayers.Pixel(e.xy.x,e.xy.y);
 		var lonlat = unproject(m.getLonLatFromPixel(pixel));
 		var n = objAddGeoLocation(objNew(), lonlat.lat, lonlat.lon);
-	    newPopup('Add...', {}).append(newObjectEdit(n, true));
 
+		$.pnotify( { title: 'New Object', text: ('@ ' + _n(lonlat.lat) + ',' + _n(lonlat.lon)) } );
+		newPopupObjectEdit( n );
 		
 	    //alert("Lat: " + lonlat.lat + " (Pixel.x:" + pixel.x + ")" + "\n" + "Lon: " + lonlat.lon + " (Pixel.y:" + pixel.y + ")" );
 	 },

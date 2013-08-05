@@ -702,3 +702,12 @@ function getCookie(name) {
     }
     return null;
 }
+
+function newPopupObjectEdit(n) {
+	var clientWidth = $(window).width();
+    newPopup('Add...', { 
+		width: parseInt(clientWidth*0.75), 
+		position: { my: "center", at: "center", of: window } 
+	}).append(newObjectEdit(n, true));
+}
+

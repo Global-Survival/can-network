@@ -49,8 +49,7 @@ $('#AvatarButton').click(function() {
 
 
 $('#AddContentButton').click(function() {
-    newPopup('Add...', {}).append(newObjectEdit(objNew(), true));
-    //showAvatarMenu(false);        
+	newPopupObjectEdit( objNew() );
 });
 
 $('#FocusButton').click(function() {
