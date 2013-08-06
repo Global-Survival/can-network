@@ -1,4 +1,6 @@
 var feedparser = require('feedparser');     //https://github.com/danmactough/node-feedparser
+
+var request = require('request');
 var _ = require('underscore');
 var util = require('../client/util.js');
 
@@ -173,7 +175,7 @@ var RSSFeed = function(url, perArticle) {
 	}	
 
     try {
-    	feedparser.parseUrl(url).on('article', onArticle);
+		request(url).pipe(new feedparser()).on('article', onArticle);
     }
     catch (e) {
         console.error(e);

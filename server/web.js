@@ -376,14 +376,17 @@ exports.start = function(host, port, dbURL, init) {
         //t can be a single string, or an array of strings
         
         var db = mongo.connect(getDatabaseURL(), collections);
-        
+
+		/*
+		var finished = false;
         var oldClose = db.close;
         db.close = function() {
-            if (whenFinished)
-                whenFinished();
+			if (finished)
+	            if (whenFinished)
+    	            whenFinished();
 			if (oldClose)
-	            oldClose();
-        }
+		        oldClose();
+        }*/
                 
         //db.obj.find({ tag: { $in: [ t ] } }, function(err, docs) {
         db.obj.find(function(err, docs) {
@@ -398,6 +401,9 @@ exports.start = function(host, port, dbURL, init) {
                         withObject(d);
                     }
                 });
+				finished = true;
+				if (whenFinished)
+					whenFinished();
             }
             db.close();
         });
