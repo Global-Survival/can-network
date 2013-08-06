@@ -290,7 +290,7 @@ function saveSelf(editFunction) {
         self.notice(m);
         $.pnotify({
            title: 'Self Saved.'            
-        });           
+        });
     });    
 }
 
@@ -382,11 +382,18 @@ function newSelfSummary(s, user, content) {
 
         saveButton.click(function() {
             saveSelf(function(m) {
+				_.each(['Human','User'], function(t) {
+					if (!objHasTag(m, t)) {
+						m = objAddTag(m, t);
+					}
+				});
+
                 m.name = nameInput.val();
-                m.email = emailInput.val();
+                m.email = emailInput.val();		
                 objRemoveDescription(m);
                 objAddDescription(m, objarea.html());
                 objTouch(m);
+
                 return m;
             });
         });

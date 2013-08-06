@@ -978,7 +978,7 @@ function objCompact( o ) {
         if (!v) continue;
         
         //console.log(i + '//' + v);
-        if ((v.value) && (v.value.lat)) {
+        if (((v.value) && (v.value.lat)) || (Array.isArray(v))) {
             newValues.push(v);
         }
         else {
