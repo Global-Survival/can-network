@@ -49,7 +49,7 @@ var generalTags = [
 
     { uri: 'Item', name: 'Item', //combined Event into this one..
 		properties: {
-		    'count': { name: 'Active', type: 'integer' },		            
+		    'count': { name: 'Count', type: 'integer' },		            
 		    'individualWeight': { name: 'Weigth (individual)', type: 'real' },
 		    'color': { name: 'Color', type: 'text' }
 		}

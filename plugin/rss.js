@@ -155,7 +155,13 @@ var RSSFeed = function(url, perArticle) {
         util.objAddDescription(x, a['description']);        
         
 		if (a['georss:point']) {
-            util.objAddGeoLocation(x, a['georss:point'][0], a['georss:point'][1] );
+			var pp = a['georss:point'];
+			if (pp.length == 2)
+	            util.objAddGeoLocation(x, pp[0], pp[1] );
+			else {
+				pp = pp['#'].split(' ');
+	            util.objAddGeoLocation(x, pp[0], pp[1] );
+			}
 		}
 		if (a['geo:lat']) {
             util.objAddGeoLocation(x, parseFloat(a['geo:lat']['#']), parseFloat(a['geo:long']['#']) );

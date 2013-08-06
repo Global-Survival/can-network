@@ -32,7 +32,8 @@ var defaultIcons = {
     'emotion.angry': '/icon/emoticon/angry.svg',
     'emotion.surprised': '/icon/emoticon/surprised.svg',
     'Tweet': '/icon/twitter.png',
-    'PlanCentroid': '/icon/rrze/emblems/workflow-cycle.png'
+    'PlanCentroid': '/icon/rrze/emblems/workflow-cycle.png',
+	'Item': '/icon/rrze/emblems/database.png',
 };
 
 /* http://www.perbang.dk/rgbgradient/ 6 steps between: AFE500 and FF3B2E:   AFE500 E9EA08 EFBB11 F48E1A F96324 FF3B2E */

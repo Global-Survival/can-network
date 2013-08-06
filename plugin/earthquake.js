@@ -28,20 +28,37 @@ exports.plugin = {
                 }
             ]);
             
-            rss.RSSFeed('http://earthquake.usgs.gov/earthquakes/catalogs/eqs7day-M5.xml', function(eq, a) {
+
+			//OLD URL: 'http://earthquake.usgs.gov/earthquakes/catalogs/eqs7day-M5.xml'
+            rss.RSSFeed('http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.atom', function(eq, a) {
 
                 eq.name = eq.name + ' Earthquake';
                 
                 util.objAddTag(eq, 'environment.EarthQuake');
                 util.objAddValue(eq, 'eqMagnitude', parseFloat( eq.name.substring(1, eq.name.indexOf(','))) );
                 
+				
+				if (a['atom:summary']) {
+					var s = a['atom:summary']['#'];
+					var pr = '<dt>Depth</dt><dd>';
+					var ipr = s.indexOf(pr);
+					if (ipr!=-1) {
+						var npr = ipr + pr.length;
+						var nps = s.indexOf(' km ');
+						var sdepth = s.substring(npr, nps);
+						depth = parseFloat(sdepth) * 1000;
+				        util.objAddValue(eq, 'eqDepth', depth );
+					}
+				}
+
+				/*
 				if (a['dc:subject']) {
 					if (a['dc:subject'].length >= 2) {
 				        var depth = a['dc:subject'][2]['#'];
 				        depth = parseFloat(depth.substring(0, depth.indexOf(' ')).trim())*1000.0;
 				        util.objAddValue(eq, 'eqDepth', depth );
 		            }
-				}
+				}*/
                 
                 
                 netention.notice(eq);

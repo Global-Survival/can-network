@@ -376,7 +376,12 @@ function renderOLMap(s, o, v) {
                     rad = 7000;
                     op = 0.3;
                     fill = '#fa3';                    
-                }                        
+                },
+                'Item' : function() {
+                    rad = 50;
+                    op = 0.2;
+                    fill = '#3af';                    
+                },          
             };
             var tags = objTags(x);
             for (var i = 0; i < tags.length; i++) {
