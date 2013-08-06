@@ -334,20 +334,20 @@ function netention(f) {
                       }*/
                 ty[t.uri] = tt;
 	
-	        if (xx) {
-                    var propertyIDs = xx;
-                    if (!_.isArray(xx)) {
-                        //hash-array mode
-                        propertyIDs = [];
-                        for (var tp in xx) {
-                            var c = ty[t.uri].properties[tp];
-    			    p[tp] = c;
-                            propertyIDs.push(tp);
-    		        }
-                    }
-                    
-                    t.properties = propertyIDs;
-	        }
+			    if (xx) {
+		                var propertyIDs = xx;
+		                if (!_.isArray(xx)) {
+		                    //hash-array mode
+		                    propertyIDs = [];
+		                    for (var tp in xx) {
+		                        var c = ty[t.uri].properties[tp];
+					    	p[tp] = c;
+		                    propertyIDs.push(tp);
+					        }
+		                }
+		                
+		                t.properties = propertyIDs;
+			    }
             },
             
             geolocate : function(ex) {
@@ -688,8 +688,7 @@ function newPopup(title,p) {
 }
 
 function isAnonymous() {
-	var c = getCookie('authenticated');
-	return (c === 'anonymous');
+	return (getCookie('authenticated') === 'anonymous');
 }
 
 function getCookie(name) {

@@ -1,10 +1,11 @@
 //GENERAL.JS is a PLUGIN WHICH IS AUTOMATICALLY LOADED BY THE WEBSERVER
 
 var generalTags = [
-        
+
+    { uri: 'Imaginary', name: 'Imaginary', description: 'Something imaginary, indefinite values.' },
+
     //Being superclass of Human..
-    //TODO "Contact Schema": http://portablecontacts.net/draft-spec.html#schema
-    
+    //TODO "Contact Schema": http://portablecontacts.net/draft-spec.html#schema   
     { uri: 'Human', name: 'Human',		
 		properties: {
 		             'currentRole': { name: 'Current Role', type: 'text' },
@@ -46,8 +47,15 @@ var generalTags = [
 
 	*/
 
+    { uri: 'Item', name: 'Item', //combined Event into this one..
+		properties: {
+		    'count': { name: 'Active', type: 'integer' },		            
+		    'individualWeight': { name: 'Weigth (individual)', type: 'real' },
+		    'color': { name: 'Color', type: 'text' }
+		}
+	},
 
-
+	
     { uri: 'Action', name: 'Action', //combined Event into this one..
 		properties: {
 		    'active': { name: 'Active', type: 'boolean' },		            
@@ -179,8 +187,7 @@ var generalTags = [
         	}
                      
             
-    },
-    { uri: 'Imaginary', name: 'Imaginary', description: 'Something imaginary, indefinite values.' }
+    }
     
         
 ];

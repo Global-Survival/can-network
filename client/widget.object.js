@@ -1172,8 +1172,8 @@ function newTagTree(param) {
                 label += ' (' + _n(stc[xi]) + ')';
         }
         else {
-            if (children.length==0)
-                return;
+            /*if (children.length==0)
+                return;*/
         }
                 
         var b = newTagLayerDiv(xi, label);
@@ -1221,13 +1221,11 @@ function newTagTree(param) {
     tree.appendTo(a);   
     a.tree({
         data: T,
-	autoEscape: false,
-	selectable: false,
-	slide: false,
-	autoOpen: 2
-    });
-    
-    
+		autoEscape: false,
+		selectable: false,
+		slide: false,
+		autoOpen: 2
+    });        
     
     return tree;
     
