@@ -60,7 +60,6 @@ exports.plugin = {
 		            }
 				}*/
                 
-                
                 netention.notice(eq);
 
                 return eq;

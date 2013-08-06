@@ -139,8 +139,6 @@ var RSSFeed = function(url, perArticle) {
 	
 
 	function onArticle(a) {
-		//console.dir(a);
-		
 		var maxlen = a['title'].length;
 		if (a['description']!=undefined)
 			maxlen = Math.max(maxlen, a['description'].length);
@@ -175,7 +173,12 @@ var RSSFeed = function(url, perArticle) {
 	}	
 
     try {
-		request(url).pipe(new feedparser()).on('article', onArticle);
+		request(url).pipe(new feedparser()).on('readable', function() {
+			var stream = this, item;
+			while (item = stream.read()) {
+				onArticle(item);
+			}
+		});
     }
     catch (e) {
         console.error(e);
