@@ -1307,18 +1307,18 @@ exports.start = function(host, port, dbURL, init) {
                 }
             }
 
-            var pm = plugins[pid];
+            var pm = Server.plugins[pid];
             if (pm) {
-                if (!(Server.plugins[pid].valid == false)) {
-                    var currentState = Server.plugins[pid].enabled;
+                if (!(pm.valid == false)) {
+                    var currentState = pm.enabled;
                     if (currentState != enabled) {
                         if (enabled) {
-                            Server.plugins[pid].enabled = true;
+                            pm.enabled = true;
                             pm.start(that, util);
                             nlog('Plugin ' + pid + ' enabled');
                         }
                         else {
-                            Server.plugins[pid].enabled = false;
+                            pm.enabled = false;
                             pm.stop(that);
                             nlog('Plugin ' + pid + ' disabled');
                         }
