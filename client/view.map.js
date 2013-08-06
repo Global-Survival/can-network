@@ -355,7 +355,7 @@ function renderOLMap(s, o, v) {
                 'environment.EarthQuake' : function() {
                     fill = '#b33';
                     var mag = objFirstValue(x,'eqMagnitude',1);
-                    rad = 100000 + (mag - 5.0)*700000;
+                    rad = 100000 + (mag - 4.0)*700000;
 
                     op *= 0.5;                    
                 },
