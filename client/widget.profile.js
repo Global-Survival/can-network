@@ -1,3 +1,5 @@
+//Personas (profile) widgets
+
 function newProfileWidget() {
     var d = newDiv();
     function closeDialog() {
@@ -42,8 +44,10 @@ function newProfileWidget() {
     d.append(okButton);
     okButton.click(function() {
         var id = selector.val();
-        become(self.getSelf(id));
-        closeDialog();
+		if (id) {
+		    become(self.getSelf(id));
+		    closeDialog();
+		}
     });
 
     d.append(deleteButton);

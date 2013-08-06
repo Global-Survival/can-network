@@ -138,7 +138,7 @@ exports.start = function(host, port, dbURL, init) {
                             var cc = c[i];
 
                             var x = util.objNew();
-                            x.name = 'Plan Centroid ' + i;
+                            x.name = 'Possible Meeting #' + (i+1);
                             util.objAddGeoLocation(x, parseFloat(cc.location[0]), parseFloat(cc.location[1]));
                             util.objSetWhen(x, new Date(cc.time).getTime()); 
                             util.objAddTag(x, 'Imaginary');
@@ -1438,6 +1438,8 @@ exports.start = function(host, port, dbURL, init) {
             getObjectsByAuthor(cid, function(uo) {
                 socket.emit('notice', uo);
             });
+
+			if (callback) callback();
             
         });
 
