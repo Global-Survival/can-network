@@ -16,7 +16,8 @@ require('./server/web.js').start(
         netention.permissions['authenticate_to_delete_objects'] = false;
         netention.permissions['authenticate_to_proxy_http'] = false;
         netention.permissions['authenticate_to_create_profiles'] = false;
-        netention.permissions['anyone_to_enable_or_disable_plugin'] = true;
+        netention.permissions['anyone_to_enable_or_disable_plugin'] = true;	//false to disallow anyone from modifying plugins
+		
 
         //netention.permissions['twitter_key'] = 'CONSUMER_KEY:CONSUMER_SECRET';
 

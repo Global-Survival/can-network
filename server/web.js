@@ -381,7 +381,8 @@ exports.start = function(host, port, dbURL, init) {
         db.close = function() {
             if (whenFinished)
                 whenFinished();
-            oldClose();
+			if (oldClose)
+	            oldClose();
         }
                 
         //db.obj.find({ tag: { $in: [ t ] } }, function(err, docs) {

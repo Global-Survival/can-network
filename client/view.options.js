@@ -94,7 +94,6 @@ function renderOptions(s, o, v) {
                             var k = kk;
                             var pu = pl[k];
 
-
                             var pd = $('<div class="PluginID ui-widget-header"></div>');
                             pd.append('<h3><a target="_blank" href="/plugin/' + pu.filename + '">' + k + '</a></h3>');
 
