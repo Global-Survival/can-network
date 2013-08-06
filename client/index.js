@@ -356,5 +356,9 @@ $(document).ready(function() {
             d.dialog('close');
         })); 
     });
+    $('#FocusWhenButton').click(function() {
+        objAddValue(focusValue, { id: 'timerange', value: { from: 0, to: 0 } });        
+        renderFocus();
+    });
 
 });

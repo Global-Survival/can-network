@@ -633,19 +633,85 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
     }
     else if (type == 'timerange') {
         if (editable) {
-            var lr = $('<input type="text" placeholder="Time Start" />');
-            lr.val(new Date(t.startsAt));
-            d.append('Start: ');
-            d.append(lr);
-	    //TODO add 'Now' button
-            d.append('<br/>');
-            var ls = $('<input type="text" placeholder="Time End" />');
-            ls.val(new Date(t.endsAt));
-            d.append('Stop: ');
-            d.append(ls);
-	    //TODO add 'Now' button
+
+			var i = $('<input type="range" name="timecenter" min="1" max="10000">');
+			var j = $('<span/>');
+			j.append('Past');
+			j.append(i);
+			j.append('Now');
+			d.append(j);
+
+			var lb = $('<input type="checkbox">Latest</input>');
+			d.append(lb);
+
+			var s = $('<select>');
+			s.append('<option value="1">5 mins</option>');
+			s.append('<option value="2">15 mins</option>');
+			s.append('<option value="3">1 hour</option>');
+			s.append('<option value="4">6 hours</option>');
+			s.append('<option value="5">1 day</option>');
+			s.append('<option value="6">1 week</option>');
+			s.append('<option value="7">1 month</option>');
+			d.append(s);
+
+
+
+			var from = -1, to = -1;
+
+			d.append('<br/>');
+
+			var output = $('<span/>');
+			d.append(output);
+
+			function update() {
+				var rangeSec = 0;
+
+				var range = s.val();
+				if (range==='1') rangeSec = 5 * 60;
+				if (range==='2') rangeSec = 15 * 60;
+				if (range==='3') rangeSec = 60 * 60;
+				if (range==='4') rangeSec = 6 * 60 * 60;
+				if (range==='5') rangeSec = 24 * 60 * 60;
+				if (range==='6') rangeSec = 7 * 24 * 60 * 60;
+				if (range==='7') rangeSec = 30 * 24 * 60 * 60;
+				
+				from = to = 0;
+
+				var nn = Date.now();
+				if (lb.is(':checked')) {
+					from = new Date(nn - rangeSec * 1000);
+					to = new Date(nn);
+					j.hide();
+				}
+				else {
+					j.show();
+					var iv = i.val();
+					var p = parseFloat(i.val()) / 10000.0;
+					var oldest = nn - 5 * 365 * 24 * 60 * 60 * 1000;
+					var current = oldest + p * (nn - oldest);
+					from = current - (rangeSec*1000.0)/2.0;
+					to = current + (rangeSec*1000.0)/2.0;
+					//console.log(oldest, newest, current, from, to);
+				}
+
+				output.html(new Date(from) + '<br/>' + new Date(to));
+			}
+
+			i.change(update);
+			lb.change(update);
+			s.change(update);
+
+			update();
+
+			//TODO add calendar buttons
             
-            //TODO add save function
+            whenSaved.push(function(y) {
+                var l = m.location();
+                objAddValue(y, tag, {
+                   'from': from,
+                   'to': to
+                }, strength);
+            });
         }
         else {
             d.append(new Date(t.startsAt) + ' ' + new Date(t.endsAt));
