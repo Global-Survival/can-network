@@ -20,6 +20,7 @@
 	"session.socket.io":"",
 	"connect":"",
 	"underscore":"",
+	"kademlia":"",
 	"irc":"",
         "cheerio":"",
         "rdfstore":"",

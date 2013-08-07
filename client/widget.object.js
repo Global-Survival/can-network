@@ -678,6 +678,8 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
 				from = to = 0;
 
 				var nn = Date.now();
+				var oldest = nn - 5 * 365 * 24 * 60 * 60 * 1000; //TODO make this configurable
+
 				if (lb.is(':checked')) {
 					from = new Date(nn - rangeSec * 1000);
 					to = new Date(nn);
@@ -687,7 +689,6 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
 					j.show();
 					var iv = i.val();
 					var p = parseFloat(i.val()) / 10000.0;
-					var oldest = nn - 5 * 365 * 24 * 60 * 60 * 1000;
 					var current = oldest + p * (nn - oldest);
 					from = current - (rangeSec*1000.0)/2.0;
 					to = current + (rangeSec*1000.0)/2.0;
@@ -717,20 +718,6 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
             d.append(new Date(t.startsAt) + ' ' + new Date(t.endsAt));
         }
         
-    }
-    else if (type == 'EmotionSelect') {
-        var es = $('<img style="width: 100%" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Plutchik-wheel.svg"/>');
-        es.click(function() {
-           alert('Emotion select not functional yet.');
-        });
-        d.append(es);
-    }
-    else if (type == 'HumanBodySelect') {
-        var es = $('<img style="width: 100%" src="http://upload.wikimedia.org/wikipedia/commons/6/68/Human_body_features.png"/>');
-        es.click(function() {
-           alert('Human body part select not functional yet.');
-        });
-        d.append(es);
     }
     else if (type == 'object') {
         if (editable) {
