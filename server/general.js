@@ -120,6 +120,8 @@ var generalTags = [
     { uri: 'Depart', name: 'Depart'},
     
     { uri: 'Problem', name: 'Problem'},
+		//blame : who
+
     { uri: 'Solution', name: 'Solution'},
     { uri: 'Cause', name: 'Cause'},
     { uri: 'Effect', name: 'Effect'},
