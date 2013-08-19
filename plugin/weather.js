@@ -1,6 +1,7 @@
 /*
 Weather
-
+	http://www.openweathermap.org/
+		http://www.openweathermap.org/api
 	http://wunderground.com
 	http://www.accuweather.com/
 	http://simuawips.com/
