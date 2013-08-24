@@ -1,6 +1,3 @@
-
-
-﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>slatebox.js example</title>
@@ -48,6 +45,7 @@
 	<script type="text/javascript" src="slate/Slatebox.slate.keyboard.js"></script>
 	<script type="text/javascript" src="slate/Slatebox.slate.birdseye.js"></script>
 
+	<script type="text/javascript" src="sensorica_example.js"></script>
 
     <script>
         (function ($, $s) {
@@ -59,7 +57,8 @@
                     Slatebox.el("txtSlateLastUpdated").innerHTML = "last updated <b>" + new Date().toString();
                 };
 
-		console.log($s);
+				console.log($s);
+
 
                 var _mainSlate = $s.slate({
                     id: 'firstSlateExample' //slate with the same ids can collaborate together.
@@ -94,15 +93,77 @@
                     }
                 }).canvas.init({ imageFolder: "cursors/" });
 
-                var _nodes = [
+				console.log(_mainSlate.zoomSlider);
+
+				var zoomValue = 15000;
+				var zoomDelta = 2500;
+				var maxZoom = 200000;	//taken from Slatebox.slate.zoomSlider.js
+				var minZoom = 6000; 
+
+				function MouseWheelHandler(e) {
+
+					// cross-browser wheel delta
+					var e = window.event || e;
+					var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+					if (delta < 0) {
+						zoomValue += zoomDelta;
+					}
+					else {
+						zoomValue -= zoomDelta;
+					}
+					if (zoomValue > maxZoom) zoomValue = maxZoom;
+					if (zoomValue < minZoom) zoomValue = minZoom;
+					_mainSlate.zoomSlider.set(zoomValue);
+
+					return false;
+				}
+
+				var s = document.getElementById("slate");
+				if (s.addEventListener) {
+					s.addEventListener("mousewheel", MouseWheelHandler, false);
+					s.addEventListener("DOMMouseScroll",MouseWheelHandler,false);
+				}
+				else s.attachEvent("onmousewheel", MouseWheelHandler);
+	
+
+				var _nodes =  [];
+				var _edges = [];
+				var _nodeIndex = { };
+
+                /*var _nodes = [
                     $s.node({ id: 'first_node', text: 'drag', xPos: 5090, yPos: 5120, height: 40, width: 80, vectorPath: 'roundedrectangle', backgroundColor: '90-#ADD8C7-#59a989', lineColor: "green", lineWidth: 2, allowDrag: true, allowMenu: true, allowContext: true })
                     , $s.node({ id: 'second_node', text: 'me', xPos: 5290, yPos: 5080, height: 40, width: 100, vectorPath: 'ellipse', backgroundColor: '90-#6A8FBD-#54709a', lineColor: "green", lineWidth: 4, allowDrag: true, allowMenu: true, allowContext: true })
                     , $s.node({ id: 'third_node', text: 'around', xPos: 5260, yPos: 5305, height: 40, width: 80, vectorPath: 'rectangle', backgroundColor: '90-#756270-#6bb2ab', lineColor: "blue", lineWidth: 5, allowDrag: true, allowMenu: true, allowContext: true })
-                ];
+                ];*/
+
+				var g = {
+					addNode : function(id, n) {
+						var x = 5000+Math.random() * 2000;
+						var y = 5000+Math.random() * 2000;
+						var nn = $s.node({ id: id, text: n.label, xPos: x, yPos: y, height: 40, width: 80, 
+								vectorPath: 'roundedrectangle', 
+								backgroundColor: n.color, //'90-#ADD8C7-#59a989', 
+								lineColor: "green", lineWidth: 2, allowDrag: true, allowMenu: true, allowContext: true })
+
+						_nodes.push(nn);
+						_nodeIndex[id] = nn;
+					},
+					addEdge : function(from, to, e) {
+						_edges.push( [ from, to, e] );
+					}
+				};
+
+				initSensorica(g);
+
                 _mainSlate.nodes.addRange(_nodes);
-                _nodes[1].relationships.addParent(_nodes[0], {});
-                _nodes[2].relationships.addAssociation(_nodes[0], {});
-                _nodes[2].relationships.addAssociation(_nodes[1], {});
+				for (var i = 0; i < _edges.length; i++) {
+					var ee = _edges[i];
+					var f = ee[0];
+					var t = ee[1];
+					var e = ee[2];
+					_nodeIndex[f].relationships.addAssociation(_nodeIndex[t], { });
+				}
+
                 _mainSlate.init();
             });
         })(jQuery, new Slatebox());
@@ -110,8 +171,6 @@
 </head>
 
 <body>
-    <h2>slatebox.js example</h2>
-
     <div id="slateContainer">
         <div id="slate">
         </div>

@@ -400,6 +400,8 @@
                 vp.left = z.l;
                 vp.top = z.t;
             }
+
+
         };
 
         _self.unwire = function () {

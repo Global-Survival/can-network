@@ -17,10 +17,10 @@
             _self.hide();
 
             var options = {
-                height: 320
+                height: 245
                 , width: 70
-                , offset: { left: 10, top: 50 }
-                , slider: { height: 300, min: 6000, max: 200000, set: 5000 }
+                , offset: { left: 10, top: 10 }
+                , slider: { height: 240, min: 6000, max: 200000, set: 5000 }
             };
 
             $s.extend(options, _options);

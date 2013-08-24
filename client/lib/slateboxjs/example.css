@@ -7,18 +7,19 @@
     -ms-user-select: none;
     user-select: none;
     font-family: Arial;
+ 	margin: 0;
+	padding: 0;
 }
 #slateContainer
 {
-    width: 95%;
+    width: 100%;
 }
 #slate
 {
     float: left;
     width: 100%;
-    height: 600px;
-    border: 1px solid black;
-    margin: 4px;
+    height: 100%;
+    /*border: 1px solid black;*/
     /*background-color: #bbb;*/
     background-image: url('cursors/grid.png');
 }
