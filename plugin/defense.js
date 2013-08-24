@@ -1,5 +1,5 @@
 /*
-Defense against threats, both immediate and potential, local or global (weapons of mass destruction)
+Defense against threats, both immediate and potential, local or global (weapons of mass destruction).  Includes threats from extraterrestrials, & animals, as well as humans.
 
 http://defensedistributed.com/
 	http://defcad.org

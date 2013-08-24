@@ -101,7 +101,8 @@ Assets and Services :
 ( Whipcar , relayrised , drivemy car rentals , getarand , tamyca )
 
 - Bike Sharing
-( Velib , Bixi , Barclays  Cycle Hire , B-Cycle , Call-A-Bike , Cyclocity )
+( Velib , Bixi , Barclays  Cycle Hire , B-Cycle , Call-A-Bike , Cyclo
+city )
 
 - Ride Sharing
 ( Zimride , Nuride , Liftshare , Jayride , Gocarshare , Carpooling )
