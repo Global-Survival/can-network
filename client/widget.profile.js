@@ -14,29 +14,40 @@ function newProfileWidget() {
     var okButton = $('<button><b>Become</b></button>');
     var deleteButton = $('<button>Delete</button>');
 
-    var otherSelves = self.get('otherSelves');
-    if (!otherSelves) {
-        selector.append('<option>' + self.myself().name + '</option>');
+	function disableBecome() {
         selector.attr('disabled', 'disabled');
         okButton.attr('disabled', 'disabled');
         deleteButton.attr('disabled', 'disabled');
+	}
+
+    var otherSelves = self.get('otherSelves');
+	console.log(otherSelves);
+    if (!otherSelves) {
+        selector.append('<option>' + self.myself().name + '</option>');
+		disableBecome();
     }
     else {
-        for (var i = 0; i < otherSelves.length; i++) {
-            var s = otherSelves[i];
-            if (s.indexOf('Self-')==0)
-                s = s.substring(5);
-            var o = self.getSelf(s);
-            if (o) {                    
-                var n = o.name;
-                var selString = (o.id.substring(5) === self.id()) ? 'selected' : '';
-                selector.append('<option value="' + s + '" ' + selString + '>' + n + '</option>');
-            }
-            else {
-                //console.log('unknown self: ' + s);
-            }
+		var c = 0;
+	    for (var i = 0; i < otherSelves.length; i++) {
+	        var s = otherSelves[i];
+	        if (s.indexOf('Self-')==0)
+	            s = s.substring(5);
+	        var o = self.getSelf(s);
+	        if (o) {                    
+	            var n = o.name;
+	            var selString = (o.id.substring(5) === self.id()) ? 'selected' : '';
+	            selector.append('<option value="' + s + '" ' + selString + '>' + n + '</option>');
+				c++;
+	        }
+	        else {
+	            //console.log('unknown self: ' + s);
+	        }
+	    }
+		console.log(c);
 
-        }
+		if (c === 0) {
+			disableBecome();
+		}
     }
 
     d.append(selector);
