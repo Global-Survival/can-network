@@ -257,6 +257,9 @@ $(document).ready(function() {
 						//show profile chooser
 						openSelectProfileModal("Anonymous Profiles");
 					}
+					else if (self.myself() === undefined)  {
+						openSelectProfileModal("Start a New Profile");
+					}
                 });
                 
                 /*if (isAuthenticated()) {
