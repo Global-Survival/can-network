@@ -65,6 +65,10 @@ function _updateView(force) {
         indent();
         currentView = renderList(s, o, v);
     }
+    else if (view === 'goal') {
+        indent();
+        currentView = renderGoal(v);
+    }
     else if (view === 'map') {
         v.addClass('overflow-hidden');
         v.addClass('nobg');
