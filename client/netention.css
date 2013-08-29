@@ -1081,3 +1081,14 @@ a.openModal:focus {
     bottom: 5px;
     z-index: 5000;
 }
+
+#goalviewSidebar {
+	float: left;
+	width: 35%;
+	height: 97%;
+	overflow: scroll;
+}
+#goalviewList {
+	float: right;
+	width: 62%;
+}

@@ -453,6 +453,10 @@ function netention(f) {
                 this.socket.emit('setPlugin', pid, enabled, callback);                    
             },
             
+			getGoals: function(when) {
+				return [ { name: 'Be patient', strength: 0.75 },  { name: 'Breathe', strength: 0.3 },  { name: 'Find Shelter', strength: 0.2 } ];
+			},
+
             getLatestObjects : function(num, onFinished) {
                 var that = this;
                 $.getJSON('/object/latest/' + num + '/json', function(objs) {
