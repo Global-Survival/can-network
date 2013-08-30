@@ -1,10 +1,11 @@
 function getRelevant(sort, scope, semantic, s, o, maxItems) { 
-    
+
     var now = Date.now();
     var location = objSpacePointLatLng(s.myself());
     
     var relevance = { };
     var focus = s.focus();
+	if (focus) semantic = 'Relevant';
     
     var ii = _.keys(self.layer().include);
     var ee = _.keys(self.layer().exclude);
@@ -91,8 +92,19 @@ function getRelevant(sort, scope, semantic, s, o, maxItems) {
         
         if (semantic == 'Relevant') { 
             if (focus) {
-                var m = objTagRelevance(s.focus(), x);
-                r *= m;
+				if (focus.name) {
+					var fn = focus.name.toLowerCase();
+					var xn = (x.name||'').toLowerCase();
+					if (xn.indexOf(fn)==-1)
+						r = 0;
+				}
+				if (r > 0) {
+					var ft = objTags(focus);
+					if (ft.length > 0) {
+					    var m = objTagRelevance(focus, x);
+					    r *= m;
+					}	
+				}
             }
             else
                 r = 0;

@@ -307,8 +307,8 @@ $(document).ready(function() {
     
     var focusValue;
     function clearFocus() {
-        focusValue = { tags: [], when: null, where: null };
-       
+		$('#FocusKeywords').val('');
+        focusValue = { tags: [], when: null, where: null };       
     }
     clearFocus();
     
