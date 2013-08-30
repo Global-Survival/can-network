@@ -1314,12 +1314,14 @@ exports.start = function(host, port, dbURL, init) {
                     if (currentState != enabled) {
                         if (enabled) {
                             pm.enabled = true;
-                            pm.start(that, util);
+							if (pm.start)
+	                            pm.start(that, util);
                             nlog('Plugin ' + pid + ' enabled');
                         }
                         else {
                             pm.enabled = false;
-                            pm.stop(that);
+							if (pm.stop)
+	                            pm.stop(that);
                             nlog('Plugin ' + pid + ' disabled');
                         }
                         saveState(function() {

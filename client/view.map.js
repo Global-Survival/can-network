@@ -352,7 +352,7 @@ function renderOLMap(s, o, v) {
             iconURL = getTagIcon(x);
             
             var tagStyling = {
-                'environment.EarthQuake' : function() {
+                'Earthquake' : function() {
                     fill = '#b33';
                     var mag = objFirstValue(x,'eqMagnitude',1);
                     rad = 100000 + (mag - 4.0)*700000;

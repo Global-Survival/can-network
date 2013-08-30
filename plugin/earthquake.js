@@ -20,7 +20,7 @@ exports.plugin = {
             
             netention.addTags([
                 {
-                    uri: 'environment.EarthQuake', name: 'Earthquake',                     
+                    uri: 'Earthquake', name: 'Earthquake',                     
                     properties: {       
         				 'eqMagnitude': { name: 'Magnitude', type: 'real' },		            
     					 'eqDepth': { name: 'Depth (m)', type: 'real' }
@@ -34,7 +34,7 @@ exports.plugin = {
 
                 eq.name = eq.name + ' Earthquake';
                 
-                util.objAddTag(eq, 'environment.EarthQuake');
+                util.objAddTag(eq, 'Earthquake');
                 util.objAddValue(eq, 'eqMagnitude', parseFloat( eq.name.substring(1, eq.name.indexOf(','))) );
                 
 				

@@ -44,6 +44,7 @@ function newTagger(selected, onFinished) {
         addButton('Emotion', newEmotionBrowser);
         addButton('Body', newBodyBrowser);
         addButton('Needs', newNeedsBrowser);
+        addButton('&#9733;', newNeedsBrowser); //favorites
         
     }
     d.append(selectBar);

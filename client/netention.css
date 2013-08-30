@@ -660,7 +660,7 @@ body { width:100%; height:100%; margin:0px; padding:0px; overflow:hidden; font-f
         }
 	.WikiTagSave { margin-top: 5px; font-size: 150%; }
         
-	#BioText { border: 1px solid gray; width: 100%; height: 12em; margin-top: 1em; margin-bottom: 1em; text-align: left; }
+	#BioText { border: 1px solid gray; width: 100%; height: 12em; margin-top: 1em; margin-bottom: 1em; text-align: left; overflow: scroll }
 	#Bio { text-align: right; }
 
         

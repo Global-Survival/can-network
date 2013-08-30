@@ -21,7 +21,6 @@ function newProfileWidget() {
 	}
 
     var otherSelves = self.get('otherSelves');
-	console.log(otherSelves);
     if (!otherSelves) {
         selector.append('<option>' + self.myself().name + '</option>');
 		disableBecome();
@@ -43,7 +42,6 @@ function newProfileWidget() {
 	            //console.log('unknown self: ' + s);
 	        }
 	    }
-		console.log(c);
 
 		if (c === 0) {
 			disableBecome();

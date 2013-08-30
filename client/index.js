@@ -338,7 +338,7 @@ $(document).ready(function() {
     $('#FocusWhereButton').click(function() {
 	if (!focusValue.where) {
 		focusValue.where = _.clone(objSpacePoint(self.myself()) || { lat: 40, lon: -79, planet: 'Earth'} );
-	        renderFocus();
+	    renderFocus();
 	}
 	else {
 		if(confirm("Remove focus's 'Where'?")) {
@@ -347,6 +347,14 @@ $(document).ready(function() {
 		}
 	}
     });
+	var periodMS = 2000;
+	$('#FocusKeywords').keyup(
+		_.throttle(function() {
+			var t = $('#FocusKeywords').val();
+			focusValue.name = t;
+			self.setFocus(focusValue);
+		}, periodMS)
+	);
       
     $('#FocusClearButton').click(function() {
         clearFocus();
