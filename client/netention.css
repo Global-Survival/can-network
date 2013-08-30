@@ -1092,3 +1092,7 @@ a.openModal:focus {
 	float: right;
 	width: 62%;
 }
+.GoalSummary {
+	border: 2px solid gray;
+	margin: 1em;
+}

@@ -1,7 +1,16 @@
 //
 
 function newGoalWidget(g)  {
-	return JSON.stringify(g);
+
+	var d = newDiv();
+	d.attr('class', 'GoalSummary');
+	d.append('<h2>' + g.name + '</h2>');
+	d.attr('style', 'font-size: ' + (100.0 * (1.0 + g.strength) )+ '%');
+
+	var dismissButton = $('<button>Dismiss</button>');
+	d.append(dismissButton);
+
+	return d;
 }
 
 function renderGoal(v) {

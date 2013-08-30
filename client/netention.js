@@ -453,7 +453,7 @@ function netention(f) {
                 this.socket.emit('setPlugin', pid, enabled, callback);                    
             },
             
-			getGoals: function(when) {
+			getGoals: function(when /*, mineOnly */) {
 				return [ { name: 'Be patient', strength: 0.75 },  { name: 'Breathe', strength: 0.3 },  { name: 'Find Shelter', strength: 0.2 } ];
 			},
 
