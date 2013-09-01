@@ -634,7 +634,7 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
     }
     else if (type == 'timerange') {
 		var nn = Date.now();
-		var oldest = nn - 5 * 365 * 24 * 60 * 60 * 1000; //TODO make this configurable
+		var oldest = nn - 5 * 24 * 60 * 60 * 1000; //TODO make this configurable
 
         if (editable) {
 
@@ -658,7 +658,7 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
 			var s = $('<select>');
 			s.append('<option value="1">5 mins</option>');
 			s.append('<option value="2">15 mins</option>');
-			s.append('<option value="3">1 hour</option>');
+			s.append('<option value="3" selected>1 hour</option>');
 			s.append('<option value="4">6 hours</option>');
 			s.append('<option value="5">1 day</option>');
 			s.append('<option value="6">1 week</option>');

@@ -450,7 +450,7 @@ function netention(f) {
             },
             
 			getGoals: function(when /*, mineOnly */) {
-				return [ { name: 'Be patient', strength: 0.75 },  { name: 'Breathe', strength: 0.3 },  { name: 'Find Shelter', strength: 0.2 } ];
+				return goals(when, this.objectsWithTag('Goal'));
 			},
 
             getLatestObjects : function(num, onFinished) {

@@ -1032,3 +1032,10 @@ function objExpand( o ) {
     return y;
 }
 exports.objExpand = objExpand;
+
+
+function goals(time, goalList) {
+	return [ { name: 'Be patient', strength: 0.75 },  { name: 'Breathe', strength: 0.3 },  { name: 'Find Shelter', strength: 0.2 } ];
+}
+exports.goals = goals;
+

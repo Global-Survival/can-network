@@ -2,7 +2,7 @@
 
 var configuration = {
     ui: 'ui.mobile.js',
-    initialView: 'chat',
+    initialView: 'goal',
     initialDisplayAvatarMenu: false,
     enableAnonymous: true,
     defaultAvatarIcon: '/icon/netention-160.jpg',

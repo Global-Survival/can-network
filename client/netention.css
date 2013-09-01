@@ -1096,3 +1096,10 @@ a.openModal:focus {
 	border: 2px solid gray;
 	margin: 1em;
 }
+
+.timecell {
+	cursor: crosshair;
+	padding: 2px;
+	margin: 2px;
+	border: 1px solid gray;
+}
