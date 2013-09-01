@@ -126,7 +126,7 @@ function newReplyWidget(onReply, onCancel) {
  *  focus - a function that returns the current focus
  *  commitFocus - a function that takes as parameter the next focus to save
  */
-function newObjectEdit(ix, editable, hideWidgets, onTagRemove) {
+function newObjectEdit(ix, editable, hideWidgets, onTagRemove, whenSliderChange) {
     var d = newDiv();
 
     
@@ -161,7 +161,8 @@ function newObjectEdit(ix, editable, hideWidgets, onTagRemove) {
         };
         var onStrengthChange = function(i, newStrength) {        
             var y = getEditedFocus();
-            y.value[i].strength = newStrength;
+			if (newStrength)
+    	        y.value[i].strength = newStrength;
             update(y);
         };
         var onOrderChange = function(fromIndex, toIndex) {        
@@ -194,7 +195,7 @@ function newObjectEdit(ix, editable, hideWidgets, onTagRemove) {
         if (x.value) {
             for (var i = 0; i < x.value.length; i++) {
                 var t = x.value[i];
-                var tt = renderTagSection(x, i, t, editable, whenSaved, onAdd, onRemove, onStrengthChange, onOrderChange);
+                var tt = renderTagSection(x, i, t, editable, whenSaved, onAdd, onRemove, onStrengthChange, onOrderChange, whenSliderChange);
                 d.append(tt); 
             }
         }
@@ -414,7 +415,7 @@ function applyTagStrengthClass(e, s) {
 }
 
 
-function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onStrengthChange, onOrderChange) {
+function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onStrengthChange, onOrderChange, whenSliderChange) {
     var tag = t.id;
     var strength = t.strength;
     
@@ -632,10 +633,20 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
         }                    
     }
     else if (type == 'timerange') {
+		var nn = Date.now();
+		var oldest = nn - 5 * 365 * 24 * 60 * 60 * 1000; //TODO make this configurable
+
         if (editable) {
 
 			var i = $('<input type="range" name="timecenter" min="1" max="10000">');
-			var j = $('<span/>');
+
+			if (t.value)
+				if ((t.value.from) && (t.value.to)) {
+					var tm = ((0.5 * (t.value.from + t.value.to))-oldest)/(nn-oldest) * 10000;
+					i.attr('value', parseInt(tm));				
+				}
+
+			var j = $('<span id="timecenter"/>');
 			j.append('Past');
 			j.append(i);
 			j.append('Now');
@@ -663,7 +674,7 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
 			var output = $('<span/>');
 			d.append(output);
 
-			function update() {
+			var update = _.throttle(function() {
 				var rangeSec = 0;
 
 				var range = s.val();
@@ -677,8 +688,6 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
 				
 				from = to = 0;
 
-				var nn = Date.now();
-				var oldest = nn - 5 * 365 * 24 * 60 * 60 * 1000; //TODO make this configurable
 
 				if (lb.is(':checked')) {
 					from = new Date(nn - rangeSec * 1000);
@@ -695,19 +704,28 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
 					//console.log(oldest, newest, current, from, to);
 				}
 
-				output.html(new Date(from) + '<br/>' + new Date(to));
-			}
 
-			i.change(update);
-			lb.change(update);
-			s.change(update);
+				output.html(new Date(from) + '<br/>' + new Date(to));
+				onStrengthChange(tag);
+				if (whenSliderChange)
+					whenSliderChange(x);
+			}, 500);
+
+			var uup = function() {
+				later(function() {
+					update();
+				});
+			};
+
+			i.change(uup);
+			lb.change(uup);
+			s.change(uup);
 
 			update();
 
 			//TODO add calendar buttons
             
             whenSaved.push(function(y) {
-                var l = m.location();
                 objAddValue(y, tag, {
                    'from': from,
                    'to': to

@@ -1,3 +1,5 @@
+//TWITTER.COM HAS REMOVED PUBLIC ACCESS TO THE TWITTER API
+//Let's make Twitter obsolete
 
 //http://blog.semmy.me/post/17390049513/streaming-twitter-with-ntwitter-and-node-js
 //https://dev.twitter.com/docs/api/1/get/search
@@ -110,12 +112,13 @@ exports.plugin = {
                         netention.noticeAll(xx);
                     }
                     else {
-                        console.log('twitter lookup: ' + error);
+                        console.log(url + ' :: twitter lookup: ' + error);
                     }
                 });                
             }
             function update() {
                 
+
                 netention.getObjectsByTag('InterestInTwitterUser', function(tu) {
                     //console.log('Interest in Twitter user: ' + tu);
                     var users = util.objValues(tu, 'twitterID');
@@ -124,7 +127,8 @@ exports.plugin = {
                             username = username.substring(1);
                         //nsole.log('fetching twitter results for: ' + username);
                         //https://dev.twitter.com/docs/api/1/get/statuses/user_timeline
-                        parseTwitterTimelineJSONResults('http://api.twitter.com/1/statuses/user_timeline.json?include_entities=false&include_rts=true&count=200&screen_name=' + username, username );
+						//No longer public since change to v1.1
+                        //parseTwitterTimelineJSONResults('http://api.twitter.com/1/statuses/user_timeline.json?include_entities=false&include_rts=true&count=200&screen_name=' + username, username );
                     });
                 });
                 netention.getObjectsByTag('InterestInTwitterHashtag', function(th) {

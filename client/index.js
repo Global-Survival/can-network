@@ -317,23 +317,26 @@ $(document).ready(function() {
         
         var fe = $('#FocusEdit');
         fe.html('');
-        var noe = newObjectEdit(focusValue, true, true, function(xx) {
-		focusValue = xx;
-		renderFocus();
-	});
+		var noe = newObjectEdit(focusValue, true, true, function(xx) {
+			focusValue = xx;
+			renderFocus();
+		}, function(x) {
+			self.setFocus(x);
+		});
+
         fe.append(noe);
 
 
-	if (focusValue.when) {
+		if (focusValue.when) {
+		}
+		if (focusValue.where) {
+			var uu = uuid();
+			var m = newDiv(uu);
+			m.attr('style', 'height: 150px; width: 95%');	//TODO use css
+			fe.append(m);
+			var lmap = initLocationChooserMap(uu, focusValue.where, 3);
+		}
 	}
-	if (focusValue.where) {
-		var uu = uuid();
-		var m = newDiv(uu);
-		m.attr('style', 'height: 150px; width: 95%');	//TODO use css
-		fe.append(m);
-		var lmap = initLocationChooserMap(uu, focusValue.where, 3);
-	}
-    }
 
     $('#FocusWhereButton').click(function() {
 	if (!focusValue.where) {
@@ -355,6 +358,7 @@ $(document).ready(function() {
 			self.setFocus(focusValue);
 		}, periodMS)
 	);
+
       
     $('#FocusClearButton').click(function() {
         clearFocus();

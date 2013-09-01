@@ -7,7 +7,11 @@ function newGoalWidget(g)  {
 	d.append('<h2>' + g.name + '</h2>');
 	d.attr('style', 'font-size: ' + (100.0 * (1.0 + g.strength) )+ '%');
 
-	var dismissButton = $('<button>Dismiss</button>');
+	//display author avatar
+
+	//display ETA - estimated time to activation
+
+	var dismissButton = $('<button title="Dismiss">X</button>');
 	d.append(dismissButton);
 
 	return d;

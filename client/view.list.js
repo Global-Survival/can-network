@@ -5,6 +5,8 @@ function getRelevant(sort, scope, semantic, s, o, maxItems) {
     
     var relevance = { };
     var focus = s.focus();
+	var focusWhen = objWhen(focus);
+
 	if (focus) semantic = 'Relevant';
     
     var ii = _.keys(self.layer().include);
@@ -79,6 +81,7 @@ function getRelevant(sort, scope, semantic, s, o, maxItems) {
             //r = Math.exp(-distance/10000.0);
             r = 1.0 / (1.0 + distance);
         }
+		//DEPRECATED
         else if (sort == 'Spacetime') {
             var llx = objSpacePointLatLng(x);
             if ((!location) || (!llx) || (!x.when)) {
@@ -98,12 +101,25 @@ function getRelevant(sort, scope, semantic, s, o, maxItems) {
 					if (xn.indexOf(fn)==-1)
 						r = 0;
 				}
+
 				if (r > 0) {
 					var ft = objTags(focus);
 					if (ft.length > 0) {
 					    var m = objTagRelevance(focus, x);
 					    r *= m;
-					}	
+					}
+				}
+				if (r > 0) {
+					if (focusWhen) {
+						var f = focusWhen.from;
+						var t = focusWhen.to;
+						var wx = objWhen(x);
+						if (typeof wx === 'number') {
+							if (wx < f) r = 0;
+							if (wx > t) r = 0;
+							//console.log(wx, focusWhen);							
+						}
+					}
 				}
             }
             else

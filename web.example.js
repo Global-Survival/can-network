@@ -22,7 +22,7 @@ require('./server/web.js').start(
         //netention.permissions['twitter_key'] = 'CONSUMER_KEY:CONSUMER_SECRET';
 
 		//Plugins to auto-enable
-		netention.enablePlugins =  [ /* 'earthquake.js', 'rss.js' */ ];
+		netention.enablePlugins =  [ /* 'earthquake', 'rss' */ ];
 
 		netention.nlog('READY!');
 

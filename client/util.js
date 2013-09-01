@@ -133,7 +133,8 @@ function objSetWhen(x, time) {
 exports.objSetWhen = objSetWhen;
 
 function objWhen(x) {
-    return objFirstValue(x, 'timepoint', null);
+	if (x === null) return null;
+    return objFirstValue(x, 'timepoint', null) || objFirstValue(x, 'timerange', null) || x.when || x.modifiedAt || x.createdAt; 
 }
 exports.objWhen = objWhen;
 
