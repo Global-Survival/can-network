@@ -607,7 +607,7 @@ body { width:100%; height:100%; margin:0px; padding:0px; overflow:hidden; font-f
 	.ObjectViewHideButton { height:30px;   position:absolute;  bottom:-4px; left:-4px; z-index:2; opacity:0; display:inline-block; }
 	.ObjectViewHideButton:hover { opacity:1; }
 	.ObjectViewHideButton button { position:relative; padding:5px; margin:0px; }
-	.objectView h1 { font-size: 120%; font-weight: bold;  margin: 2px 0px; z-index:2; }
+	.objectView h1 { font-size: 140%; font-weight: bold;  margin: 2px 0px; z-index:2; }
 	.objectView h2 { font-size: 105%; font-weight: bold; margin: 0; z-index:2; }
 	.objectView h3 { font-weight: normal; color: #333; margin: 0;  z-index:2; }
 	.objectView ul { list-style-type: none; margin-bottom: 0.2em; padding-left: 0; margin-left: 0; z-index:2; }
