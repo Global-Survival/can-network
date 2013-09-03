@@ -450,7 +450,8 @@ function netention(f) {
             },
             
 			getGoals: function(when /*, mineOnly */) {
-				return goals(when, this.objectsWithTag('Goal'));
+				var that = this;
+				return goals(when, _.map(this.objectsWithTag('Goal'), function(id) { return that.getObject(id); } ));
 			},
 
             getLatestObjects : function(num, onFinished) {

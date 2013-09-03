@@ -1035,7 +1035,12 @@ exports.objExpand = objExpand;
 
 
 function goals(time, goalList) {
-	return [ { name: 'Be patient', strength: 0.75 },  { name: 'Breathe', strength: 0.3 },  { name: 'Find Shelter', strength: 0.2 } ];
+	return _.map(goalList, function(g) {
+		var x = _.clone(g);				
+		x.strength = 0.1;
+		return x;
+	});
+//	return [ { name: 'Be patient', strength: 0.75 },  { name: 'Breathe', strength: 0.3 },  { name: 'Find Shelter', strength: 0.2 } ];
 }
 exports.goals = goals;
 

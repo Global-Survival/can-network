@@ -12,7 +12,7 @@ function newGoalWidget(g)  {
 
 	//display ETA - estimated time to activation
 
-	var dismissButton = $('<button title="Dismiss">X</button>');
+	var dismissButton = $('<button title="Dismiss">OK</button>');
 	d.append(dismissButton);
 
 	return d;
@@ -22,10 +22,7 @@ function renderGoal(v) {
 	var sidebar = newDiv('goalviewSidebar');
 	var goalList = newDiv('goalviewList');
 
-
-	$.get('/inputs.html', function(x) {
-		sidebar.html(x);
-	});
+	sidebar.html(newProtogoalMenu());
 
 	v.append(sidebar);
 	v.append(goalList);
@@ -105,7 +102,8 @@ function newSelfTimeGrid(x, clicked) {
     time = time.getTime();
     
     var d = newDiv();
-    
+    //d.attr('style', 'width:8000px; overflow-x: scroll;');
+
     var planSlotTimes = { };
     var planSlots = { };
     
