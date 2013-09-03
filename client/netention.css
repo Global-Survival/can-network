@@ -1094,7 +1094,7 @@ a.openModal:focus {
 }
 .GoalSummary {
 	border: 2px solid gray;
-	margin: 1em;
+	margin: 5px;
 }
 
 .timecell {

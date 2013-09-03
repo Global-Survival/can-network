@@ -1037,7 +1037,7 @@ exports.objExpand = objExpand;
 function goals(time, goalList) {
 	return _.map(goalList, function(g) {
 		var x = _.clone(g);				
-		x.strength = 0.1;
+		x.strength = Math.random();
 		return x;
 	});
 //	return [ { name: 'Be patient', strength: 0.75 },  { name: 'Breathe', strength: 0.3 },  { name: 'Find Shelter', strength: 0.2 } ];

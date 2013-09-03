@@ -331,10 +331,26 @@ function newObjectEdit(ix, editable, hideWidgets, onTagRemove, whenSliderChange)
             var whoButton = $('<button disabled title="Who?" id="AddWhoButton"><img src="/icon/rrze/categories/user-group.png"></button>');
             d.append(whoButton);
 
-            var uploadButton = $('<button disabled title="Upload"><img src="/icon/rrze/actions/dial-in.png"/></button>');
+            var uploadButton = $('<button title="Upload"><img src="/icon/rrze/actions/dial-in.png"/></button>');
             uploadButton.click(function() {
+
+				var y = newDiv();
+				var fuf = y.append('<form id="FocusUploadForm" action="/upload" method="post" enctype="multipart/form-data"><div>File:<input type="file" name="uploadfile" /><input type="submit" value="Upload" /></div></form>');
+				y.append('<div class="FocusUploadProgress"><div class="FocusUploadBar"></div><div class="FocusUploadPercent">0%</div></div>');
+		        y.append('<div id="FocusUploadStatus"></div>');
+				var okButton = $('<button class="btn">OK</button>');
+				y.append(okButton);
+
+
+				var x = newPopup('Upload',  { modal: true} );
+				x.append(y);
+
+				okButton.click(function() {
+					x.dialog('close');
+				});
+
                 var bar = $('.FocusUploadBar');
-                var percent = $('.FocusUploadPercent');
+				var percent = $('.FocusUploadPercent');				
                 var status = $('#FocusUploadStatus');
 
                 $('#FocusUploadForm').ajaxForm({
@@ -355,9 +371,7 @@ function newObjectEdit(ix, editable, hideWidgets, onTagRemove, whenSliderChange)
                         var ab = $('<button>Add Image To Description</button>');
                         var absURL = url.substring(1);
                         ab.click(function() {
-                            var f = renderedFocus.getEditedFocus();
-                            objAddDescription(f, '<a href="' + absURL + '"><img src="' + absURL + '"></img></a>');
-                            commitFocus(f);
+			                update(objAddDescription(getEditedFocus(), '<a href="' + absURL + '"><img src="' + absURL + '"></img></a>'));
                         });
                         status.append('<br/>');
                         status.append(ab);
@@ -365,6 +379,113 @@ function newObjectEdit(ix, editable, hideWidgets, onTagRemove, whenSliderChange)
                 });
 
             });
+			d.append(uploadButton);
+
+			/*
+			var uploadArea = $('<div id="holder">Upload...</div>');
+			uploadArea.attr('style', 'border: 10px dashed #ccc; width: 300px; min-height: 300px; margin: 20px auto;');
+            var filereader = $('<div id="filereader"></div>');
+            var formdata = $('<div id="formdata"></div>');
+            var progress = $('<div id="progress"></div>');
+			d.append(uploadArea);
+			d.append(filereader);
+			d.append(formdata);
+			d.append(progress);
+			{
+				var holder = uploadArea.get(),
+				   tests = {
+					  filereader: typeof FileReader != 'undefined',
+					  dnd: 'draggable' in document.createElement('span'),
+					  formdata: !!window.FormData,
+					  progress: "upload" in new XMLHttpRequest
+					}, 
+					support = {
+					  filereader: filereader.get(),
+					  formdata: formdata.get(),
+					  progress: progress.get()
+					},
+					acceptedTypes = {
+					  'image/png': true,
+					  'image/jpeg': true,
+					  'image/gif': true
+					},
+					progress = document.getElementById('uploadprogress'),
+					fileupload = document.getElementById('upload');
+
+				_.each("filereader formdata progress".split(' '), function (api) {
+					  if (tests[api] === false) {
+						support[api].className = 'fail';
+					  } else {
+						// FFS. I could have done el.hidden = true, but IE doesn't support
+						// hidden, so I tried to create a polyfill that would extend the
+						// Element.prototype, but then IE10 doesn't even give me access
+						// to the Element object. Brilliant.
+						support[api].className = 'hidden';
+					  }
+				});
+
+				function previewfile(file) {
+				  if (tests.filereader === true && acceptedTypes[file.type] === true) {
+					var reader = new FileReader();
+					reader.onload = function (event) {
+					  var image = new Image();
+					  image.src = event.target.result;
+					  image.width = 250; // a fake resize
+					  holder.appendChild(image);
+					};
+
+					reader.readAsDataURL(file);
+				  }  else {
+					holder.innerHTML += '<p>Uploaded ' + file.name + ' ' + (file.size ? (file.size/1024|0) + 'K' : '');
+					console.log(file);
+				  }
+				}
+
+				function readfiles(files) {
+					debugger;
+					var formData = tests.formdata ? new FormData() : null;
+					for (var i = 0; i < files.length; i++) {
+					  if (tests.formdata) formData.append('file', files[i]);
+					  previewfile(files[i]);
+					}
+
+					// now post a new XHR request
+					if (tests.formdata) {
+					  var xhr = new XMLHttpRequest();
+					  xhr.open('POST', '/devnull.php');
+					  xhr.onload = function() {
+						progress.value = progress.innerHTML = 100;
+					  };
+
+					  if (tests.progress) {
+						xhr.upload.onprogress = function (event) {
+						  if (event.lengthComputable) {
+							var complete = (event.loaded / event.total * 100 | 0);
+							progress.value = progress.innerHTML = complete;
+						  }
+						}
+					  }
+
+					  xhr.send(formData);
+					}
+				}
+
+				//var tests.dnd = true;
+				//if (tests.dnd) { 
+				  holder.ondragover = function () { console.log('hover'); this.className = 'hover'; return false; };
+				  holder.ondragend = function () { this.className = ''; return false; };
+				  holder.ondrop = function (e) {
+					this.className = '';
+					e.preventDefault();
+					readfiles(e.dataTransfer.files);
+				  }
+				} else {
+				  fileupload.className = 'hidden';
+				  fileupload.querySelector('input').onchange = function () {
+					readfiles(this.files);
+				  };
+				//}
+			}*/
 
 
             var saveButton = $('<button><b>Save/Share</b></button>');

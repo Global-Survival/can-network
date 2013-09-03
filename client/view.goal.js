@@ -4,9 +4,10 @@ function newGoalWidget(g)  {
 
 	var d = newDiv();
 
-	d.attr('class', 'GoalSummary');
+	d.attr('class', 'GoalSummary ui-widget-content');
+
 	d.append('<h2>' + g.name + '</h2>');
-	d.attr('style', 'font-size: ' + (100.0 * (1.0 + g.strength) )+ '%');
+	d.attr('style', 'font-size: ' + (100.0 * (0.5 + g.strength) )+ '%');
 
 	//display author avatar
 
@@ -29,7 +30,7 @@ function renderGoal(v) {
 
 	var goalTime = Date.now();
 
-	var updatePeriod = 2000 * 1000; //in ms
+	var updatePeriod = 7 * 1000; //in ms
 	function updateGoalList() {
 		goalList.html('');
 
