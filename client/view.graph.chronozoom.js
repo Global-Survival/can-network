@@ -4,16 +4,19 @@ var layoutFPS = 20;
 function renderGraph(s, o, v, withGraph) {
     
     var ee = uuid();
-	var r = newDiv('"slateContainer"');
-	r.attr('style', 'width:100%; height:100%;');	
-	v.append(r);
-
-	var l = newDiv('slate');
-	r.append(l);
+    var r = $('<div style="width: 100%; height: 98%; overflow: hidden; background-color: transparent; border: none;);"/>').attr('id', ee);
+    r.appendTo(v);
+    
+    var l2 = $('<div id="layer2"></div>');
+    r.append(l2);
+    var l1 = $('<div id="layer1"></div>');
+    r.append(l1);
     
     later(function() {
         initCZ(function() {
         	
+    		//var path = '/demo/enformable/enformable-fukushima-timeline.json';
+    		//$.getJSON(path, function(data) {
     		graphCZ(r, function(root) {	
                 var width = 1000;
                 var height = 1000;
@@ -169,6 +172,9 @@ function renderGraph(s, o, v, withGraph) {
                     root.vc.invalidate();
                 }, graphUpdatePeriod);
      
+                that.visibleRegion = new VisibleRegion2d(-width/2.0, 0, 122.0 / 356.0);
+                
+                return that;
                 
     		}, withGraph);								
     	});
@@ -187,7 +193,7 @@ function renderGraphFocus(s, o, v) {
             for (var i = 0; i < xxrr.length; i++) {
                 var x = xxrr[i][0];
                 var r = xxrr[i][1];
-                g.addNode(x.id, { label: x.name || "" } );
+                g.addNode(x.id, x.name);
                 
                 var rtags = objTags(x);
                 if (!rtags)
@@ -198,7 +204,7 @@ function renderGraphFocus(s, o, v) {
                     if (!exists) {
                         var ttj = s.tag(tj);
                         if (ttj) {           
-                            g.addNode(tj, { label: s.tag(tj).name||"" }, getTagIcon(tj));
+                            g.addNode(tj, s.tag(tj).name, getTagIcon(tj));
                             tags[tj] = true;
                         }
                     }
@@ -210,61 +216,36 @@ function renderGraphFocus(s, o, v) {
     });
 }
 
+var maxPermitedVerticalRange = { top: -10000000, bottom: 10000000 };
 
-var codeLoaded = false;
+
+var _chronozoomloaded = false;
 
 function initCZ(f) {
-    if (codeLoaded) {
+    if (_chronozoomloaded) {
         f();
     }
     else {
-        codeLoaded = true;
+        _chronozoomloaded = true;
 
         var scripts = [ 
+                       "/lib/chronozoom/Scripts/rx.js",
+                       "/lib/chronozoom/Scripts/rx.jQuery.js",
+                       "/lib/chronozoom/Scripts/common.js",
+                       "/lib/chronozoom/Scripts/cz.settings.js",
+                       "/lib/chronozoom/Scripts/vccontent.js",
+                       "/lib/chronozoom/Scripts/viewport.js",
+                       "/lib/chronozoom/Scripts/virtualCanvas.js",
+                       "/lib/chronozoom/Scripts/mouseWheelPlugin.js",
+                       "/lib/chronozoom/Scripts/gestures.js",
+                       "/lib/chronozoom/Scripts/viewportAnimation.js",
+                       "/lib/chronozoom/Scripts/viewportController.js",
 
-			"/lib/slateboxjs/raphael/raphael.js",
-
-			"/lib/slateboxjs/slatebox.js",
-			"/lib/slateboxjs/slatebox.slate.js",
-			"/lib/slateboxjs/slatebox.node.js",
-
-			"/lib/slateboxjs/raphael/raphael.el.tooltip.js",
-			"/lib/slateboxjs/raphael/raphael.el.loop.js",
-			"/lib/slateboxjs/raphael/raphael.el.style.js",
-			"/lib/slateboxjs/raphael/raphael.button.js",
-			"/lib/slateboxjs/raphael/raphael.fn.connection.js",
-			"/lib/slateboxjs/raphael/raphael.fn.objects.js",
-
-			"/lib/slateboxjs/node/Slatebox.node.editor.js",
-			"/lib/slateboxjs/node/Slatebox.node.shapes.js",
-			"/lib/slateboxjs/node/Slatebox.node.menu.js",
-			"/lib/slateboxjs/node/Slatebox.node.toolbar.js",
-			"/lib/slateboxjs/node/Slatebox.node.context.js",
-			"/lib/slateboxjs/node/Slatebox.node.colorpicker.js",
-			"/lib/slateboxjs/node/Slatebox.node.links.js",
-			"/lib/slateboxjs/node/Slatebox.node.connectors.js",
-			"/lib/slateboxjs/node/Slatebox.node.relationships.js",
-			"/lib/slateboxjs/node/Slatebox.node.images.js",
-			"/lib/slateboxjs/node/Slatebox.node.template.js",
-			"/lib/slateboxjs/node/Slatebox.node.resize.js",
-
-			"/lib/slateboxjs/spinner.js",
-			"/lib/slateboxjs/emile/emile.js",
-			"/lib/slateboxjs/notify.js",
-
-			"/lib/slateboxjs/slate/Slatebox.slate.canvas.js",
-			"/lib/slateboxjs/slate/Slatebox.slate.message.js",
-			"/lib/slateboxjs/slate/Slatebox.slate.multiselection.js",
-			"/lib/slateboxjs/slate/Slatebox.slate.nodes.js",
-
-			"/lib/slateboxjs/slate/Slatebox.slate.zoomSlider.js",
-			"/lib/slateboxjs/slate/Slatebox.slate.keyboard.js",
-			"/lib/slateboxjs/slate/Slatebox.slate.birdseye.js",
-
-             '/lib/arbor/arbor.js'
+                       '/lib/arbor/arbor.js'
         ];
         
-        loadCSS('/lib/slateboxjs/example.css');        
+        loadCSS('/lib/chronozoom/Styles/cz.css');
+        
 
         LazyLoad.js(scripts, f);
 
@@ -274,144 +255,43 @@ function initCZ(f) {
 
 var vc;
 function graphCZ(canvasElement, init, withGraph) {
-	var graph = init(canvasElement);
+    /*
+    pos = $("#pos");
+    pos.css("position", "absolute");
+    pos.css("top", (($(window).height() - pos.outerHeight()) / 2) + $(window).scrollTop() + "px");
+    pos.css("left", (($(window).width() - pos.outerWidth()) / 2) + $(window).scrollLeft() + "px");
+    */
 
-	var $s = new Slatebox();
+    //vc = $("#" + canvasElement);
+    vc = canvasElement;
+    vc.virtualCanvas();
 
-    var log = [], startTime = Math.round(new Date().getTime() / 1000);
+    var root = vc.virtualCanvas("getLayerContent");
+    root.beginEdit();
 
-    function upd() {
-        Slatebox.el("txtSlateJson").value = _mainSlate.exportJSON();
-        Slatebox.el("txtSlateLastUpdated").innerHTML = "last updated <b>" + new Date().toString();
-    };
+    var graph = init(root);
+    
+    root.endEdit(true);
 
-	//console.log($s);
+    var controller = new ViewportController(
+                    function (visible) {
+                        vc.virtualCanvas("setVisible", visible, controller.activeAnimation);
+                    },
+                    function () {
+                        return vc.virtualCanvas("getViewport");
+                    },
+                    getGesturesStream(vc));
 
+    vc.virtualCanvas("setVisible", graph.visibleRegion);
+    /*if (graph.viewPort)
+        vc.virtualCanvas("setViewport", graph.viewPort);    */
+    
 
-    var _mainSlate = $s.slate({
-        id: 'firstSlateExample' //slate with the same ids can collaborate together.
-        , container: 'slate'
-        , viewPort: { width: 50000, height: 50000, allowDrag: true, left: 5000, top: 5000 }
-        , showZoom: true
-        , showBirdsEye: false
-        , showStatus: false
-        , showMultiSelect: false
-        , onSlateChanged: function (subscriberCount) {
-            upd();
-        }
-        , collaboration: {
-            allow: false
-/*                        , showPanel: false
-            , url: 'http://slatebox.com'
-            , jsonp: true
-            , userName: "Tester"
-            , userIP: 1
-            , userProfile: ''
-            , callbacks: {
-                onCollaboration: function (name, msg) {
-                    var secs = Math.round(new Date().getTime() / 1000) - startTime;
-                    log.push(secs + " secs ago - " + name + ": " + msg.toLowerCase());
-                    Slatebox.el("slateMessage").innerHTML = log.reverse().join('<br/>');
-                    startTime = Math.round(new Date().getTime() / 1000);
-                    upd();
-                }
-            }
-*/
-
-        }
-    }).canvas.init({ imageFolder: "/lib/slateboxjs/cursors/" });
-
-	//console.log(_mainSlate.zoomSlider);
-
-	var zoomValue = 15000;
-	var zoomDelta = 2500;
-	var maxZoom = 200000;	//taken from Slatebox.slate.zoomSlider.js
-	var minZoom = 6000; 
-
-	function MouseWheelHandler(e) {
-
-		// cross-browser wheel delta
-		var e = window.event || e;
-		var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
-		if (delta < 0) {
-			zoomValue += zoomDelta;
-		}
-		else {
-			zoomValue -= zoomDelta;
-		}
-		if (zoomValue > maxZoom) zoomValue = maxZoom;
-		if (zoomValue < minZoom) zoomValue = minZoom;
-		_mainSlate.zoomSlider.set(zoomValue);
-
-		return false;
-	}
-
-	var s = document.getElementById("slate");
-	if (s.addEventListener) {
-		s.addEventListener("mousewheel", MouseWheelHandler, false);
-		s.addEventListener("DOMMouseScroll",MouseWheelHandler,false);
-	}
-	else s.attachEvent("onmousewheel", MouseWheelHandler);
-
-
-	var _nodes =  [];
-	var _edges = [];
-	var _nodeIndex = { };
-
-    /*var _nodes = [
-        $s.node({ id: 'first_node', text: 'drag', xPos: 5090, yPos: 5120, height: 40, width: 80, vectorPath: 'roundedrectangle', backgroundColor: '90-#ADD8C7-#59a989', lineColor: "green", lineWidth: 2, allowDrag: true, allowMenu: true, allowContext: true })
-        , $s.node({ id: 'second_node', text: 'me', xPos: 5290, yPos: 5080, height: 40, width: 100, vectorPath: 'ellipse', backgroundColor: '90-#6A8FBD-#54709a', lineColor: "green", lineWidth: 4, allowDrag: true, allowMenu: true, allowContext: true })
-        , $s.node({ id: 'third_node', text: 'around', xPos: 5260, yPos: 5305, height: 40, width: 80, vectorPath: 'rectangle', backgroundColor: '90-#756270-#6bb2ab', lineColor: "blue", lineWidth: 5, allowDrag: true, allowMenu: true, allowContext: true })
-    ];*/
-
-	var g = {
-		addNode : function(id, n) {
-			var x = 5000+Math.random() * 2000;
-			var y = 5000+Math.random() * 2000;
-			var nn = $s.node({ id: id, text: n.label, xPos: x, yPos: y, height: 40, width: 80, 
-					vectorPath: 'roundedrectangle', 
-					backgroundColor: n.color, //'90-#ADD8C7-#59a989', 
-					lineColor: "green", lineWidth: 2, allowDrag: true, allowMenu: true, allowContext: true })
-
-			_nodes.push(nn);
-			_nodeIndex[id] = nn;
-		},
-		addEdge : function(e, from, to) {
-			_edges.push( [ from, to, e] );
-		}
-	};
-
-	if (withGraph)
-		withGraph(g);
-
-    _mainSlate.nodes.addRange(_nodes);
-	for (var i = 0; i < _edges.length; i++) {
-		console.log(i);
-		var ee = _edges[i];
-		var f = ee[0];
-		var t = ee[1];
-		var e = ee[2];
-
-		if (f==t)
-			continue;
-		if (!_nodeIndex[t]) {
-			//console.log('Missing node: ', t);
-			continue;
-		}
-	
-
-		if (_nodeIndex[f])
-			_nodeIndex[f].relationships.addAssociation(_nodeIndex[t], { });
-		else {
-			//console.log('Edge missing node: ', f);
-		}
-	}
-
-
-
-    _mainSlate.init();
-
-
+    updateLayout();
+    
+    if (withGraph)
+        withGraph(graph);
+    
 }
 
 $(window).bind('resize', function () {
@@ -419,4 +299,7 @@ $(window).bind('resize', function () {
 });
 
 function updateLayout() {
+    //vc.css('height', (window.innerHeight - 250) + "px");
+    if (vc)
+        vc.virtualCanvas("updateViewport");
 }
