@@ -1,4 +1,4 @@
-//
+var updatePeriod = 4 * 1000; //in ms
 
 function newGoalWidget(g)  {
 
@@ -6,8 +6,13 @@ function newGoalWidget(g)  {
 
 	d.attr('class', 'GoalSummary ui-widget-content');
 
-	d.append('<h2>' + g.name + '</h2>');
-	d.attr('style', 'font-size: ' + (100.0 * (0.5 + g.strength) )+ '%');
+	var aa = $('<a href="#"><h2>' + g.name + '</h2></a>');
+	d.append(aa);
+	aa.click(function() {
+		newPopupObjectView(g);
+	});
+
+	d.attr('style', 'font-size: ' + (100.0 * (0.25 + g.strength) )+ '%');
 
 	//display author avatar
 
@@ -28,14 +33,26 @@ function renderGoal(v) {
 	v.append(sidebar);
 	v.append(goalList);
 
+
+	var now = true;
 	var goalTime = Date.now();
 
-	var updatePeriod = 7 * 1000; //in ms
 	function updateGoalList() {
 		goalList.html('');
 
+		if (now)
+			goalTime = Date.now();
+
+		var nowButton = $('<button>Now</button>');
+		nowButton.click(function() {
+			now = true;
+			updateGoalList();
+		});
+		goalList.append(nowButton);
+
 		var st = newSelfTimeGrid(self.myself(), function(clickedTime) {
 			goalTime = clickedTime;
+			now = false;
 			updateGoalList();
 		});
 
@@ -103,7 +120,7 @@ function newSelfTimeGrid(x, clicked) {
     time = time.getTime();
     
     var d = newDiv();
-    //d.attr('style', 'width:8000px; overflow-x: scroll;');
+    d.attr('style', 'width:100%; overflow: auto;');
 
     var planSlotTimes = { };
     var planSlots = { };
@@ -112,11 +129,12 @@ function newSelfTimeGrid(x, clicked) {
     if (!centroidTimes) centroidTimes = [];
     
     for (var i = 0; i < numHours; i++) {
-        var cell = newDiv();
+        var cell = $('<a>');
 		cell.addClass('timecell');
 
 		//http://css-tricks.com/how-to-create-a-horizontally-scrolling-site/
-		cell.attr('style', 'float: left; display: inline-block');
+		var fs = 100.0 * (0.25 + (numHours-i)/numHours);
+		cell.attr('style', 'display: inline-block; font-size: ' + fs + '%');
 
         var endtime = time + 60.0 * 60.0 * 1000.0 * 1.0;
         var timed = new Date(time);

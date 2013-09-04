@@ -1035,9 +1035,21 @@ exports.objExpand = objExpand;
 
 
 function goals(time, goalList) {
+	var m = objNew();
+	objName(m, 'Synchronous @ 1min');
+	m = objAddTag(m, 'Goal');
+	m = objAddValue(m, 'synchronous', { every: 60000, delay: 0 } );
+	goalList.push(m);
+
 	return _.map(goalList, function(g) {
 		var x = _.clone(g);				
-		x.strength = Math.random();
+		x.strength = 0.1; // Math.random();
+		
+		var s = objFirstValue(x, 'synchronous');
+		if (s) {
+			x.strength = ((time - s.delay) % s.every) / s.every;
+		}
+
 		return x;
 	});
 //	return [ { name: 'Be patient', strength: 0.75 },  { name: 'Breathe', strength: 0.3 },  { name: 'Find Shelter', strength: 0.2 } ];
