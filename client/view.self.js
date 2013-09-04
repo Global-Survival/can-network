@@ -158,7 +158,7 @@ function getKnowledgeCodeHTML(s, userid) {
             x += '<b style="color: ' + color + '">' + il + '</b>: ';
             for (var y = 0; y < tags[i].length; y++) {
                 var tt = tags[i][y];
-                x += '<a href="' + getENWikiURL(tt) + '">' + tags[i] + '</a>';
+                x += '<a href="' + getENWikiURL(tt) + '">' + tags[i][y] + '</a>';
                 x += '&nbsp;';
             }
         }
