@@ -352,15 +352,17 @@ $(document).ready(function() {
 		}
 	}
     });
+
 	var periodMS = 2000;
-	$('#FocusKeywords').keyup(
-		function() {
-			_.throttle(function() {
+	var ty = _.throttle(function() {
 				var t = $('#FocusKeywords').val();
 				focusValue.name = t;
-				self.setFocus(focusValue);
-			
-			}, periodMS)();
+				self.setFocus(focusValue);			
+			}, periodMS);
+
+	$('#FocusKeywords').keyup(
+		function() {
+			ty();
 		}
 	);
 
