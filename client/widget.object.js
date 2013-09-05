@@ -1,4 +1,5 @@
 /* version 1.1 5-26-2013 */
+var ONTO_SEARCH_PERIOD_MS = 500; //TODO move this to client.js
 
 //t is either a tag ID, or an object with zero or more tags
 function getTagIcon(t) {
@@ -168,7 +169,7 @@ function newObjectEdit(ix, editable, hideWidgets, onTagRemove, whenSliderChange)
         var onOrderChange = function(fromIndex, toIndex) {        
             //http://stackoverflow.com/questions/5306680/move-an-array-element-from-one-array-position-to-another
             var y = getEditedFocus();
-            y.value.splice(toIndex, 0, x.value.splice(fromIndex, 1)[0]);
+            y.value.splice(toIndex, 0, y.value.splice(fromIndex, 1)[0]);
             update(y);
         };
 
@@ -233,7 +234,7 @@ function newObjectEdit(ix, editable, hideWidgets, onTagRemove, whenSliderChange)
         
         if (hideWidgets!=true) {
             if (editable)
-                ontoSearcher = setInterval(search, 500);
+                ontoSearcher = setInterval(search, ONTO_SEARCH_PERIOD_MS);
         }
 
         d.getEditedFocus = getEditedFocus;
@@ -634,7 +635,11 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
     else if ((type == 'text') || (type == 'url') || (type=='integer') || (type=='real')) {
         
         if (editable) {
-            var dd = $('<input type="text"/>').addClass('tagDescription');
+            var dd = $('<input type="text"/>');
+
+			if (type == 'text')
+				dd.addClass('tagDescription');
+
             if (t.value)
                 dd.val(t.value);
             d.append(dd);
@@ -951,7 +956,8 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
                     (function() {
                         var ppv = pp[i];
                         var PP = self.getProperty(ppv);
-                        var appv = $('<a href="#" title="' + PP.type +'">' + PP.name + '</a>');
+						var ppn = PP.name;
+                        var appv = $('<a href="#" title="' + PP.type +'">' + ppn + '</a>');
                         var defaultValue = '';
                         appv.click(function() {
                             onAdd(ppv, defaultValue);
