@@ -7,6 +7,7 @@ function renderChat(v) {
         var o = objNew();
         o.author = self.id();
         objName(o, x);
+		o = objAddTag(o, 'Message');
         self.pub(o, function(err) {
             $.pnotify({
                 title: 'Unable to save message.',
@@ -14,7 +15,7 @@ function renderChat(v) {
             });                
         }, function() {
             $.pnotify({
-                title: 'Saved (' + x.id.substring(0,6) + ')'
+                title: 'Saved (' + o.id.substring(0,6) + ')'
             });        
             self.notice(o);
         });
