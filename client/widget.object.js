@@ -545,11 +545,10 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
     
     if (!strength) strength = 1.0;
     
-    var tagLabel = newDiv().html(tag).addClass('tagLabel');
+    var tagLabel = $('<span>' + tag + '</span>').addClass('tagLabel');
     
     applyTagStrengthClass(d, strength);
     
-    d.append(tagLabel);
 
         
     if (editable) {
@@ -594,10 +593,10 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
         //d.hover(function(){ tagButtons.show();}, function() { tagButtons.hide();});                
         //tagButtons.hide();
     }
+
+    d.append(tagLabel);
+	d.append('&nbsp;');
     
-    
-    //-----------------
-    d.append('<br/>');
     
     var type;
     if (isPrimitive(tag)) {
@@ -635,18 +634,17 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
     else if ((type == 'text') || (type == 'url') || (type=='integer') || (type=='real')) {
         
         if (editable) {
-            var dd = $('<input type="text"/>');
-
-			if (type == 'text')
-				dd.addClass('tagDescription');
+            var dd = $('<input type="text" placeholder="' + type + '"/>');
 
             if (t.value)
                 dd.val(t.value);
+			//d.append('<br/>');
             d.append(dd);
             
             whenSaved.push(function(y) {
-                if ((type == 'text') || (type=='url'))
+                if ((type == 'text') || (type=='url')) {
                     objAddValue(y, tag, dd.val(), strength);
+				}
                 else if (type == 'real') {
                     var ddv = parseFloat(dd.val());
                     if (isNaN(ddv)) ddv = dd.val();    //store as string                 
