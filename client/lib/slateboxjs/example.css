@@ -21,7 +21,7 @@
     height: 100%;
     /*border: 1px solid black;*/
     /*background-color: #bbb;*/
-    background-image: url('cursors/grid.png');
+    background-image: url('cursors/grid_transparent.png');
 }
 #slateJson
 {

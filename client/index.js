@@ -229,12 +229,14 @@ $(document).ready(function() {
                 $('#ViewControls').buttonset('refresh');
                 
                 $('body').timeago();
-                updateView = _.throttle(_updateView, 650);
+                updateView = _.throttle(function() {
+					later(function() {
+						_updateView();
+					});
+				}, 850);
 
                 function doUpdate() {
-                    later(function() {
-                        updateView();
-                    });        
+                    updateView();
                 }
 
                 self.on('change:attention', doUpdate);    
@@ -352,11 +354,14 @@ $(document).ready(function() {
     });
 	var periodMS = 2000;
 	$('#FocusKeywords').keyup(
-		_.throttle(function() {
-			var t = $('#FocusKeywords').val();
-			focusValue.name = t;
-			self.setFocus(focusValue);
-		}, periodMS)
+		function() {
+			_.throttle(function() {
+				var t = $('#FocusKeywords').val();
+				focusValue.name = t;
+				self.setFocus(focusValue);
+			
+			}, periodMS)();
+		}
 	);
 
       
