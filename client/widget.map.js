@@ -53,6 +53,9 @@ function initLocationChooserMap(target, location, zoom, geolocate) {
     m.setCenter(new OpenLayers.LonLat(0,0), defaultZoomLevel);
     m.targetLocation = m.getCenter();
 
+	var latlonDisplay = newDiv();
+	$('#' + target).append(latlonDisplay);
+
     var df = new OpenLayers.Control.DragFeature(vector);
     m.addControl(df);
     df.activate();
@@ -79,9 +82,14 @@ function initLocationChooserMap(target, location, zoom, geolocate) {
         //var opx = m.getLayerPxFromViewPortPx(e.xy) ;
         var oll = m.getLonLatFromViewPortPx(e.xy);
         center(oll);
+
+		var uo = unproject(oll);
+
+		latlonDisplay.html(_n(uo.lat,4) + ', ' + _n(uo.lon,4));
         
-        if (m.onClicked)
-            m.onClicked(unproject(oll));
+        if (m.onClicked) {
+            m.onClicked(uo);
+		}
     });
     
     function unproject(x) {
