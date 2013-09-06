@@ -622,9 +622,9 @@ body { width:100%; height:100%; margin:0px; padding:0px; overflow:hidden; font-f
         .ObjectEditDiv button img { height: 1em; }
         
 /* Chat */
-        .ChatViewContent { margin-left: 1em; width: 68%; float: left; overflow: scroll; height: 85%; position: fixed; }
-	.ChatViewRoster { float: right; width: 23%; padding-left: 1em; max-height: 95%; overflow: auto; right: 0; position: fixed; }
-        .ChatViewInput { position: fixed; width: 68%; float: left; bottom: 0; }
+        .ChatViewContent { margin-left: 1em; width: 72%; float: right; }
+		.ChatViewRoster { float: left; width: 23%; max-height: 95%; overflow: auto; left: 0; position: fixed; padding-left: 4em; }
+        .ChatViewInput { position: fixed; width: 66%; right: 1em; bottom: 0; }
         .InlineSelfButton { cursor: crosshair; border: 1px solid rgba(0,0,0,0.1); font-weight: bold; }
         
 /* Team/Self Browser */

@@ -22,8 +22,8 @@ function renderChat(v) {
 
     }).attr('class', 'ChatViewInput');
     
-    frame.append(content);
     frame.append(roster);
+    frame.append(content);
     frame.append(input);
     
     v.append(frame);
@@ -50,7 +50,11 @@ function renderChat(v) {
             content.append(newEle('br'));
         }
         
+        content.append(newEle('br'));
+		content.append(newEle('br'));
+
         content.scrollTop(content.prop("scrollHeight"));
+
 
     }
         
