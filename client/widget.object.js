@@ -84,6 +84,17 @@ function newTagButton(t) {
     else
         b.append(t);
     
+	function tagObject(tag) {
+		var o = objNew();
+		o.name = tag.name;
+		o = objAddDescription(o, tag.uri + ' [tag]');
+		return o;
+	}
+
+	b.click(function() {
+		newPopupObjectView(tagObject(t));
+	});
+
     return b;
 }
 
@@ -1025,7 +1036,7 @@ function newPropertyView(vv) {
 
 
 
-function renderObjectSummary(x, onRemoved, r, depthRemaining) {
+function renderObjectSummary(x, onRemoved, r, depthRemaining, nameNotClickable) {
 
     if (!x) {
         return newDiv().html('Object Missing');
@@ -1070,6 +1081,10 @@ function renderObjectSummary(x, onRemoved, r, depthRemaining) {
     var hb = newDiv().addClass('ObjectViewHideButton ui-corner-tl'); //without ui-widget-header, it is faster CSS according to Chrome profiler
     
     var favoriteButton = $('<button title="Favorite" class="ui-widget-content ui-button ui-corner-tl">*</button>');
+	favoriteButton.click(function() {
+		$.pnotify('Selecting "Favorite" objects not available yet.');
+	});
+
     hb.append(favoriteButton);
     
     var replyButton, focusButton, deleteButton;
@@ -1182,13 +1197,18 @@ function renderObjectSummary(x, onRemoved, r, depthRemaining) {
     
 
 	if (x.name) {
-        var axn = $('<a href="#">' + xn + '</a>');
-        axn.attr('title', x.id);
-        axn.click(function() {
-           newPopupObjectView(x.id); 
-        });
-        var haxn = $('<h1>');
-        haxn.append(axn);
+	    var haxn = $('<h1>');
+		if (nameNotClickable) {
+			haxn.html(xn);
+		}
+		else {
+		    var axn = $('<a href="#">' + xn + '</a>');
+		    axn.attr('title', x.id);
+		    axn.click(function() {
+		       newPopupObjectView(x.id); 
+		    });
+		    haxn.append(axn);
+		}
 		d.append(haxn);
 	}
 	

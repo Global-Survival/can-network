@@ -471,11 +471,11 @@ function newRoster(selectUser) {
     var anonymous = [];
     
     function h(x) {
-        var sx = renderObjectSummary(x, null, 0.5, 0);        
+        var sx = renderObjectSummary(x, null, 0.5, 0, (selectUser ? true : false));        
         
         if (self.myself()) {
             if (x.id === self.myself().id) {
-                sx.find('h1 a').append(' (me)');
+                sx.find('h1').append(' (me)');
                 d.prepend(sx);            
             }
             else {
