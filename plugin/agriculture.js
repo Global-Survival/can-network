@@ -8,12 +8,13 @@ http://www.gardeningpassions.com/
 //http://hyperlocavore.ning.com/page/what-is-hyperlocavore-and-yard
 //http://www.farmshares.com
 //http://sharedearth.com
-//http://www.localharvest.org
-//http://www.ams.usda.gov/AMSv1.0/farmersmarkets
 //http://www.beginningfarmers.org/
 //http://www.farmstandapp.com/
 //https://www.cookening.com/
 //http://sheltr.org/
+
+http://thejournalofman.com/home
+	ask that you donate something... whether it be a plot in your backyard for us to plant a garden on (preferably in the Pittsburgh area), supplies such as fencing or plant starts, 
 
 What is 'yard sharing or a yard share'?
 
