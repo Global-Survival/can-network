@@ -67,6 +67,15 @@ var generalTags = [
 	        //RSVP by
 		//Reason (why)
 		//Needs Volunteers?
+		/*
+		Are you about to take a big decision? How do you know it's the right one? Here are the five tests:
+			The Eternal Recurrence Test - this thing you are about to do: if you had to watch yourself performing this action an infinite number of times, would you still go ahead? If so, do it. If not, don't.
+			The Movie Of Your Life Test - this thing you are about to do: would you want it to be in the movie of your life, the scenes that show you at your very best? If so, do it. If not, don't.
+			The Gravestone Test - this thing you are about to do: would you want it recorded on your gravestone after your death? If so, do it. If not, don't.
+			The Mirror Test - this thing you are about to do: will you be able to look at yourself in the mirror afterwards and feel proud of what you have done? If so, do it. If not, don't.
+			The Others Test - this thing you are about to do: will you be happy for others to know all about it? If so, do it. If not, don't.
+		*/
+
 		}
 	},
 	{ uri: 'Geometry', name: 'Geometry',
@@ -119,10 +128,11 @@ var generalTags = [
     { uri: 'Arrive', name: 'Arrive'},
     { uri: 'Depart', name: 'Depart'},
     
-    { uri: 'Problem', name: 'Problem'},
+    { uri: 'Problem', name: 'Problem'}, //=Question
 		//blame : who
 
-    { uri: 'Solution', name: 'Solution'},
+    { uri: 'Solution', name: 'Solution'}, //=Answer
+
     { uri: 'Cause', name: 'Cause'},
     { uri: 'Effect', name: 'Effect'},
 
@@ -141,6 +151,8 @@ var generalTags = [
         */
     
     { uri: 'Decision', name: 'Decision'}, 
+		//subtag of Action?
+
         //http://en.wikipedia.org/wiki/List_of_biases_in_judgment_and_decision_making
         
         //from LOOMIO:
