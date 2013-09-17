@@ -157,12 +157,14 @@ function popupAboutDialog() {
 }
 
 $(document).ready(function() {
+
 	
     if (configuration.enableAnonymous)
         $('#AnonymousLoginButton').show();
-        
+        	
     if (!isAuthenticated()) {        
-        return;
+		if (configuration.requireIdentity)
+	        return;
     }
     
     $('#LoadingSplash').hide();
@@ -264,7 +266,8 @@ $(document).ready(function() {
 						openSelectProfileModal("Anonymous Profiles");
 					}
 					else if (self.myself() === undefined)  {
-						openSelectProfileModal("Start a New Profile");
+						if (configuration.requireIdentity)
+							openSelectProfileModal("Start a New Profile");
 					}
                 });
                 
@@ -293,8 +296,9 @@ $(document).ready(function() {
         $('.login').hide();
     }
     else {
-        $('.logout').hide();
-        $('.login').show();        
+		//if (configuration.requireIdentity)
+		    $('.logout').hide();
+	    $('.login').show();
     }
 
     $('#close-menu').button();

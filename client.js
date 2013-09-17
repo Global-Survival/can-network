@@ -9,7 +9,8 @@ var configuration = {
     includeCanNeedNot: true,
     wikiStartPage: 'Life', //'Portal:Contents',
     showPlanOnSelfPage: true,
-    defaultTheme: '_cybernetic'
+    defaultTheme: '_cybernetic',
+	requireIdentity: false
 };
 
 //all hardcoded stuff here is temporary until icons are specified by ontology
