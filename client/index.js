@@ -188,7 +188,14 @@ $(document).ready(function() {
 	    $('#LoadingSplash').hide();
 	}
     
+	var ll = $.pnotify({
+		title: 'Loading...'
+	});
+
     netention(function(self) {
+		ll.pnotify({
+			text: 'System loaded.'
+		});
 
         window.self = self;
         
@@ -197,8 +204,12 @@ $(document).ready(function() {
         self.clear();
 
         self.loadSchemaJSON('/schema/json', function() {            
+			ll.pnotify({
+					text: 'Schema ready. Loading objects...'
+			});
 
             self.getLatestObjects(MAX_INITIAL_OBJECTS, function() {
+				ll.hide();
 
                 self.listenAll(true);
 
@@ -306,7 +317,7 @@ $(document).ready(function() {
 				else {
 			        var nn = $.pnotify({
 		                title: 'Unidentified.',
-						text: 'Read-only public access.  <b><a class="loginlink" href="#">Login</a></b>'
+						text: 'Read-only public access.  <b><a class="loginlink" href="#">Login</a>?</b>'
 		            });
 					$('.loginlink').click(function() {
 					    $('#LoadingSplash').show();
