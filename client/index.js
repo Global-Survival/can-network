@@ -165,6 +165,14 @@ $(document).ready(function() {
         	
 	$('.logout').show();
 
+	function newLoginButton() {
+		var lb = $('<button>Login</button>');
+		lb.click(function() {
+		    $('#LoadingSplash').show();
+		});
+		return lb;
+	}
+
 	var ii = identity();
     if (ii == ID_UNKNOWN) {
 		if (configuration.requireIdentity) {
@@ -172,12 +180,7 @@ $(document).ready(function() {
 	        return;
 		}
 		else {
-			var lb = $('<button>Login</button>');
-			lb.click(function() {
-			    $('#LoadingSplash').show();
-			});
-
-			$('#welcome').html(lb);
+			$('#welcome').html(newLoginButton());
 		    $('#LoadingSplash').hide();
 		}
 	}
@@ -301,10 +304,14 @@ $(document).ready(function() {
 		            });
 				}
 				else {
-			        $.pnotify({
+			        var nn = $.pnotify({
 		                title: 'Unidentified.',
-						text: 'Read-only public access'
+						text: 'Read-only public access.  <b><a class="loginlink" href="#">Login</a></b>'
 		            });
+					$('.loginlink').click(function() {
+					    $('#LoadingSplash').show();
+						nn.hide();
+					});
 				}
                 
             });
