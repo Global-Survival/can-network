@@ -186,6 +186,8 @@ function onWikiTagAdded(target) {
 }
 
 function newSelfTagList(s, user, c) {
+	if (!user)
+		return;
 
     var b = $('<div/>');
          
@@ -249,7 +251,7 @@ function newSelfTagList(s, user, c) {
         }
     }
     else {
-        if (user) {
+        if ((user) && (self.myself())) {
             var own = (user.id === self.myself().id);
             b.append('Click ');
 
@@ -297,9 +299,13 @@ function saveSelf(editFunction) {
 function newSelfSummary(s, user, content) {
 	var editable = false;
 
+	if (!user)
+		return;
+
 	if (self.myself())
 		editable = (user.id === self.myself().id);
     
+
     var c = $('<div/>');        
     $.get('/self.header.html', function(d) {
         c.prepend(d);        
@@ -547,8 +553,11 @@ function renderSelf(s, o, v) {
     
     function updateTags(x) {
         contentTags.html(newSelfTagList(s, x, content));
-        if (configuration.showPlanOnSelfPage)
-            contentTime.html(newSelfTimeList(x, contentTime));
+
+		if (x)
+		    if (configuration.showPlanOnSelfPage)
+		        contentTime.html(newSelfTimeList(x, contentTime));
+
         roster.html(newRoster(function(x) {
             summaryUser(x);
         }));

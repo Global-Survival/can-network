@@ -321,23 +321,25 @@ function newSelfTimeList(x, container) {
         if (plans.length > 0)
             t.addClass('SelfTimeFilled');
 
-        if (x.id === s.myself().id) { //only edit own plan
-            (function(i, time, endtime) {
-                t.click(function() {
-                    var targetTime = (time + endtime)/2.0;
-                    var d = newPopup("Select Tags for " + new Date(targetTime), {width: 800, height: 600, modal: true});
-                    d.append(newTagger(planSlots[i], function(results) {
-                        planSlots[i] = results;
-                        later(function() {
-                            save();                    
-                            d.dialog('close');                        
-                        });
-                        //container.html(newSelfTimeList(s, x, container));
-                    }));
-                });
-            })(i, time, endtime);
-        }
-        
+		if (s.myself()) {
+		    if (x.id === s.myself().id) { //only edit own plan
+		        (function(i, time, endtime) {
+		            t.click(function() {
+		                var targetTime = (time + endtime)/2.0;
+		                var d = newPopup("Select Tags for " + new Date(targetTime), {width: 800, height: 600, modal: true});
+		                d.append(newTagger(planSlots[i], function(results) {
+		                    planSlots[i] = results;
+		                    later(function() {
+		                        save();                    
+		                        d.dialog('close');                        
+		                    });
+		                    //container.html(newSelfTimeList(s, x, container));
+		                }));
+		            });
+		        })(i, time, endtime);
+		    }
+		}
+
         d.append(rowHeader);
         d.append(t);
         d.append(u);
