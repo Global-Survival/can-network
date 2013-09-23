@@ -684,7 +684,7 @@ function netention(f) {
     //s.saveLocal();
     //console.log('saved clientID: ' + s.get('clientID'));
 
-    if (s.get('clientID')!='undefined')
+    if ((s.get('clientID')!='undefined') || (getCookie('authenticated')==='true'))
 	    s.connect(function() { });
 
     f(s);
