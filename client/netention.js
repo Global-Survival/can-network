@@ -7,9 +7,20 @@
 
 var localStorePrefix = 'n.';
 
-window.authenticated = getCookie('authenticated') !== 'false';
-function isAuthenticated() {
-    return window.authenticated;
+
+var ID_UNKNOWN = 0;
+var ID_ANONYMOUS = 1;
+var ID_AUTHENTICATED = 2;
+
+function identity() {
+	var a = getCookie('authenticated');
+	if (a === 'anonymous') {
+		return ID_ANONYMOUS;
+	}
+    if (a!=='false') {
+		return ID_AUTHENTICATED;
+    }
+	return ID_UNKNOWN;
 }
             
 function loadCSS(url, med) {
@@ -44,7 +55,6 @@ var Self;
 
 function netention(f) {
         		
-        window.clientID = getCookie('clientID');
                 
         Self = Backbone.Model.extend({
             
@@ -56,6 +66,7 @@ function netention(f) {
                 this.set('replies', { });
                 this.set('layer', { include: [], exclude: [] });
                 this.set('focus', null );    
+				this.set('clientID', 'undefined');
             },
             
             id : function() { return this.get('clientID'); },
@@ -581,21 +592,29 @@ function netention(f) {
             },
             
             subscribe: function(channel, f) {
-            	this.socket.emit('subscribe', channel);
-            	this.socket.on('receive-'+ channel, f);	
+				if (this.socket) {
+		        	this.socket.emit('subscribe', channel);
+		        	this.socket.on('receive-'+ channel, f);	
+				}
             },
             
             unsubscribe: function(channel) {
-            	this.socket.emit('unsubscribe', channel);
-            	//socket.off ??
+				if (this.socket) {
+	            	this.socket.emit('unsubscribe', channel);
+				}
             },
             
             pub: function(object, onErr, onSuccess) {
-                this.socket.emit('pub', objCompact(object), function(err) {
-                    if (onErr)
-                        onErr(object);
-                    $.pnotify({title: 'Error saving:', text: err, type:'error'});
-                }, onSuccess);
+				if (this.socket) {
+		            this.socket.emit('pub', objCompact(object), function(err) {
+		                if (onErr)
+		                    onErr(object);
+		                $.pnotify({title: 'Error saving:', text: err, type:'error'});
+		            }, onSuccess);
+				}
+				else {
+					onErr('Not connected.');
+				}
             },
             
             //THIS NEEDS UPDATED
@@ -648,25 +667,27 @@ function netention(f) {
 
 	console.log('Scripts loaded');
 		
-        var s = new Self();
-        
-        s.clear();
-        s.loadLocal();
-                 
-        //console.log('loaded clientID: ' + s.get('clientID'));
-        var oldCID = s.get('clientID');
-        var nextCID = window.clientID;
-        if ((nextCID === '') || (nextCID === undefined))
-            nextCID = oldCID;
-        if ((nextCID === '') || (nextCID === undefined))
-            nextCID = uuid();
-        
-        s.set('clientID', nextCID);
-        s.saveLocal();
-        //console.log('saved clientID: ' + s.get('clientID'));
-        
-        s.connect(function() { });
-        f(s);
+    var s = new Self();
+    
+    s.clear();
+    //s.loadLocal();
+             
+    //console.log('loaded clientID: ' + s.get('clientID'));
+    /*var oldCID = s.get('clientID');
+    var nextCID = window.clientID;
+    if ((nextCID === '') || (nextCID === undefined))
+        nextCID = oldCID;
+    if ((nextCID === '') || (nextCID === undefined))
+        nextCID = uuid();*/
+    
+    s.set('clientID', getCookie('clientID'));
+    //s.saveLocal();
+    //console.log('saved clientID: ' + s.get('clientID'));
+
+    if (s.get('clientID')!='undefined')
+	    s.connect(function() { });
+
+    f(s);
 		
 	
 }

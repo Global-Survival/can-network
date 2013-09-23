@@ -295,7 +295,10 @@ function saveSelf(editFunction) {
 }
 
 function newSelfSummary(s, user, content) {
-    var editable = (user.id === self.myself().id);
+	var editable = false;
+
+	if (self.myself())
+		editable = (user.id === self.myself().id);
     
     var c = $('<div/>');        
     $.get('/self.header.html', function(d) {

@@ -61,6 +61,7 @@ function _updateView(force) {
     function indent() {
         v.addClass('overthrow ui-widget-content view-indented');        
     }
+
     if (view === 'list') {
         indent();
         currentView = renderList(s, o, v);
@@ -162,12 +163,27 @@ $(document).ready(function() {
     if (configuration.enableAnonymous)
         $('#AnonymousLoginButton').show();
         	
-    if (!isAuthenticated()) {        
-		if (configuration.requireIdentity)
+	$('.logout').show();
+
+	var ii = identity();
+    if (ii == ID_UNKNOWN) {
+		if (configuration.requireIdentity) {
+		    $('#LoadingSplash').show();
 	        return;
-    }
-    
-    $('#LoadingSplash').hide();
+		}
+		else {
+			var lb = $('<button>Login</button>');
+			lb.click(function() {
+			    $('#LoadingSplash').show();
+			});
+
+			$('#welcome').html(lb);
+		    $('#LoadingSplash').hide();
+		}
+	}
+	else {
+	    $('#LoadingSplash').hide();
+	}
     
     netention(function(self) {
 
@@ -270,13 +286,26 @@ $(document).ready(function() {
 							openSelectProfileModal("Start a New Profile");
 					}
                 });
-                
-                /*if (isAuthenticated()) {
-                          $.pnotify({
-                            title: 'Authorized',
-                            text: self.myself().name
-                         });
-                        }*/
+
+				var ii = identity();
+			                
+                if (ii === ID_AUTHENTICATED) {
+			        $.pnotify({
+		               title: 'Authorized.',
+		               text: self.myself().name
+		            });
+                }
+				else if (ii === ID_ANONYMOUS) {
+			        $.pnotify({
+		               title: 'Anonymous.'
+		            });
+				}
+				else {
+			        $.pnotify({
+		                title: 'Unidentified.',
+						text: 'Read-only public access'
+		            });
+				}
                 
             });
         });
@@ -291,15 +320,6 @@ $(document).ready(function() {
 		function() { $(this).removeClass('ui-state-hover');$(this).removeClass('shadow'); }
 	);
 
-    if (isAuthenticated()) {
-        $('.logout').show();
-        $('.login').hide();
-    }
-    else {
-		//if (configuration.requireIdentity)
-		    $('.logout').hide();
-	    $('.login').show();
-    }
 
     $('#close-menu').button();
     $("#ViewControls").buttonset();   

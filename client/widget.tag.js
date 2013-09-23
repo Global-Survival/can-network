@@ -1,6 +1,8 @@
 function newTagger(selected, onFinished) {
     if (!selected)
         selected = [];
+
+    var tags = _.clone(selected);
     
     var d = newDiv();
     var t = newDiv(); //target for the browser instances
@@ -8,7 +10,6 @@ function newTagger(selected, onFinished) {
     
     var currentBrowser = null;
     
-    var tags = selected;
     
     var tagsCombo = $('<select></select>');
     tagsCombo.update = function() {
@@ -16,6 +17,7 @@ function newTagger(selected, onFinished) {
         for (var i = 0; i < tags.length; i++)
             tagsCombo.append('<option>' + tags[i] + '</option>');
     };
+	tagsCombo.update();
      
     function onTagAdded(t) {
         tags = _.unique( [t].concat(tags) ); 

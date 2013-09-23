@@ -1130,6 +1130,8 @@ exports.start = function(host, port, dbURL, init) {
 
     });
     express.get('/logout', function(req, res) {
+        res.cookie('authenticated', '');
+        res.cookie('clientID', 'undefined');
         req.logout();
         res.redirect('/');
     });
@@ -1436,8 +1438,7 @@ exports.start = function(host, port, dbURL, init) {
             }            
 
             nlog('connect: ' + cid + ', ' + key);
-            
-            
+                        
             socket.set('clientID', cid);
             socket.emit('setClientID', cid, key, getClientSelves(session) );
             socket.emit('setServer', Server.name, Server.description);
