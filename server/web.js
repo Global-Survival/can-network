@@ -1172,6 +1172,17 @@ exports.start = function(host, port, dbURL, init) {
                 var $ = cheerio.load(page);
 				$('script').remove();
 
+				{
+					//get the actual wikipage from the page-_____ class added to <body>
+					var bodyclasses = $('body').attr('class').split(' ');
+					for (var i = 0; i < bodyclasses.length; i++) {
+						var bc = bodyclasses[i];
+						if (bc.indexOf('page-') == 0) {
+							redirector = bc.substring(5);
+						}
+					}					
+				}
+
                 if (redirector)
                     $('#content').append('<div style="display:none" class="WIKIPAGEREDIRECTOR">' + redirector + '</div>');            
                 rres.write($('#content').html() || $.html());

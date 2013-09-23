@@ -82,7 +82,7 @@ reader.addListener('end', function() {
 
 	//console.log(events.length + ' events loaded.');
 
-	console.log( JSON.stringify([getTimeGliderJSON(events)]/*, null, 4*/) );
+	console.log( JSON.stringify([getTimeGliderJSON(events)], null, 4) );
 
 	//console.log( JSON.stringify(getTimelineJSJSON(events)/*, null, 4*/) );
 
@@ -127,14 +127,25 @@ function getTimeGliderJSON(events) {
 
 	var y = x.events;
 
+	x.legend = [];
+	var legends = { };
+
 	for (var i = 0; i < events.length; i++) {
 		var n = _.clone(events[i]);
 		/*n.startdate = n.start_date + ' ' + n.start_time;
 		if (n.end_date)
 			n.enddate = n.end_date + ' ' + n.end_time;*/
 		n.id = 	'_' + i;
+		legends[n.icon] = 1;
 		y.push(n);
 	}
+
+	for (var l in legends) {
+		if (l.length > 0)
+			x.legend.push( { title: l, icon: l }  );
+	}
+
+
 	return x;
 }
 
