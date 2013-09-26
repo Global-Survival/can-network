@@ -51,6 +51,7 @@ function newTagBarSaveButton(s, currentTag, tagBar, onSave) {
     });
     return saveButton;
 }
+
 function newTagBar(s, currentTag) {
     var tagBar = $('<div/>');
 
@@ -123,6 +124,7 @@ function newTagBar(s, currentTag) {
     tagBar.append('<br/>');        
     return tagBar;
 }
+
 function getKnowledgeCodeTags(s, userid) {
     userid = userid.substring(5);
     

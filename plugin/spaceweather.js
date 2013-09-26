@@ -1,5 +1,4 @@
 /*
-SpaceWeather
 	http://www.spaceweather.com/
 	http://www.swpc.noaa.gov/SWN/index.html
 	http://sohowww.nascom.nasa.gov/spaceweather/
@@ -14,8 +13,9 @@ SpaceWeather
 
 	http://www.google.com/sky/
 
+	http://neutronm.bartol.udel.edu/spaceweather/welcome.html
+
 from: http://www.youtube.com/user/Suspicious0bservers?feature=watch
-SPACEWEATHER:
     Spaceweather: http://spaceweather.com
     SOHO Solar Wind: http://umtof.umd.edu/pm/
     HAARP Data Meters: http://www.haarp.alaska.edu/haarp/dat... 
@@ -35,6 +35,5 @@ SPACEWEATHER:
     NOAA Sunspot Classifications: http://www.swpc.noaa.gov/ftpdir/lates...
     GONG: http://gong2.nso.edu/dailyimages/
     GONG Magnetic Maps: http://gong.nso.edu/data/magmap/ondem...
-
 
 */

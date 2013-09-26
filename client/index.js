@@ -24,6 +24,7 @@ function updateBrand() {
 }
 
 function _updateView(force) {
+
     var s = window.self;
 
     updateBrand();
