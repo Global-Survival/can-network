@@ -179,5 +179,25 @@ Training
 Transportation 
 Warehouse 
 Web Development
+
+
+http://commonsabundance.net/2013/07/13/rethinking-sustainable-development-in-terms-of-commons/#Questions_to_be_asked_when_making_policy_recommendations_reassessed_through_on-going_monitoring_processes
+- How is it linked to the commons as a system? 
+- What context does it address? 
+- What people/practices, assets and outcomes does it associate? 
+- What dimension of the commons does it grow/stop depleting? 
+- What dimensions of the commons does it put at risk? 
+- What are the risks of enclosure, abuse, over-exploitation? 
+- Who has access? How is over-usage and depletion protected? 
+- How is enclosure, appropriation, abusive exploitation prevented? 
+- Who are the stakeholders? How are they involved? 
+- How open and transparent are the decision processes and modes of governance? 
+- Where does the power lie? 
+- What are the learning and conflict resolution mechanisms in place? 
+- How does this contribute to empowering and enabling self-realization and self-healing at the individual and community level? 
+- What elements or circumstances could make it become detrimental to the commons? 
+- What are the assessment and correction mechanisms in place? 
+- How are assets, practices and outcomes assessed in inter-related ways? 
+- What are the mechanisms in place to avoid misinterpretation and misappropriation of the goal, target and indicator? 
 */
 

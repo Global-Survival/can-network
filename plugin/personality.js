@@ -9,4 +9,6 @@ CBS Surveys
 https://docs.google.com/spreadsheet/ccc?key=0AifmjEDwh_fedHZuVm1oLTRrdUZwX2Vrb2dOZlVlbkE&usp=sharing
 
 http://en.wikipedia.org/wiki/VALS ("Values, Attitudes And Lifestyles") 
+
+http://en.wikipedia.org/wiki/Dark_triad
 */

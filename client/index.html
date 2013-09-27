@@ -68,35 +68,39 @@
                 <!-- <li><button id='slides'  title="Slides"><i class="icon-play"></i></button></li> -->
 
                 <div id="identity" class="ui-widget-content ui-corner-all shadow">
-                    <span id="welcome"><button id="SelectProfileButton" title="Select Profile">Now</button>:<a class="brand" href="#"></a></span>
+                    <span id="welcome">
+						<button onclick="startTalk(); return false;" title="Toggle Communicator">Talk</button>
+						<button id="SelectProfileButton" title="Select Profile">ID</button>:<a class="brand" href="#"></a>
+					</span>
                     <a id="logout" class="logout ui-widget-content ui-corner-all" href="logout">Logout</a></div>
 
-                <div id="ViewControls">
-                    <form>
-                        <input type="radio" id="goal" name="ViewControls" /><label for="goal">Goal</label>
-                        <input type="radio" id="map" name="ViewControls" /><label for="map">Map</label>
-                        <input type="radio" id="grid" name="ViewControls" /><label for="grid">Grid</label>
-                        <input type="radio" id="list" name="ViewControls" /><label for="list">List</label>
-                        <input type="radio" id="self" name="ViewControls" /><label for="self">Team</label>
-                        <input type="radio" id="graph" name="ViewControls" /><label for="graph">Graph</label>
-                        <input type="radio" id="trends" name="ViewControls" /><label for="trends">Trends</label>
-                        <input type="radio" id="options" name="ViewControls" /><label for="options">Options</label>
-                        <input type="radio" id="chat" name="ViewControls" /><label for="chat">Chat</label>
-                    </form>
-                </div>
-                <button id="AddContentButton" title="New...">[+]</button>
+		            <div id="ViewControls">
+		                <form>
+		                    <input type="radio" id="goal" name="ViewControls" /><label for="goal">Goal</label>
+		                    <input type="radio" id="map" name="ViewControls" /><label for="map">Map</label>
+		                    <input type="radio" id="grid" name="ViewControls" /><label for="grid">Grid</label>
+		                    <input type="radio" id="list" name="ViewControls" /><label for="list">List</label>
+		                    <input type="radio" id="self" name="ViewControls" /><label for="self">Team</label>
+		                    <input type="radio" id="graph" name="ViewControls" /><label for="graph">Graph</label>
+		                    <input type="radio" id="trends" name="ViewControls" /><label for="trends">Trends</label>
+		                    <input type="radio" id="options" name="ViewControls" /><label for="options">Options</label>
+		                    <input type="radio" id="chat" name="ViewControls" /><label for="chat">Chat</label>
+		                </form>
+		            </div>
+	                <button id="AddContentButton" title="New...">[+]</button>
                 
-                <button id="FocusWhatButton">What?</button>
-                <button id="FocusWhereButton">Where?</button>
-                <button id="FocusWhenButton">When?</button>
-                <input id="FocusKeywords" type="text"></input>
-                <button id="FocusClearButton" title="Clear">[x]</button>
+		            <button id="FocusWhatButton">What?</button>
+		            <button id="FocusWhereButton">Where?</button>
+		            <button id="FocusWhenButton">When?</button>
+		            <input id="FocusKeywords" type="text"></input>
+		            <button id="FocusClearButton" title="Clear">[x]</button>
 
-            </div>
-            <div id="FocusEdit"></div>
+		        </div>
+		        <div id="FocusEdit"></div>
 
         </div>
         <!-- END HIDDEN UNTIL LOADED -->
+		<script src="https://togetherjs.com/togetherjs-min.js"></script>
 
         <script src="lib/jquery/jquery.min.js" type="text/javascript"></script>
         <script src="lib/jquery-ui/1.10.3/ui/minified/jquery-ui.min.js" type="text/javascript"></script>

@@ -22,4 +22,11 @@ Bing Transit (subway, busses, trains, etc..)
 
 http://onebusaway.org/
 
+https://www.biomimicrydesignchallenge.com/
+	Transportation connects us all.
+	Whether it’s simply getting from home to work or using products shipped over distances near and far, in every region of the world transportation impacts our daily lives.
+	At first glance, transportation may simply appear to be about the movement of people and goods. But looking deeper, it’s also closely linked to equality, access to healthy food and good schools, and wildlife impacts, for example.
+	As the mobility demands of people and freight have grown, so too has the need for products, systems, and services that will make the transportation sector more life-friendly, for both people and the planet.
+	Can biomimicry help us address the deeper needs around transportation? Let’s find out!
+
  */

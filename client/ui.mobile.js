@@ -67,3 +67,21 @@ if (configuration.initialDisplayAvatarMenu)
     showAvatarMenu(true);
 else
     showAvatarMenu(false);
+
+
+function startTalk() {
+
+	TogetherJSConfig_on_ready = function () {};
+	TogetherJSConfig_getUserName = function () {
+		return self.myself().name;
+	};
+	//TogetherJSConfig_getUserAvatar = function () {return avatarUrl;};
+
+	TogetherJSConfig_suppressJoinConfirmation = true;
+	TogetherJSConfig_suppressInvite = true;
+
+	//TogetherJS.refreshUserData()
+	TogetherJS(this);
+
+}
+

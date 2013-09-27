@@ -279,6 +279,10 @@ function netention(f) {
                     if (whenConnected) {
                         whenConnected();
                     }
+
+					TogetherJS.reinitialize();
+					TogetherJS.refreshUserData();
+
                 });
                 
                 socket.on('notice', function(n) {
