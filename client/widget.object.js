@@ -60,6 +60,7 @@ function getAvatarURL(email) {
 
 function newTagButton(t) {
     var ti = null;
+
     if (!t.uri) {
         var tagObject = self.getTag(t);
         if (tagObject)        
@@ -68,7 +69,6 @@ function newTagButton(t) {
     if (t.uri) {
         ti = getTagIcon(t.uri);
     }
-        
     
     var i = null;
     if (ti!=null) {
@@ -342,6 +342,12 @@ function newObjectEdit(ix, editable, hideWidgets, onTagRemove, whenSliderChange)
 
             var whoButton = $('<button disabled title="Who?" id="AddWhoButton"><img src="/icon/rrze/categories/user-group.png"></button>');
             d.append(whoButton);
+
+            var drawButton = $('<button title="Draw"><img src="/icon/rrze/emblems/pen.png"/></button>');
+			drawButton.click(function() {
+                update(objAddValue(getEditedFocus(), 'sketch', ''));            
+			});
+			d.append(drawButton);
 
             var uploadButton = $('<button title="Upload"><img src="/icon/rrze/actions/dial-in.png"/></button>');
             uploadButton.click(function() {
@@ -767,6 +773,34 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
             d.append(new Date(t.at));
         }                    
     }
+	else if (type == 'sketch') {
+		var eu = uuid();
+
+		var ee = newDiv(eu);
+
+		d.append(ee);
+
+		var options = {
+			width: 250,
+			height: 250,
+			editing: editable
+		};
+		if (t.value) {
+			options.strokes = JSON.parse(t.value);
+		}
+		later(function() {
+			var sketchpad = Raphael.sketchpad(eu, options);
+
+			var value = "";
+			// When the sketchpad changes, update the input field.
+			sketchpad.change(function() {
+				value = sketchpad.json();				
+			});
+	        whenSaved.push(function(y) {
+	            objAddValue(y, "sketch", value, strength);
+			});
+		});
+	}
     else if (type == 'timerange') {
 		var nn = Date.now();
 		var oldest = nn - 5 * 24 * 60 * 60 * 1000; //TODO make this configurable
@@ -1220,6 +1254,7 @@ function renderObjectSummary(x, onRemoved, r, depthRemaining, nameNotClickable) 
     
     for (var i = 0; i < ot.length; i++) {
         var t = ot[i];   
+
         if (self.isProperty(t))
             continue;
             

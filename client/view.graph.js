@@ -195,8 +195,6 @@ function initCZ(f) {
 
         var scripts = [ 
 
-			"/lib/slateboxjs/raphael/raphael.js",
-
 			"/lib/slateboxjs/slatebox.js",
 			"/lib/slateboxjs/slatebox.slate.js",
 			"/lib/slateboxjs/slatebox.node.js",

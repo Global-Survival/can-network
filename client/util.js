@@ -108,6 +108,7 @@ function isPrimitive(t) {
     if (t == 'spacepoint') return true;
     if (t == 'timepoint') return true;
     if (t == 'timerange') return true;
+    if (t == 'sketch') return true;
     return false;    
 }
 exports.isPrimitive = isPrimitive;
