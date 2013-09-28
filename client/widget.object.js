@@ -1032,6 +1032,7 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
 }
 
 function newPropertyView(vv) {
+
     var p = self.getProperty(vv.id);
     if (!p)
         return ('<li>' + vv.id + ': ' + vv.value + '</li>');
@@ -1049,7 +1050,7 @@ function newPropertyView(vv) {
         var v = $('<li>' + p.name + ': ' + vv.value + '</li>');
         
         //Property Actions
-        //TODO make this more abstract and extendable by plugins
+        //TODO HACK make this more abstract and extendable by plugins
         
         if ((vv.id == 'walletBTC') || (vv.id == 'walletPayPal') || (vv.id == 'walletRipple')) {
             var payButton = $('<button>Pay</button>');
@@ -1322,12 +1323,35 @@ function renderObjectSummary(x, onRemoved, r, depthRemaining, nameNotClickable) 
         if (desc) {
             d.append('<p>' + desc + '</p>');		
         }
+
 	
         if (x.value) {
             var ud = $('<ul>');
             d.append(ud);
             for (var vi = 0; vi < x.value.length; vi++) {
                 var vv = x.value[vi];
+
+				if (vv.id == 'sketch') {
+					var eu = uuid();
+
+					var ee = newDiv(eu);
+
+					ud.append(ee);
+					
+					var options = {
+						width: 250,
+						height: 250,
+						editing: false
+					};
+					if (vv.value) {
+						options.strokes = JSON.parse(vv.value);
+					}
+					later(function() {
+						var sketchpad = Raphael.sketchpad(eu, options);
+					});
+					continue;
+				}
+				
                 if (self.isProperty(vv.id))
                     ud.append(newPropertyView(vv));
                 }
