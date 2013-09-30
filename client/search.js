@@ -1,15 +1,9 @@
+/** Search and NLP (natural language processing) support */
+
+var englishInvalidKeywords = /^and|or|to|the|if|with|which|an$/;
 function isValidKeyword(x) {
     if (x.length < 2) return false;
-    if (x == 'and') return false;
-    if (x == 'or') return false;
-    if (x == 'to') return false;
-    if (x == 'the') return false;
-    if (x == 'if') return false;
-    if (x == 'with') return false;
-    if (x == 'which') return false;
-    if (x == 'an') return false;
-    //...
-    return true;
+	return !englishInvalidKeywords.test(x);
 }
 
 function getKeywords(s) {

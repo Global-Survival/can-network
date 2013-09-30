@@ -190,7 +190,7 @@ var generalTags = [
     //Pledge = Promise
     //  
     { uri: 'Promise', name: 'Promise',
-            description: "I’ll do it, but only if you’ll help." //PledgeBank.com
+            description: "Promise or an Offer. 'I will do it, but only if you will help.'" //PledgeBank.com
     },
     
     { uri: 'Tag', name: 'Tag',

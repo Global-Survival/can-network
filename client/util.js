@@ -96,20 +96,9 @@ function objName(x, newName) {
 }
 exports.objName = objName;
 
+var primitiveRegEx = /^boolean|text|textarea|integer|real|url|object|spacepoint|timepoint|timerange|sketch$/;
 function isPrimitive(t) {
-    if (t == 'boolean') return true;
-    if (t == 'text') return true;
-    if (t == 'textarea') return true;
-    if (t == 'integer') return true;
-    if (t == 'real') return true;
-    if (t == 'url') return true;
-    if (t == 'object') return true;
-    //if (t == 'fileattachment') return true;
-    if (t == 'spacepoint') return true;
-    if (t == 'timepoint') return true;
-    if (t == 'timerange') return true;
-    if (t == 'sketch') return true;
-    return false;    
+	return primitiveRegEx.test(t);
 }
 exports.isPrimitive = isPrimitive;
 
