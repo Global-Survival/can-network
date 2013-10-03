@@ -432,4 +432,13 @@ $(document).ready(function() {
         renderFocus();
     });
 
+	//TODO ABSTRACT this into a pluggable focus template system
+
+    $('#FocusNeedButton').click(function() {
+		var needs = [ 'Volunteer', 'Shelter', 'Food', 'Tools', 'Health', 'Transport', 'Service', 'Animal' ];
+		_.each(needs, function(n) {
+			objAddValue(focusValue, { id: n });
+		});
+        renderFocus();
+    });
 });

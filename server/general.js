@@ -187,6 +187,16 @@ var generalTags = [
         { uri: 'Need', name: 'Need' },
         { uri: 'Not', name: 'Not' },
 
+		//NEEDS from SparkRelief
+        { uri: 'Volunteer', name: 'Volunteer', tag: ['Need'] },
+        { uri: 'Shelter', name: 'Shelter', tag: ['Need']  },
+        { uri: 'Food', name: 'Food', tag: ['Need']  },
+        { uri: 'Tools', name: 'Tools', tag: ['Need']  },
+        { uri: 'Health', name: 'Health', tag: ['Need']  },
+        { uri: 'Transport', name: 'Transport', tag: ['Need']  },
+        { uri: 'Service', name: 'Service', tag: ['Need']  },
+        { uri: 'Animal', name: 'Animal', tag: ['Need']  },
+
     //Pledge = Promise
     //  
     { uri: 'Promise', name: 'Promise',

@@ -35,6 +35,14 @@ var defaultIcons = {
     'Tweet': '/icon/twitter.png',
     'PlanCentroid': '/icon/rrze/emblems/workflow-cycle.png',
 	'Item': '/icon/rrze/emblems/database.png',
+	'Volunteer': '/icon/sparkrelief/cat-volunteer-28.png',
+	'Shelter': '/icon/sparkrelief/cat-shelter-28.png',
+	'Food':  '/icon/sparkrelief/cat-food-28.png',
+	'Tools':  '/icon/sparkrelief/cat-goods-28.png',
+	'Health':  '/icon/sparkrelief/cat-medical-28.png',
+	'Transport':  '/icon/sparkrelief/cat-transportation-28.png',
+	'Service':  '/icon/sparkrelief/cat-services-28.png',
+	'Animal':  '/icon/sparkrelief/cat-pets-28.png'
 };
 
 /* http://www.perbang.dk/rgbgradient/ 6 steps between: AFE500 and FF3B2E:   AFE500 E9EA08 EFBB11 F48E1A F96324 FF3B2E */

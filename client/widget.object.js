@@ -173,6 +173,8 @@ function newObjectEdit(ix, editable, hideWidgets, onTagRemove, whenSliderChange)
         };
         var onStrengthChange = function(i, newStrength) {        
             var y = getEditedFocus();
+			if (!y.value[i])
+				y.value[i] = { };
    	        y.value[i].strength = newStrength;
 			if (whenSliderChange)
 				whenSliderChange(y);
