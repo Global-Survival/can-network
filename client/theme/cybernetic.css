@@ -12,4 +12,13 @@ body {
 }
 #ViewMenu {
     background-color: #149bdf;
+	color: white;
 }
+#ViewMenu a {
+	color: white;
+}
+.ui-widget-content {
+	background: #eee;
+	border: 1px solid #bbb;
+}
+

@@ -174,7 +174,7 @@ exports.objIncidentTags= objIncidentTags;
 
 
 function objTags(x) {
-  // objTags(x) -> array of tags involved
+  // objTags(x) -> array of tags involved (except those with strength==0)
   if (!x.value) return [];
   
   //HACK to handlle when values are null, which they shouldnt bve
@@ -182,8 +182,12 @@ function objTags(x) {
   for (var i = 0; i < x.value.length; i++) {
       var vv = x.value[i];
       if (vv) 
-        if (vv.id)
-          newValues.push(vv);
+        if (vv.id) {
+			if (vv.strength == 0)
+				continue;
+
+	        newValues.push(vv);
+		}
   }
   x.value = newValues;
   return _.uniq( _.filter( _.pluck(x.value, 'id'), function(t) { return !isPrimitive(t) } ) );

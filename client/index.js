@@ -276,6 +276,7 @@ $(document).ready(function() {
                 self.on('change:layer', doUpdate);
                 self.on('change:currentView', doUpdate);
                 self.on('change:tags', doUpdate);
+                self.on('change:focus', doUpdate);
 
                 var msgs = ['I think', 'I feel', 'I wonder', 'I know', 'I want'];
                 //var msgs = ['Revolutionary', 'Extraordinary', 'Bodacious', 'Scrumptious', 'Delicious'];
@@ -366,6 +367,7 @@ $(document).ready(function() {
 			focusValue = xx;
 			renderFocus();
 		}, function(x) {
+			focusValue = x;
 			self.setFocus(x);
 		});
 

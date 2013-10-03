@@ -246,10 +246,12 @@ div.olMapViewport {
     margin-right: 0.25em;    
 }
 
-.tag25 { opacity: 0.7; font-size: 70%  }
-.tag50 { opacity: 0.8; font-size: 80%  }
-.tag75 { opacity: 0.9; font-size: 90%  }
-.tag100 { opacity: 1.0; font-size: 100%  }
+.tag0 { opacity: 0.5; font-size: 80%  }
+.tag25 { opacity: 0.7; font-size: 85%  }
+.tag50 { opacity: 0.8; font-size: 90%  }
+.tag75 { opacity: 0.9; font-size: 95%  }
+.tag100 { opacity: 1.0; font-size: 100%  }*
+
 
 .tagButtons {
     font-weight: bold;
@@ -259,8 +261,8 @@ div.olMapViewport {
     opacity: 0.5;
 }
 .tagButton {
-    margin-left: 0.25em;
-    margin-right: 0.25em;
+    margin-left: 0.1em;
+    margin-right: 0.1em;
     font-weight: bold;
     font-size: 125%;
 }

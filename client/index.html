@@ -61,7 +61,7 @@
         <div id="toggle-menu" style="display:none;" class="ui-corner-all shadow"><img id="toggle-img" title="Click here to expand the control panel" class="ui-corner-all" alt="toggle menu button" src="icon/netention-button.png" /></div>
         <div id="close-menu" class="close-menu" style="display:none;" title="Click here to close the control panel"><span class="ui-icon ui-icon-closethick"></span></div>
         <div id="AvatarButton" class="ui-corner-br shadow" style="display:none;"><img id="avatar-img" class="ui-corner-br" alt="avatar image" src="icon/load.gif" /></div>
-        <div id="ViewMenu" style="display:none;" class="ui-widget ui-widget-header shadow overthrow">
+        <div id="ViewMenu" style="display:none;" class="ui-widget shadow overthrow">
             <div class="viewmenu-container">
                 <!-- <li class="viz"><a class="ui-button" id="time" title="Timeline" href="#"><b class="icon-time"></b><span class="display-menu-collapse">Timeline</span></a></li> -->
                 <!-- <li><button id="FocusToggleButton" title="Toggle Fullsize" ><i class="icon-resize-full"></i></button></li> -->
@@ -69,6 +69,7 @@
 
                 <div id="identity" class="ui-widget-content ui-corner-all shadow">
                     <span id="welcome">
+		                <button id="AddContentButton" title="New...">[+]</button>
 						<button onclick="startTalk(); return false;" title="Toggle Communicator">Talk</button>
 						<button id="SelectProfileButton" title="Select Profile">ID</button>:<a class="brand" href="#"></a>
 					</span>
@@ -87,7 +88,6 @@
 		                    <input type="radio" id="chat" name="ViewControls" /><label for="chat">Chat</label>
 		                </form>
 		            </div>
-	                <button id="AddContentButton" title="New...">[+]</button>
                 
 		            <button id="FocusWhatButton">What?</button>
 		            <button id="FocusWhereButton">Where?</button>

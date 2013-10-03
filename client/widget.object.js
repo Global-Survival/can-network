@@ -166,15 +166,16 @@ function newObjectEdit(ix, editable, hideWidgets, onTagRemove, whenSliderChange)
             update(objAddValue(getEditedFocus(), tag, value));
         };
         var onRemove = function(i) {                                
-   	    var rr = objRemoveValue( getEditedFocus(), i);
-	    if (onTagRemove)
-		    onTagRemove(rr);
-            update(rr);
+	   	    var rr = objRemoveValue( getEditedFocus(), i);
+			if (onTagRemove)
+				onTagRemove(rr);
+	        update(rr);
         };
         var onStrengthChange = function(i, newStrength) {        
             var y = getEditedFocus();
-			if (newStrength)
-    	        y.value[i].strength = newStrength;
+   	        y.value[i].strength = newStrength;
+			if (whenSliderChange)
+				whenSliderChange(y);
             update(y);
         };
         var onOrderChange = function(fromIndex, toIndex) {        
@@ -547,7 +548,8 @@ function newObjectEdit(ix, editable, hideWidgets, onTagRemove, whenSliderChange)
 }
 
 function applyTagStrengthClass(e, s) {
-    if (s <= 0.25)       e.addClass('tag25');
+    if (s === 0.0)     	 e.addClass('tag0');
+    else if (s <= 0.25)  e.addClass('tag25');
     else if (s <= 0.50)  e.addClass('tag50');
     else if (s <= 0.75)  e.addClass('tag75');
     else                 e.addClass('tag100');    
@@ -560,7 +562,7 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
     
     var d = newDiv().addClass('tagSection');
     
-    if (!strength) strength = 1.0;
+    if (strength==undefined) strength = 1.0;
     
     var tagLabel = $('<span>' + tag + '</span>').addClass('tagLabel');
     
@@ -572,16 +574,24 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
         var tagButtons = newDiv().addClass('tagButtons');
         
         if (index > 0) {
-            var upButton = $('<a href="#">^</a>');
+            var upButton = $('<a href="#" title="Move Up">^</a>');
             upButton.addClass('tagButton');
             upButton.click(function() {
                 onOrderChange(index, index-1);            
             });
             tagButtons.append(upButton);
         }
-        
+        else {
+            var downButton = $('<a href="#" title="Move Down">v</a>');
+            downButton.addClass('tagButton');
+            downButton.click(function() {
+                onOrderChange(index, index+1);            
+            });
+            tagButtons.append(downButton);
+        }
+
         if (strength > 0.25) {
-            var weakenButton = $('<a href="#">-</a>');
+            var weakenButton = $('<a href="#" title="Decrease">-</a>');
             weakenButton.addClass('tagButton');
             weakenButton.click(function() {
                 onStrengthChange(index, strength - 0.25);            
@@ -589,15 +599,26 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
             tagButtons.append(weakenButton);
         }
         if (strength < 1.0) {
-            var strengthButton = $('<a href="#">+</a>');
+            var strengthButton = $('<a href="#" title="Increase">+</a>');
             strengthButton.addClass('tagButton');
             strengthButton.click(function() {
                 onStrengthChange(index, strength + 0.25);
             });
             tagButtons.append(strengthButton);
         }
+
+		if (strength > 0) {
+           var disableButton = $('<a href="#" title="Disable">x</a>');
+            disableButton.addClass('tagButton');
+            disableButton.click(function() {
+                onStrengthChange(index, 0);
+            });
+            tagButtons.append(disableButton);
+ 		}
+		else {
+		}
         
-        var removeButton = $('<a href="#">X</a>');
+        var removeButton = $('<a href="#" title="Remove">X</a>');
         removeButton.addClass('tagButton');
         removeButton.click(function() {
            if (confirm("Remove " + tag + "?"))

@@ -517,12 +517,16 @@ function netention(f) {
                 if (f.where==null) delete f.where;
                 if (f.tags)
                     if (f.tags.length == 0) delete f.tags;
+
                 this.set('focus', f);
-                this.pub( f, function(err) { 
-                    console.log(err);
-                }, function() {
-                    $.pnotify({title: 'Focus noticed.'});
-                });
+
+				if (this.socket) {
+		            this.pub( f, function(err) { 
+		                console.log(err);
+		            }, function() {
+		                $.pnotify({title: 'Focus noticed.'});
+		            });
+				}
             },
 
             focus : function() { 
