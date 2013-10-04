@@ -4,7 +4,6 @@
 
 "use strict";
 
-var MAX_INITIAL_OBJECTS = 1024;
 
 var updateView;
 
@@ -209,7 +208,7 @@ $(document).ready(function() {
 					text: 'Schema ready. Loading objects...'
 			});
 
-            self.getLatestObjects(MAX_INITIAL_OBJECTS, function() {
+            self.getLatestObjects(configuration.maxStartupObjects, function() {
 				ll.hide();
 
                 self.listenAll(true);

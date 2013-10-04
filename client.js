@@ -10,7 +10,8 @@ var configuration = {
     wikiStartPage: 'Life', //'Portal:Contents',
     showPlanOnSelfPage: true,
     defaultTheme: '_cybernetic',
-	requireIdentity: false
+	requireIdentity: false,
+	maxStartupObjects: 8192
 };
 
 //all hardcoded stuff here is temporary until icons are specified by ontology

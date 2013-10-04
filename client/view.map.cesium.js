@@ -1,7 +1,7 @@
 /* http://cesium.agi.com */
 
 var cesiumLoaded = false;
-var MAX_CESIUM_ITEMS = 100;
+var MAX_CESIUM_ITEMS = 250;
 
 function renderCesiumMap(o, v) {
 	var cc = { };
@@ -40,7 +40,9 @@ function renderCesiumMap(o, v) {
 
 		var octagonVertexAngle = 3.1415 * 2.0 / 8.0;
 
-		function newCircle(lat, lon, radiusMeters, vertexAngle, r, g, b, a) {
+		var imageMaterials = { };
+
+		function newCircle(lat, lon, radiusMeters, vertexAngle, r, g, b, a, iconURL) {
 			var poly = new Cesium.Polygon({
 		        positions : Cesium.Shapes.computeCircleBoundary(
 		            ellipsoid,
@@ -49,13 +51,33 @@ function renderCesiumMap(o, v) {
 					vertexAngle
 					)
 		    });
-			poly.material = Cesium.Material.fromType('Color');
-			poly.material.uniforms.color = {
-				red : r,
-				green : g,
-				blue : b,
-				alpha : a
-			};		
+			if (iconURL) {
+				if (imageMaterials[iconURL]) {
+					poly.material = imageMaterials[iconURL];
+				}
+				else {
+					imageMaterials[iconURL] = poly.material = new Cesium.Material({
+						fabric : {
+						    type : 'Image',
+						    uniforms : {
+						        image: iconURL,
+						    },
+							components: {
+								alpha: a*2.0
+							}
+						}
+					});
+				}
+			}
+			else {
+				poly.material = Cesium.Material.fromType('Color');
+				poly.material.uniforms.color = {
+					red : r,
+					green : g,
+					blue : b,
+					alpha : a
+				};		
+			}
 			return poly;
 		}
 
@@ -75,7 +97,7 @@ function renderCesiumMap(o, v) {
 					};
 					image.src = '../images/Cesium_Logo_overlay.png';
 			*/
-			addPrimitive(newCircle(lat, lon, rad, octagonVertexAngle, fill.r, fill.g, fill.b, opacity));
+			addPrimitive(newCircle(lat, lon, rad, octagonVertexAngle, fill.r, fill.g, fill.b, opacity, iconURL));
 		}
 
 	    currentMapNow = Date.now();        
