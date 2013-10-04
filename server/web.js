@@ -51,7 +51,7 @@ function plugin(netention, kv) {
                 netention.nlog('Started plugin: ' + p.name);
             }
             else {
-                netention.nlog('Disabling plugin: ' + p.name);
+                //netention.nlog('Disabling plugin: ' + p.name);
             }
 
             return;
@@ -65,7 +65,7 @@ function plugin(netention, kv) {
 
     //TODO remove unused Server.plugins entries
 
-    console.log('Loaded invalid plugin: ' + v);
+    //console.log('Loaded invalid plugin: ' + v);
 }
 exports.plugin = plugin;
 

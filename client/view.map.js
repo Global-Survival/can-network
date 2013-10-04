@@ -1,6 +1,81 @@
+var currentMapNow = null;
+
 function getProxyURL(u) {
     return '/http/' + encodeURIComponent(u);
 }
+
+function renderMapMarker(x, createMarkerFunction) {
+	if (!currentMapNow) {
+		console.err('set currentMapNow before calling renderMapMarker');
+		return;
+	}
+
+    var s = objSpacePoint(x);
+	if (!s) return;
+    var fill = {
+		r: 0.75,
+		g: 0.75,
+		b: 0.75
+	};
+
+    var op = 0.5;
+    var rad = 50;
+    var iconURL = undefined;
+    
+    var ww = x.modifiedAt || x.createdAt || null;
+    if (ww) {
+        op = 0.25 + 0.5 * Math.exp( -((currentMapNow - ww) / 1000.0 / 48.0 / 60.0 / 60.0) );
+    }
+
+    iconURL = getTagIcon(x);
+    
+    var tagStyling = {
+        'Earthquake' : function() {
+            var mag = objFirstValue(x,'eqMagnitude',1);
+            rad = 100000 + (mag - 4.0)*700000;
+            op *= 0.5;                    
+            //fill = '#b33';
+			fill.r = 256;
+			fill.g = 75;
+			fill.b = 0;
+        },
+        'NuclearFacility' : function() {
+            rad = 7000;
+            op = 0.3;
+            //fill = '#ff0';                    
+        },
+        'Human' : function() {
+            rad = 200;
+            op = 0.25;                    
+        },
+        'Message' : function() {
+            //fill = '#55f';
+            rad = 50;                    
+        },
+        'PlanCentroid' : function() {
+            rad = 7000;
+            op = 0.3;
+            //fill = '#fa3';                    
+        },
+        'Item' : function() {
+            rad = 50;
+            op = 0.2;
+            //fill = '#3af';                    
+        },          
+    };
+
+
+    var tags = objTags(x);
+    for (var i = 0; i < tags.length; i++) {
+        var tt = tags[i];
+        if (tagStyling[tt])
+            tagStyling[tt]();
+    }
+    
+    createMarkerFunction(x.id, s.lat, s.lon, rad, op, fill, iconURL);
+}
+
+
 
 function getKMLLayer(kmlurl) {
     //use an layer cache with explicit expiration,
@@ -229,13 +304,17 @@ function renderOLMap(s, o, v) {
         var p = project(new OpenLayers.LonLat(lon, lat));
         var t = new OpenLayers.Geometry.Point(p.lon, p.lat /*location[1],location[0]*/);
         
+		function fillString(f) {
+			return 'rgb(' + (f.r * 256.0) + ', ' + (f.g * 256.0) + ', ' + (f.b * 256.0) + ')';
+		}
+
         var targetLocation = new OpenLayers.Feature.Vector(
         OpenLayers.Geometry.Polygon.createRegularPolygon(
         t,
         rad,
         6,
         0), {}, {
-            fillColor: fill,
+            fillColor: fillString(fill),
             //strokeColor: '#fff',
             fillOpacity: opacity,
             //strokeOpacity: opacity,
@@ -329,7 +408,6 @@ function renderOLMap(s, o, v) {
         return kml;
     }
     
-    var now = Date.now();
     
     function renderMapFeature(x, r) {
         var k = x.id;
@@ -338,62 +416,9 @@ function renderOLMap(s, o, v) {
             addKMLLayer(x.kmlURL);
             return;    
         }
-        
-        var s = objSpacePoint(x);
-        if (s) {
-            var fill = '#888';
-            var op = 0.5;
-            var rad = 50;
-            var iconURL = undefined;
-            
-            var ww = x.modifiedAt || x.createdAt || null;
-            if (ww) {
-                op = 0.25 + 0.5 * Math.exp( -((now - ww) / 1000.0 / 48.0 / 60.0 / 60.0) );
-            }
 
-            iconURL = getTagIcon(x);
-            
-            var tagStyling = {
-                'Earthquake' : function() {
-                    fill = '#b33';
-                    var mag = objFirstValue(x,'eqMagnitude',1);
-                    rad = 100000 + (mag - 4.0)*700000;
+		renderMapMarker(x, createMarker);
 
-                    op *= 0.5;                    
-                },
-                'NuclearFacility' : function() {
-                    rad = 7000;
-                    op = 0.3;
-                    fill = '#ff0';                    
-                },
-                'Human' : function() {
-                    rad = 200;
-                    op = 0.25;                    
-                },
-                'Message' : function() {
-                    fill = '#55f';
-                    rad = 50;                    
-                },
-                'PlanCentroid' : function() {
-                    rad = 7000;
-                    op = 0.3;
-                    fill = '#fa3';                    
-                },
-                'Item' : function() {
-                    rad = 50;
-                    op = 0.2;
-                    fill = '#3af';                    
-                },          
-            };
-            var tags = objTags(x);
-            for (var i = 0; i < tags.length; i++) {
-                var tt = tags[i];
-                if (tagStyling[tt])
-                    tagStyling[tt]();
-            }
-            
-            createMarker(k, s.lat, s.lon, rad, op, fill, iconURL);
-        }        
     }
     
     function updateMap() {
@@ -420,6 +445,8 @@ function renderOLMap(s, o, v) {
                 ollayers.push(l);
             }
         }
+
+	    currentMapNow = Date.now();        
         
         renderItems(s, o, v, MAX_ITEMS, function(s, v, xxrr) {
             for (var i = 0; i < xxrr.length; i++) {
