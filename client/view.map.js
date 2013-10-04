@@ -41,7 +41,7 @@ function renderMap(s, o, v) {
         if (typeSelect)
             map2d = (typeSelect.val() === '2D');
         else
-            map2d = true;
+            map2d = false;
 
         var mapControl = newDiv();
         typeSelect = $('<select/>');
@@ -71,7 +71,9 @@ function renderMap(s, o, v) {
             mm.location = m.location;
         }
         else {
-            v.append('TODO: add Cesium');
+			var m = renderCesiumMap(o, v);
+			if (m.onChange)
+				mm.onChange = m.onChange;
         }
         
         v.append(mapControl);
