@@ -1,4 +1,4 @@
-var layoutFPS = 5;
+var layoutFPS = 30;
 var graphUpdatePeriod = 1000 / layoutFPS; //in ms
 
 function renderGraph(s, o, v, withGraph) {
@@ -159,17 +159,23 @@ function renderGraphFocus(s, o, v) {
                 g.addNode(x.id, { label: x.name || "" } );
                 
                 var rtags = objTags(x);
-                if (!rtags)
+
+                if (!rtags) 
                     continue;
+
+				if (x.author)
+					rtags.push('Self-' + x.author);
+
+				//add Tags (intensional inheritance)
                 for (var j = 0; j < rtags.length; j++) {
                     var tj = rtags[j];
                     var exists = tags[tj];
                     if (!exists) {
-                        var ttj = s.tag(tj);
-                        if (ttj) {           
-                            g.addNode(tj, { label: s.tag(tj).name||"" }, getTagIcon(tj));
-                            tags[tj] = true;
-                        }
+                        var ttj = s.tag(tj) || s.object(tj) || null; // || { name: '<' + tj + '>' };
+						if (!ttj)
+							continue;
+                        g.addNode(tj, { label: ttj.name||"" }, ttj ? getTagIcon(tj) : null);
+                        tags[tj] = true;
                     }
                     g.addEdge(x.id+'_' + j, x.id, tj);
                 }

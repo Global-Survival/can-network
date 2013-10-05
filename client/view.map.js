@@ -116,7 +116,7 @@ function renderMap(s, o, v) {
         if (typeSelect)
             map2d = (typeSelect.val() === '2D');
         else
-            map2d = false;
+            map2d = configuration.defaultMapMode2D;
 
         var mapControl = newDiv();
         typeSelect = $('<select/>');

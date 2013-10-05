@@ -2,7 +2,7 @@
 
 var configuration = {
     ui: 'ui.mobile.js',
-    initialView: 'map',
+    initialView: 'list',
     initialDisplayAvatarMenu: false,
     enableAnonymous: true,
     defaultAvatarIcon: '/icon/netention-160.jpg',
@@ -11,7 +11,8 @@ var configuration = {
     showPlanOnSelfPage: true,
     defaultTheme: '_cybernetic',
 	requireIdentity: false,
-	maxStartupObjects: 8192
+	maxStartupObjects: 8192,
+	defaultMapMode2D: true //true=2d, false=3d
 };
 
 //all hardcoded stuff here is temporary until icons are specified by ontology

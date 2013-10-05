@@ -114,9 +114,11 @@ function renderCesiumMap(o, v) {
 
 	//ensure Cesium loaded
 	if (!cesiumLoaded) {
+		cesiumLoaded = true;
+
 		loadCSS('http://cesium.agi.com/Cesium/Build/Cesium/Widgets/CesiumWidget/CesiumWidget.css');
 
-        LazyLoad.js("http://cesium.agi.com/Cesium/Build/Cesium/Cesium.js", render);		
+        LazyLoad.js("http://cesium.agi.com/Cesium/Build/Cesium/Cesium.js", render);
 	}
 	else {
 		render();
