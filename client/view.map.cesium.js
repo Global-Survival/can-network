@@ -46,7 +46,7 @@ function renderCesiumMap(o, v) {
 			var poly = new Cesium.Polygon({
 		        positions : Cesium.Shapes.computeCircleBoundary(
 		            ellipsoid,
-		            ellipsoid.cartographicToCartesian(Cesium.Cartographic.fromDegrees(lat, lon)),
+		            ellipsoid.cartographicToCartesian(Cesium.Cartographic.fromDegrees(lon, lat)),
 		            radiusMeters,
 					vertexAngle
 					)
