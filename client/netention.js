@@ -713,10 +713,14 @@ function newEle(e) {
 }
 
 function newPopup(title,p) {
+	var clientHeight = $(window).height();
     var d = newDiv();
     d.attr('title', title);
     
     $('body').append(d);
+	p = _.extend(p, {
+		maxHeight: parseInt(0.75 * clientHeight)
+	});
     d.dialog(p);
     return d;    
 }

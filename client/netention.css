@@ -3,6 +3,8 @@
  * Discombobulated by @rezn8d
  */
 
+select { visibility: visible; -webkit-appearance: menulist-text; }
+
 .focusMap {
     width: 98%;
     height: 18em;
@@ -643,10 +645,12 @@ body { width:100%; height:100%; margin:0px; padding:0px; overflow:hidden; font-f
 	.SelfCode { width: 95%; height: 90%; }
 	.SelfMeta { float: left; }
 	.SelfMeta input, .SelfMeta button { font-size: 150%; }
-        .ui-dialog-content .WikiBrowser {
+
+        .ui-dialog-content .WikiBrowser-REMOVED {
             max-height: 400px;
         }
-	.WikiBrowser { height: 90%; overflow:auto; background-color: white; color: black; width: 98%; border-top: 1px solid gray; border-bottom: 1px solid gray; }
+
+	.WikiBrowser { clear: both; overflow:auto; background-color: white; color: black; width: 98%;  }
 	.WikiBrowser h1 { margin-top: 0; }
 	.WikiBrowser a, .WikiBrowser a:visited { border: 1px solid gray; padding: 1px; cursor: crosshair; color: black !important;}
         .WikiBrowser .hlist li {
@@ -661,6 +665,13 @@ body { width:100%; height:100%; margin:0px; padding:0px; overflow:hidden; font-f
             background: none !important;
         }
 	.WikiTagSave { margin-top: 5px; font-size: 150%; }
+
+	.WikiBrowserHeader {
+		float: center;
+		text-align: center;
+		padding: 0.5em;
+	}
+
         
 	#BioText { border: 1px solid gray; width: 100%; height: 12em; margin-top: 1em; margin-bottom: 1em; text-align: left; overflow: scroll }
 	#Bio { text-align: right; }
@@ -673,7 +684,7 @@ body { width:100%; height:100%; margin:0px; padding:0px; overflow:hidden; font-f
         .SelfTimeWantToPeriod { width: 25%; float: left; border: 1px solid gray; margin: 1px; cursor:crosshair; vertical-align: top; }
         .SelfTimeCouldDoPeriod { width: 25%; float: left;  margin: 1px; vertical-align: top; }
         .SelfTimeFilled { background-color: rgba(125,125,125,0.2); }
-        .SelfTimeTagTree { max-height: 400px; overflow: scroll; } 
+        .SelfTimeTagTree { } 
 .nameInput { padding:3px; text-indent:15px; }
 
 /*

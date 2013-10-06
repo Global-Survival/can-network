@@ -11,11 +11,11 @@ function newTagger(selected, onFinished) {
     var currentBrowser = null;
     
     
-    var tagsCombo = $('<select></select>');
+    var tagsCombo = $('<span></span>');
     tagsCombo.update = function() {
         tagsCombo.html('');
         for (var i = 0; i < tags.length; i++)
-            tagsCombo.append('<option>' + tags[i] + '</option>');
+            tagsCombo.append('<b>' + tags[i] + '</b>&nbsp;');
     };
 	tagsCombo.update();
      
@@ -30,8 +30,7 @@ function newTagger(selected, onFinished) {
         t.append(currentBrowser);        
     }
     
-    var selectBar = newDiv();
-    selectBar.attr('style', 'width: 70%; float: left;');
+    var selectBar = $('<span style="float:left"/>');
     {
         function addButton(label, browserFunction) {
             var b = $('<button>' + label + '</button>');
@@ -49,10 +48,9 @@ function newTagger(selected, onFinished) {
         addButton('&#9733;', newNeedsBrowser); //favorites
         
     }
-    d.append(selectBar);
+    //d.append(selectBar);
     
-    var saveBar = newDiv();
-    saveBar.attr('style', 'width: 30%; float: right; text-align: right');
+    var saveBar = $('<span/>');
     {
         tagsCombo.update();
         saveBar.append(tagsCombo);
@@ -83,7 +81,10 @@ function newTagger(selected, onFinished) {
         });
         saveBar.append(b);
     }
-    d.append(saveBar);
+	later(function() {
+		selectBar.append(saveBar);
+		d.parent().parent().children(".ui-dialog-titlebar").append(selectBar);
+	});
         
     t.attr('style', 'clear: both');
     d.append(t);
@@ -153,9 +154,11 @@ function newTreeBrowser(selected, onTagAdded) {
 }
 
 function newWikiBrowser(selected, onTagAdded) {    
-    var b = $('<div/>');
-    
-    
+    var b = newDiv();
+
+	var header = newDiv();
+	header.addClass('WikiBrowserHeader');
+
     var backButton = $('<button disabled>Back</button>');
     var homeButton = $('<button>Bookmarks</button>');
     homeButton.click(function() {
@@ -170,11 +173,13 @@ function newWikiBrowser(selected, onTagAdded) {
     searchInputButton.click(function() {
        gotoTag(searchInput.val(), true); 
     });
-    b.append(backButton);
-    b.append(homeButton);
-    b.append('<button title="Bookmark">*</button>');
-    b.append(searchInput);
-    b.append(searchInputButton);
+    header.append(backButton);
+    header.append(homeButton);
+    header.append('<button title="Bookmark">*</button>');
+    header.append(searchInput);
+    header.append(searchInputButton);
+
+	b.append(header);
     
     var br = $('<div/>');
     br.addClass('WikiBrowser');
