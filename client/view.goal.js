@@ -1,4 +1,4 @@
-var updatePeriod = 4 * 1000; //in ms
+var updatePeriod = 30 * 1000; //in ms
 
 function newGoalWidget(g)  {
 
@@ -134,18 +134,22 @@ function newSelfTimeGrid(x, clicked) {
 
 		//http://css-tricks.com/how-to-create-a-horizontally-scrolling-site/
 		var fs = 100.0 * (0.25 + (numHours-i)/numHours);
-		cell.attr('style', 'display: inline-block; font-size: ' + fs + '%');
+		cell.attr('style', 'display: inline-block;');
 
         var endtime = time + 60.0 * 60.0 * 1000.0 * 1.0;
         var timed = new Date(time);
         var rowHeader = newDiv();
 
+		/*
         if (i % 12 == 0) {
             rowHeader.html(timed.toLocaleDateString() + ': ' + timed.toLocaleTimeString());            
         }
         else {
             rowHeader.html(timed.toLocaleTimeString());                        
-        }
+        }*/
+		var lds = timed.toLocaleDateString()
+		cell.attr('title', timed.toLocaleDateString() + ': ' + timed.toLocaleTimeString());
+		rowHeader.html(timed.toLocaleTimeString().substring(0, 2));
         
         var t = newDiv();        
         var u = newDiv();

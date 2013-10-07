@@ -69,7 +69,6 @@ exports.plugin = {
 				}
 
 				var selfNode = util.objNew('TelehashNode_Local', 'Telehash');
-				util.objName(selfNode)
 				util.objAddTag(selfNode, 'TelehashNode');
 				util.objAddValue(selfNode, 'telehashname',  node.hashname);
 				util.objAddValue(selfNode, 'telehashAddress',  netention.server.host + ':' + DEFAULT_TELEHASH_PORT);

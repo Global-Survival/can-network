@@ -643,10 +643,10 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
     
     var type;
     if (isPrimitive(tag)) {
-        tagLabel.hide();    
+        //tagLabel.hide();    
         type = tag;
     }
-    else if (self.properties()[tag]!=undefined) {
+    if (self.properties()[tag]!=undefined) {
         var prop = self.properties()[tag];
         type = prop.type;
         tagLabel.html( prop.name );

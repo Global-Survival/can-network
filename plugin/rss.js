@@ -5,6 +5,7 @@ var _ = require('underscore');
 var util = require('../client/util.js');
 
 var minUrlFetchPeriod = 60*10;
+var rssCyclePeriod = 5 * 1000;
 
 exports.plugin = {
         name: 'RSS Feeds (Really Simple Syndication)',	
@@ -24,7 +25,7 @@ exports.plugin = {
                     uri: 'RSSFeed', name: 'RSS Feed', 
                     properties: {
                         'url': { name: 'URL', type: 'text' /* url */, min: 1, default: 'http://' },
-                        'urlFetchPeriod': { name: 'Fetch Period (seconds)', type: 'text' /* number */, default: "3600", min: 1, max: 1 },
+                        'urlFetchPeriod': { name: 'Fetch Period (seconds)', type: 'real' /* number */, default: "3600", min: 1, max: 1 },
                         'addArticleTag': { name: 'Add Tag to Articles', type: 'text' },
                         'lastRSSUpdate': { name: 'Last RSS Update',  type: 'timepoint' }
                     }
@@ -96,7 +97,6 @@ exports.plugin = {
                                 for (var ff = 0; ff < furi.length; ff++) {
                                     RSSFeed(furi[ff], function(a) {            
                                         //TODO add extra tags from 'f'
-                                        
                                         netention.pub(a);
                                         return a;
                                     });
@@ -115,7 +115,7 @@ exports.plugin = {
                 
             };
             
-            this.loop = setInterval(ux, 15000);
+            this.loop = setInterval(ux, rssCyclePeriod);
             ux();
         },
                 
@@ -168,21 +168,30 @@ var RSSFeed = function(url, perArticle) {
 		}
         util.objAddTag(x, 'RSSItem');
         util.objAddValue(x, 'rssItemURL', a['link']);
+
+
 		perArticle(x, a);
 		
 	}	
 
-    try {
-		request(url).pipe(new feedparser()).on('readable', function() {
-			var stream = this, item;
-			while (item = stream.read()) {
-				onArticle(item);
-			}
-		});
-    }
-    catch (e) {
-        console.error(e);
-    }
+
+		
+	var fp = new feedparser();
+	request(url).pipe(fp).on('error', function(error) {
+		// always handle errors
+		console.log(error);
+	}).on('meta', function(data) {
+		// always handle errors
+		//onArticle(data);
+		//console.log(data, 'META');
+
+	}).on('end', function() {
+		var articles = fp.articles;
+		for (var i = 0; i < articles.length; i++) {
+			onArticle(articles[i]);
+		}
+	});
+
 	
 }
 

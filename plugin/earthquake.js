@@ -59,7 +59,6 @@ exports.plugin = {
 				        util.objAddValue(eq, 'eqDepth', depth );
 		            }
 				}*/
-                
                 netention.notice(eq);
 
                 return eq;

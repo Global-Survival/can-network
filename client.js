@@ -2,7 +2,7 @@
 
 var configuration = {
     ui: 'ui.mobile.js',
-    initialView: 'list',
+    initialView: 'list', //TODO null = use last known view
     initialDisplayAvatarMenu: false,
     enableAnonymous: true,
     defaultAvatarIcon: '/icon/netention-160.jpg',
