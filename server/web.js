@@ -41,6 +41,7 @@ function plugin(netention, kv) {
             netention.server.plugins[kv].description = p.description;
             netention.server.plugins[kv].filename = filename;
 
+
             //TODO add required plugins parameter to add others besides 'general'
             if ((netention.server.plugins[kv].enabled) || (v == 'general')) {
                 p.start(netention, util);
@@ -1644,13 +1645,14 @@ exports.start = function(host, port, dbURL, init) {
 	that.saveState = saveState;
 
     function loadPlugins() {
-		if (that.enablePlugins)	
+		if (that.enablePlugins)	{
 			_.each(that.enablePlugins, function(x) {
 				if (!that.server.plugins[x])
 					that.server.plugins[x] = { };
 
 				that.server.plugins[x].enabled = true;
 			});
+		}
 
         fs.readdirSync("./plugin").forEach(function(ifile) {
 			var file = ifile + '';

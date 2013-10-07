@@ -136,7 +136,16 @@ var generalTags = [
     { uri: 'Cause', name: 'Cause'},
     { uri: 'Effect', name: 'Effect'},
 
-	{ uri: 'Goal', name: 'Goal'}, //=Project=Program=Plan=Opportunity
+	{ uri: 'Goal', name: 'Goal',
+		properties: {
+			'repeatPeriod': { name: 'Repeat period (sec)', type: 'real', unit: 'time'},
+			'repeatDelay': { name: 'Repeat phase (sec)', type: 'real', unit: 'time' },
+			'repeatStarted': { name: 'Repeat started', type: 'timepoint', readonly: true },
+			'requiresAcknowledgement': { name: 'Require Acknowledgement', type: 'boolean' },
+			'lastAcknowledgement': { name: 'Repeat started', type: 'timepoint', readonly: true },
+			'goalEnabled': { name: 'Enabled', type: 'boolean' }
+		}	
+	}, //=Project=Program=Plan=Opportunity
 		//state = considered|desired|active|completed
 
 	{ uri: 'User', name: 'User'}, 

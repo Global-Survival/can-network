@@ -942,9 +942,11 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
             
             //http://jqueryui.com/autocomplete/#default
             //http://jqueryui.com/autocomplete/#categories
+
+			//TODO filter by tag specified by ontology property metadata
             var data = [ ];
             for (var k in self.objects()) {
-                var v = self.showObject(k);
+                var v = self.object(k);
                 if (value == k) {
                     ts.val(v.name);
                     ts.result = value;
@@ -1064,7 +1066,7 @@ function newPropertyView(vv) {
         return ('<li>' + vv.id + ': ' + vv.value + '</li>');
         
     if (p.type == 'object') {
-        var o = self.showObject(vv.value) || { name: vv.value };
+        var o = self.getObject(vv.value) || { name: vv.value };
         
         return ('<li>' + p.name + ': <a href="javascript:newPopupObjectView(\'' + vv.value + '\')">' + o.name + '</a></li>');
     }

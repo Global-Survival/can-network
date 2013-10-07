@@ -3,7 +3,7 @@
  * Discombobulated by @rezn8d
  */
 
-select { visibility: visible; -webkit-appearance: menulist-text; }
+.ui-autocomplete {  z-index: 5000 !important; }
 
 .focusMap {
     width: 98%;
