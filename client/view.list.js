@@ -206,8 +206,8 @@ function renderItems(s, o, v, maxItems, perItems) {
 
 }
 
-function renderList(s, o, v) {
-    renderItems(s, o, v, 75, function(s, v, xxrr) {
+function renderBrowseList(o, v) {
+    renderItems(self, o, v, 75, function(s, v, xxrr) {
         var elements = [];
         for (var i = 0; i < xxrr.length; i++) {
             var x = xxrr[i][0];
@@ -219,3 +219,82 @@ function renderList(s, o, v) {
     
     $('body').timeago('refresh');
 }
+
+function renderBrowseGrid(o, v) {
+    renderItems(self, o, v, 75, function(s, v, xxrr) {
+        var elements = [];
+        for (var i = 0; i < xxrr.length; i++) {
+            var x = xxrr[i][0];
+            var r = xxrr[i][1];
+            var o = renderObjectSummary(x, function() {
+            }, r, 1);
+            o.addClass('objectGridItem');
+            elements.push(o);
+        }
+        v.append(elements);
+    });
+
+    //http://masonry.desandro.com/docs/intro.html
+    /*$(function() {
+        vv.imagesLoaded(function(){
+            vv.masonry({
+                // options
+                itemSelector: '.objectView',
+                columnWidth: 350
+            });//.masonry('reload');
+        });
+    });*/
+
+    $('body').timeago('refresh');
+}
+
+function renderBrowseSlides(o, v, slideControls) {
+
+}
+
+
+function renderList(s, o, v) {
+	var listRenderer = renderBrowseList;
+
+	var submenu = $('#toggle-submenu');
+	var slidesButton = $('<button title="Slides">S</button>');
+	slidesButton.click(function() {
+		listRenderer = renderBrowseSlides;
+		update();
+	});
+	var listButton = $('<button title="List">L</button>');
+	listButton.click(function() {
+		listRenderer = renderBrowseList;
+		update();
+	});
+	var gridButton = $('<button title="Grid">G</button>');
+	gridButton.click(function() {
+		listRenderer = renderBrowseGrid;
+		update();
+	});
+
+	submenu.append(slidesButton);
+	submenu.append(listButton);
+	submenu.append(gridButton);
+		
+	var slideControls = newDiv();
+	var textsizeSlider = $('<input type="range" name="points" min="1" max="10">');
+	var prevButton = $('<button>&lt;</button>');
+	var nextButton = $('<button>&gt;</button>');
+
+	slideControls.append(textsizeSlider);
+	slideControls.append(prevButton);
+	slideControls.append(nextButton);
+
+
+	submenu.append(slideControls);
+
+
+	function update() {
+		v.html('');
+		listRenderer(o, v, slideControls);
+	}
+	update();
+}
+
+

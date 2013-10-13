@@ -46,7 +46,8 @@ function loadJS(url) {
 }
 
 function later(f) {
-    setTimeout(f, 0);
+    //setTimeout(f, 0);
+	setImmediate(f);
 }
 
 var stack_bottomleft = {"dir1": "right", "dir2": "up", "push": "top"};

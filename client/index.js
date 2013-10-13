@@ -34,6 +34,8 @@ function _updateView(force) {
 
     var o = $('#ViewOptions');
     var v = $('#View');
+	var submenu = $('#toggle-submenu');
+
     if (v.is(':visible')) {    }
     else
         return;
@@ -49,6 +51,8 @@ function _updateView(force) {
 
     v.html('');
     o.html('');
+	submenu.html('');
+	submenu.hide();
 
     lastView = view;
 
@@ -59,6 +63,7 @@ function _updateView(force) {
     v.removeClass('nobg');
     
     function indent() {
+		submenu.show();
         v.addClass('overthrow ui-widget-content view-indented');        
     }
 
@@ -86,10 +91,6 @@ function _updateView(force) {
 /*    else if (view == 'slides') {
         currentView = renderSlides(s, o, v);
     }*/
-    else if (view == 'grid') {
-        indent();
-        currentView = renderGrid(s, o, v);
-    }
     else if (view == 'self') {
         indent();
         currentView = renderSelf(s, o, v);

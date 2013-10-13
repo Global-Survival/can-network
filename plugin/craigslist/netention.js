@@ -26,6 +26,34 @@ exports.plugin = {
 };
 
 
+var cltags = { };
+cltags.Community = [
+	 'activities'
+	,'artists'
+	,'childcare'
+	,'general'
+	,'groups'
+	,'pets'
+	,'events'
+	,'lost+found'
+	,'musicians'
+	,'local news'
+	,'politics'
+	,'rideshare'
+	,'volunteers'
+	,'classes' 
+];
+cltags.Personals = [
+	'strictly platonic'
+	,'women seek women'
+	,'women seeking men'
+	,'men seeking women'
+	,'men seeking men'
+	,'misc romance'
+	,'casual encounters'
+	,'missed connections'
+	,'rants and raves'
+];
 
 var cldata = {
     "categories": {
