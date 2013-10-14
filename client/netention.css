@@ -5,6 +5,9 @@
 
 .ui-autocomplete {  z-index: 5000 !important; }
 
+.bx-wrapper .bx-pager { position: fixed !important; bottom: 30px !important;}
+.bx-wrapper {  overflow: hidden; height: auto !important; }
+
 .focusMap {
     width: 98%;
     height: 18em;

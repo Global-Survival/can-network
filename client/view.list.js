@@ -249,7 +249,27 @@ function renderBrowseGrid(o, v) {
 }
 
 function renderBrowseSlides(o, v, slideControls) {
+	var u = $('<ul/>');
 
+    renderItems(self, o, v, 15, function(s, v, xxrr) {
+        var elements = [];
+        for (var i = 0; i < xxrr.length; i++) {
+            var x = xxrr[i][0];
+            var r = xxrr[i][1];
+            var o = renderObjectSummary(x, function() {            }, r, 1);
+			var l = $('<li/>');
+			u.append(l);
+			l.append(o);			
+        }
+    });
+
+
+	v.append(u);
+	later(function() {
+		u.bxSlider({adaptiveHeight: true, responsive: true, mode: 'fade'});	
+		var clientHeight = $(window).height();
+		$('.bx-viewport').css('height', clientHeight + 'px' );
+	});
 }
 
 
@@ -257,17 +277,17 @@ function renderList(s, o, v) {
 	var listRenderer = renderBrowseList;
 
 	var submenu = $('#toggle-submenu');
-	var slidesButton = $('<button title="Slides">S</button>');
+	var slidesButton = $('<button style="width: 100%" title="Slides">Slides</button>');
 	slidesButton.click(function() {
 		listRenderer = renderBrowseSlides;
 		update();
 	});
-	var listButton = $('<button title="List">L</button>');
+	var listButton = $('<button style="width: 100%" title="List">List</button>');
 	listButton.click(function() {
 		listRenderer = renderBrowseList;
 		update();
 	});
-	var gridButton = $('<button title="Grid">G</button>');
+	var gridButton = $('<button style="width: 100%" title="Grid">Grid</button>');
 	gridButton.click(function() {
 		listRenderer = renderBrowseGrid;
 		update();
@@ -277,15 +297,19 @@ function renderList(s, o, v) {
 	submenu.append(listButton);
 	submenu.append(gridButton);
 		
+	function updateFont(s) {
+		var vp = parseInt((0.15 + (s/8.0)) * 100)		
+		v.css('font-size', vp + '%');
+	}
+
 	var slideControls = newDiv();
-	var textsizeSlider = $('<input type="range" name="points" min="1" max="10">');
-	var prevButton = $('<button>&lt;</button>');
-	var nextButton = $('<button>&gt;</button>');
-
+	var textsizeSlider = $('<input type="range" name="points" min="1" value="8" max="16">');
+	textsizeSlider.change(function(x) {
+		updateFont($(this).val());
+	});
 	slideControls.append(textsizeSlider);
-	slideControls.append(prevButton);
-	slideControls.append(nextButton);
 
+	textsizeSlider.change();
 
 	submenu.append(slideControls);
 
