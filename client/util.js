@@ -20,19 +20,34 @@ function objNew(id, name) {
     if (!id)
         id = uuid();
         
+	var now = Date.now();
+
     var x = {
         'id': id,
-        createdAt: Date.now()
+        'createdAt': now
         //scope: 'public'
     };
     
     if (name)
         x.name = name;
         
+	//TODO build convenient & friendly object API here
+	x.touch = function() {
+		objTouch(x);
+	};
+
+	x.add = function(k, v) {
+		return objAddValue(x, k, v);
+	};
+
     return x;
 }
 exports.objNew = objNew;
 
+function timerange(start, end) {
+	return { id: 'timerange', value: {  start: Date.parse(start), end: Date.parse(end) } };
+}
+exports.timerange = timerange;
 
 function objAddTag(x, t, strength) {
     var v = { id: t };

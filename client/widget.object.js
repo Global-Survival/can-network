@@ -836,8 +836,8 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
 			var i = $('<input type="range" name="timecenter" min="1" max="10000">');
 
 			if (t.value)
-				if ((t.value.from) && (t.value.to)) {
-					var tm = ((0.5 * (t.value.from + t.value.to))-oldest)/(nn-oldest) * 10000;
+				if ((t.value.start) && (t.value.end)) {
+					var tm = ((0.5 * (t.value.start + t.value.end))-oldest)/(nn-oldest) * 10000;
 					i.attr('value', parseInt(tm));				
 				}
 
@@ -862,7 +862,7 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
 
 
 
-			var from = -1, to = -1;
+			var start = -1, end = -1;
 
 			d.append('<br/>');
 
@@ -881,12 +881,12 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
 				if (range==='6') rangeSec = 7 * 24 * 60 * 60;
 				if (range==='7') rangeSec = 30 * 24 * 60 * 60;
 				
-				from = to = 0;
+				start = end = 0;
 
 
 				if (lb.is(':checked')) {
-					from = new Date(nn - rangeSec * 1000);
-					to = new Date(nn);
+					start = new Date(nn - rangeSec * 1000);
+					end = new Date(nn);
 					j.hide();
 				}
 				else {
@@ -894,13 +894,13 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
 					var iv = i.val();
 					var p = parseFloat(i.val()) / 10000.0;
 					var current = oldest + p * (nn - oldest);
-					from = current - (rangeSec*1000.0)/2.0;
-					to = current + (rangeSec*1000.0)/2.0;
+					start = current - (rangeSec*1000.0)/2.0;
+					end = current + (rangeSec*1000.0)/2.0;
 					//console.log(oldest, newest, current, from, to);
 				}
 
 
-				output.html(new Date(from) + '<br/>' + new Date(to));
+				output.html(new Date(start) + '<br/>' + new Date(end));
 				onStrengthChange(tag);
 				if (whenSliderChange)
 					whenSliderChange(x);
@@ -922,13 +922,13 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
             
             whenSaved.push(function(y) {
                 objAddValue(y, tag, {
-                   'from': from,
-                   'to': to
+                   'from': end,
+                   'to': start
                 }, strength);
             });
         }
         else {
-            d.append(new Date(t.startsAt) + ' ' + new Date(t.endsAt));
+            d.append(new Date(t.value.start) + ' ' + new Date(t.value.end));
         }
         
     }
@@ -1378,6 +1378,10 @@ function renderObjectSummary(x, onRemoved, r, depthRemaining, nameNotClickable) 
 						var sketchpad = Raphael.sketchpad(eu, options);
 					});
 					continue;
+				}
+				else if (vv.id == 'timerange') {					
+					ud.append(ISODateString(new Date(vv.value.start)) + ' '
+							 + ISODateString(new Date(vv.value.start)));
 				}
 				
                 if (self.isProperty(vv.id))
