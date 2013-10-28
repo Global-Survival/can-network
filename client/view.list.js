@@ -212,7 +212,7 @@ function renderBrowseList(o, v) {
         for (var i = 0; i < xxrr.length; i++) {
             var x = xxrr[i][0];
             var r = xxrr[i][1];
-            elements.push(renderObjectSummary(x, function() { }, r, 1 ));
+            elements.push(newObjectSummary(x, function() { }, r, 1 ));
         }
         v.append(elements);
     });
@@ -226,7 +226,7 @@ function renderBrowseGrid(o, v) {
         for (var i = 0; i < xxrr.length; i++) {
             var x = xxrr[i][0];
             var r = xxrr[i][1];
-            var o = renderObjectSummary(x, function() {
+            var o = newObjectSummary(x, function() {
             }, r, 1);
             o.addClass('objectGridItem');
             elements.push(o);
@@ -248,99 +248,138 @@ function renderBrowseGrid(o, v) {
     $('body').timeago('refresh');
 }
 
-function renderBrowseSlides(o, v, slideControls) {
-	var u = $('<ul/>');
+function renderBrowseSlides(o, vv, slideControls) {
+	var u = $('<div class="reveal"></div>');
+	var v = $('<div class="slides"></div>');
+	v.appendTo(u);
+	vv.append(u);
 
-	Reveal.initialize({
-		// Display controls in the bottom right corner
-		controls: true,
+	later(function() {
 
-		// Display a presentation progress bar
-		progress: true,
+	  renderItems(self, o, v, 15, function(s, v, xxrr) {
+				var elements = [];
+				for (var i = 0; i < xxrr.length; i++) {
+				    var x = xxrr[i][0];
+				    var r = xxrr[i][1];
+				    var o = newObjectSummary(x, function() {  }, r, 1);
 
-		// Push each slide change to the browser history
-		history: false,
+					//<section>Single Horizontal Slide</section><section><section>Vertical Slide 1</section><section>Vertical Slide 2</section></section>
+					var w = $('<section/>');
+					w.append(o);
+					v.append(w);
+				}
 
-		// Enable keyboard shortcuts for navigation
-		keyboard: true,
+			});
 
-		// Enable touch events for navigation
-		touch: true,
+		Reveal.initialize({
+			 dependencies: [
+					// Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+					{ src: '/lib/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
 
-		// Enable the slide overview mode
-		overview: true,
+					// Interpret Markdown in <section> elements
+					{ src: '/lib/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '/lib/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
 
-		// Vertical centering of slides
-		center: true,
+					// Syntax highlight for <code> elements
+					{ src: '/lib/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
 
-		// Loop the presentation
-		loop: false,
+					// Zoom in and out with Alt+click
+					{ src: '/lib/reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
 
-		// Change the presentation direction to be RTL
-		rtl: false,
+					// Speaker notes
+					{ src: '/lib/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
 
-		// Number of milliseconds between automatically proceeding to the
-		// next slide, disabled when set to 0, this value can be overwritten
-		// by using a data-autoslide attribute on your slides
-		autoSlide: 0,
+					// Remote control your reveal.js presentation using a touch device
+					{ src: '/lib/reveal.js/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } },
 
-		// Enable slide navigation via mouse wheel
-		mouseWheel: false,
-
-		// Transition style
-		transition: 'default', // default/cube/page/concave/zoom/linear/fade/none
-
-		// Transition speed
-		transitionSpeed: 'default', // default/fast/slow
-
-		// Transition style for full page backgrounds
-		backgroundTransition: 'default' // default/linear/none
-
-	});
+					// MathJax
+					{ src: '/lib/reveal.js/plugin/math/math.js', async: true }
+				],
 
 
-/*
-	<div class="reveal">
+			// Display controls in the bottom right corner
+			controls: true,
 
-			<div class="slides">
+			// Display a presentation progress bar
+			progress: true,
 
-				<section>
-					<h2>Barebones Presentation</h2>
-					<p>This example contains the bare minimum includes and markup required to run a reveal.js presentation.</p>
-				</section>
+			// Push each slide change to the browser history
+			history: false,
 
-				<section>
-					<h2>No Theme</h2>
-					<p>There's no theme included, so it will fall back on browser defaults.</p>
-				</section>
+			// Enable keyboard shortcuts for navigation
+			keyboard: true,
+
+			// Enable touch events for navigation
+			touch: true,
+
+			// Enable the slide overview mode
+			overview: true,
+
+			// Vertical centering of slides
+			center: true,
+
+			// Loop the presentation
+			loop: false,
+
+			// Change the presentation direction to be RTL
+			rtl: false,
+
+			// Number of milliseconds between automatically proceeding to the
+			// next slide, disabled when set to 0, this value can be overwritten
+			// by using a data-autoslide attribute on your slides
+			autoSlide: 0,
+
+			// Enable slide navigation via mouse wheel
+			mouseWheel: false,
+
+			// Transition style
+			transition: 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+			// Transition speed
+			transitionSpeed: 'default', // default/fast/slow
+
+			// Transition style for full page backgrounds
+			backgroundTransition: 'default' // default/linear/none
+
+		});
+
+	
+
+	/*
+		<div class="reveal">
+
+				<div class="slides">
+
+					<section>
+						<h2>Barebones Presentation</h2>
+						<p>This example contains the bare minimum includes and markup required to run a reveal.js presentation.</p>
+					</section>
+
+					<section>
+						<h2>No Theme</h2>
+						<p>There's no theme included, so it will fall back on browser defaults.</p>
+					</section>
+
+				</div>
 
 			</div>
 
-		</div>
+			<script src="../lib/js/head.min.js"></script>
+			<script src="../js/reveal.min.js"></script>
 
-		<script src="../lib/js/head.min.js"></script>
-		<script src="../js/reveal.min.js"></script>
+			<script>
 
-		<script>
+				Reveal.initialize();
 
-			Reveal.initialize();
-
-		</script>
-*/
-    renderItems(self, o, v, 15, function(s, v, xxrr) {
-        var elements = [];
-        for (var i = 0; i < xxrr.length; i++) {
-            var x = xxrr[i][0];
-            var r = xxrr[i][1];
-            var o = renderObjectSummary(x, function() {            }, r, 1);
-			//var l = $('<li/>');
-			//u.append(l);
-			u.append(o.wrap('<li/>'));			
-        }
-    });
+			</script>
+	*/
+	});
 
 
-	v.append(u);
+
+  
+
+	
 
 }
 

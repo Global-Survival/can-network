@@ -37,7 +37,7 @@ function newPopupObjectView(_x) {
     }
     
     var d = newPopup(x.name);
-    d.append(renderObjectSummary(x, null, 1.0, 4));
+    d.append(newObjectSummary(x, null, 1.0, 4));
     return d;
     
 }
@@ -1098,8 +1098,10 @@ function newPropertyView(vv) {
 }
 
 
-
-function renderObjectSummary(x, onRemoved, r, depthRemaining, nameNotClickable) {
+/**
+produces a self-contained widget representing a nobject (x) to a finite depth. activates all necessary renderers to make it presented
+*/
+function newObjectSummary(x, onRemoved, r, depthRemaining, nameNotClickable) {
 
     if (!x) {
         return newDiv().html('Object Missing');
@@ -1175,7 +1177,7 @@ function renderObjectSummary(x, onRemoved, r, depthRemaining, nameNotClickable) 
             //TODO sort the replies by age, oldest first
             for (var i = 0; i < r.length; i++) {
                 var p = r[i];
-                replies.append(renderObjectSummary(self.getObject(p), null, r*0.618, depthRemaining-1));
+                replies.append(newObjectSummary(self.getObject(p), null, r*0.618, depthRemaining-1));
             }
         }
         else {
