@@ -1110,33 +1110,38 @@ function renderObjectSummary(x, onRemoved, r, depthRemaining, nameNotClickable) 
 		var cd = $('<canvas/>')
 		cd.attr('id', ee);
 
-		var pdfPath = '/doc/seh_netention_intro.pdf';
-		var pdfPage = 1;
+		var pdfPage = objFirstValue(x, 'slideNumber');
+		var pdfPath = objFirstValue(x, 'pdfURL');
+		if (pdfPage && pdfPath)  {
 
-		PDFJS.getDocument(pdfPath).then(function(pdf) {
-		  // Using promise to fetch the page
-		  pdf.getPage(pdfPage).then(function(page) {
-			var scale = 1.0;
-			var viewport = page.getViewport(scale);
+			PDFJS.getDocument(pdfPath).then(function(pdf) {
+			  // Using promise to fetch the page
+			  pdf.getPage(pdfPage).then(function(page) {
+				var scale = 1.0;
+				var viewport = page.getViewport(scale);
 
-			//
-			// Prepare canvas using PDF page dimensions
-			//
-			var canvas = document.getElementById(ee);
-			var context = canvas.getContext('2d');
-			canvas.height = viewport.height;
-			canvas.width = viewport.width;
+				//
+				// Prepare canvas using PDF page dimensions
+				//
+				var canvas = document.getElementById(ee);
+				var context = canvas.getContext('2d');
+				canvas.height = viewport.height;
+				canvas.width = viewport.width;
 
-			//
-			// Render PDF page into canvas context
-			//
-			var renderContext = {
-			  canvasContext: context,
-			  viewport: viewport
-			};
-			page.render(renderContext);
-		  });
-		});
+				//
+				// Render PDF page into canvas context
+				//
+				var renderContext = {
+				  canvasContext: context,
+				  viewport: viewport
+				};
+				page.render(renderContext);
+			  });
+			});
+		}
+		else {
+			cd.prepend('Unable to find PDF source.');
+		}
 	}
 
 
