@@ -369,38 +369,7 @@ function renderList(s, o, v) {
 	submenu.append(listButton);
 	submenu.append(gridButton);
 
-	//add canvas
-
-	var vvvv = $('<button>PDF</button>');
-	submenu.append(vvvv);
-	vvvv.click(function() {
-			PDFJS.getDocument('/doc/seh_netention_intro.pdf').then(function(pdf) {
-			  // Using promise to fetch the page
-			  pdf.getPage(1).then(function(page) {
-				var scale = 1.5;
-				var viewport = page.getViewport(scale);
-
-				//
-				// Prepare canvas using PDF page dimensions
-				//
-				var canvas = document.getElementById('pdfcanvas');
-				var context = canvas.getContext('2d');
-				canvas.height = viewport.height;
-				canvas.width = viewport.width;
-
-				//
-				// Render PDF page into canvas context
-				//
-				var renderContext = {
-				  canvasContext: context,
-				  viewport: viewport
-				};
-				page.render(renderContext);
-			  });
-			});
-	});
-
-
+	
 	function updateFont(s) {
 		var vp = parseInt((0.15 + (s/8.0)) * 100)		
 		v.css('font-size', vp + '%');
@@ -420,8 +389,6 @@ function renderList(s, o, v) {
 
 	function update() {
 		v.html('');
-		var pdfcanvas =  '<canvas id="pdfcanvas"/>';
-		v.prepend(pdfcanvas);
 		listRenderer(o, v, slideControls);
 	}
 	update();

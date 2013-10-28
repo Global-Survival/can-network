@@ -1104,6 +1104,42 @@ function renderObjectSummary(x, onRemoved, r, depthRemaining, nameNotClickable) 
     if (!x) {
         return newDiv().html('Object Missing');
     }
+
+	if (objHasTag(x, 'PDF')) {
+		var ee = uuid();
+		var cd = $('<canvas/>')
+		cd.attr('id', ee);
+
+		var pdfPath = '/doc/seh_netention_intro.pdf';
+		var pdfPage = 1;
+
+		PDFJS.getDocument(pdfPath).then(function(pdf) {
+		  // Using promise to fetch the page
+		  pdf.getPage(pdfPage).then(function(page) {
+			var scale = 1.0;
+			var viewport = page.getViewport(scale);
+
+			//
+			// Prepare canvas using PDF page dimensions
+			//
+			var canvas = document.getElementById(ee);
+			var context = canvas.getContext('2d');
+			canvas.height = viewport.height;
+			canvas.width = viewport.width;
+
+			//
+			// Render PDF page into canvas context
+			//
+			var renderContext = {
+			  canvasContext: context,
+			  viewport: viewport
+			};
+			page.render(renderContext);
+		  });
+		});
+	}
+
+
     
     var mini = (depthRemaining == 0);
     
@@ -1112,6 +1148,8 @@ function renderObjectSummary(x, onRemoved, r, depthRemaining, nameNotClickable) 
     var d = $('<div class="objectView ui-widget-content ui-corner-all" style="font-size:' + fs + '">');
     var xn = x.name;
     var authorID = x.author;
+
+	d.append(cd);
 
     if (!isSelfObject(x.id)) { //exclude Self- objects
             if (x.author) {

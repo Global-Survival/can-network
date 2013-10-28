@@ -206,6 +206,8 @@ var generalTags = [
         { uri: 'Service', name: 'Service', tag: ['Need']  },
         { uri: 'Animal', name: 'Animal', tag: ['Need']  },
 
+        { uri: 'PDF', name: 'Slide' },
+
     //Pledge = Promise
     //  
     { uri: 'Promise', name: 'Promise',
