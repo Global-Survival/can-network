@@ -251,25 +251,97 @@ function renderBrowseGrid(o, v) {
 function renderBrowseSlides(o, v, slideControls) {
 	var u = $('<ul/>');
 
+	Reveal.initialize({
+		// Display controls in the bottom right corner
+		controls: true,
+
+		// Display a presentation progress bar
+		progress: true,
+
+		// Push each slide change to the browser history
+		history: false,
+
+		// Enable keyboard shortcuts for navigation
+		keyboard: true,
+
+		// Enable touch events for navigation
+		touch: true,
+
+		// Enable the slide overview mode
+		overview: true,
+
+		// Vertical centering of slides
+		center: true,
+
+		// Loop the presentation
+		loop: false,
+
+		// Change the presentation direction to be RTL
+		rtl: false,
+
+		// Number of milliseconds between automatically proceeding to the
+		// next slide, disabled when set to 0, this value can be overwritten
+		// by using a data-autoslide attribute on your slides
+		autoSlide: 0,
+
+		// Enable slide navigation via mouse wheel
+		mouseWheel: false,
+
+		// Transition style
+		transition: 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+		// Transition speed
+		transitionSpeed: 'default', // default/fast/slow
+
+		// Transition style for full page backgrounds
+		backgroundTransition: 'default' // default/linear/none
+
+	});
+
+
+/*
+	<div class="reveal">
+
+			<div class="slides">
+
+				<section>
+					<h2>Barebones Presentation</h2>
+					<p>This example contains the bare minimum includes and markup required to run a reveal.js presentation.</p>
+				</section>
+
+				<section>
+					<h2>No Theme</h2>
+					<p>There's no theme included, so it will fall back on browser defaults.</p>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="../lib/js/head.min.js"></script>
+		<script src="../js/reveal.min.js"></script>
+
+		<script>
+
+			Reveal.initialize();
+
+		</script>
+*/
     renderItems(self, o, v, 15, function(s, v, xxrr) {
         var elements = [];
         for (var i = 0; i < xxrr.length; i++) {
             var x = xxrr[i][0];
             var r = xxrr[i][1];
             var o = renderObjectSummary(x, function() {            }, r, 1);
-			var l = $('<li/>');
-			u.append(l);
-			l.append(o);			
+			//var l = $('<li/>');
+			//u.append(l);
+			u.append(o.wrap('<li/>'));			
         }
     });
 
 
 	v.append(u);
-	later(function() {
-		u.bxSlider({adaptiveHeight: true, responsive: true, mode: 'fade'});	
-		var clientHeight = $(window).height();
-		$('.bx-viewport').css('height', clientHeight + 'px' );
-	});
+
 }
 
 
@@ -296,7 +368,39 @@ function renderList(s, o, v) {
 	submenu.append(slidesButton);
 	submenu.append(listButton);
 	submenu.append(gridButton);
-		
+
+	//add canvas
+
+	var vvvv = $('<button>PDF</button>');
+	submenu.append(vvvv);
+	vvvv.click(function() {
+			PDFJS.getDocument('/doc/seh_netention_intro.pdf').then(function(pdf) {
+			  // Using promise to fetch the page
+			  pdf.getPage(1).then(function(page) {
+				var scale = 1.5;
+				var viewport = page.getViewport(scale);
+
+				//
+				// Prepare canvas using PDF page dimensions
+				//
+				var canvas = document.getElementById('pdfcanvas');
+				var context = canvas.getContext('2d');
+				canvas.height = viewport.height;
+				canvas.width = viewport.width;
+
+				//
+				// Render PDF page into canvas context
+				//
+				var renderContext = {
+				  canvasContext: context,
+				  viewport: viewport
+				};
+				page.render(renderContext);
+			  });
+			});
+	});
+
+
 	function updateFont(s) {
 		var vp = parseInt((0.15 + (s/8.0)) * 100)		
 		v.css('font-size', vp + '%');
@@ -316,6 +420,8 @@ function renderList(s, o, v) {
 
 	function update() {
 		v.html('');
+		var pdfcanvas =  '<canvas id="pdfcanvas"/>';
+		v.prepend(pdfcanvas);
 		listRenderer(o, v, slideControls);
 	}
 	update();

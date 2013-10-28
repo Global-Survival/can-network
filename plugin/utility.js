@@ -1,3 +1,7 @@
+/*
+ENERGY, COMMUNICATIONS, SENSORS, INFRASTRUCTURE, etc...
+*/
+
 /* 
  * http://en.wikipedia.org/wiki/Public_utility
  * http://en.wikipedia.org/wiki/Infrastructure
@@ -6,6 +10,13 @@
  * Assets and facilities:
         Airports Bridges Broadband Canals Critical infrastructure Dams Electricity Energy Hazardous waste Hospitals Levees Lighthouses Parks Ports Mass transit Public housing State schools Public spaces Rail Roads Sewage Solid waste Telecommunications Utilities Water supply Wastewater
  */
+
+/*
+http://www.offgridworld.com/solar-and-wind-power-now-cheaper-than-coal-power-in-the-u-s/#.UkipFJT31p8.twitter
+	Solar and Wind Power Now Cheaper Than Coal Power in the U.S
+	It’s cheaper to use solar and wind power in the USA, than traditional coal power. Good news for solar and wind power companies, and a vindication for clean energy activists and lobbies.
+		determine variables and cost points for each of the mnodels and explain the most affordable and reliable sources.
+*/
 
 
 /* Communication

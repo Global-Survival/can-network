@@ -3,6 +3,10 @@ Collaborative Consumption services
 	Originally from a diagram by Rachel Botsman @ http://CollaborativeConsumption.com
 	Transcribed to text by Dante Monson
 
+http://www.opencouchsurfing.org/tag/api/
+https://github.com/unRob/CouchSurfing-API
+	https://github.com/unRob/CouchSurfing-API/blob/master/examples/example.rb
+
 http://www.collaborativeconsumption.com/directory-category
 	CHILDREN 
 		Babysitting​​, ​Clothes​​, ​Gear​​, ​Toys​​

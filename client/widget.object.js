@@ -1239,6 +1239,12 @@ function renderObjectSummary(x, onRemoved, r, depthRemaining, nameNotClickable) 
                 
 	hb.append(focusButton);
 	hb.append(deleteButton);
+	
+	var cloneButton = $('<button title="Clone" class="ui-widget-content ui-button" style="padding-right:8px;">c</button>');
+	var varyButton = $('<button title="Vary" class="ui-widget-content ui-button" style="padding-right:8px;">v</button>');
+	hb.append(cloneButton);
+	hb.append(varyButton);
+
 	d.append(hb);
 	
     (function() {

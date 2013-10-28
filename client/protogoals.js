@@ -2,6 +2,12 @@
 
 Acquire Item (ex: store purchase or borrow/trade)
 
+
+Increase Sex Drive
+Increase Healing Ability
+Increase Relaxation
+Increase Brainstorming
+
 Consume Item
 	Quantity Range (Dose)
 	Frequency
