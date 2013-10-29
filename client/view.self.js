@@ -482,7 +482,7 @@ function newRoster(selectUser) {
     var anonymous = [];
     
     function h(x) {
-        var sx = renderObjectSummary(x, null, 0.5, 0, (selectUser ? true : false));        
+        var sx = newObjectSummary(x, null, 0.5, 0, (selectUser ? true : false));        
         
         if (self.myself()) {
             if (x.id === self.myself().id) {

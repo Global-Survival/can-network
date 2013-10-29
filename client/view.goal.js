@@ -180,7 +180,7 @@ function newSelfTimeGrid(x, clicked) {
         });
         
         _.each(centroids, function(c) {
-            u.append(renderObjectSummary(c));
+            u.append(newObjectSummary(c));
         });
         
         if (plans.length > 0)
@@ -319,7 +319,7 @@ function newSelfTimeList(x, container) {
         });
         
         _.each(centroids, function(c) {
-            u.append(renderObjectSummary(c));
+            u.append(newObjectSummary(c));
         });
         
         if (plans.length > 0)

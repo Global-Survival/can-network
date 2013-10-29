@@ -208,8 +208,9 @@ var generalTags = [
 
         { uri: 'PDF', name: 'PDF Slide', properties: {
     					 'pdfURL': { name: 'PDF URL', type: 'text' },
-        				 'slideNumber': { name: 'Slide', type: 'integer' }
+        				 'slideNumber': { name: 'Slide', type: 'integer', min: 1, incremental: true }
         	}},
+
 
     //Pledge = Promise
     //  
@@ -237,7 +238,18 @@ exports.plugin = {
         version: '1.0',
         author: 'http://netention.org',
 		start: function(netention, util) { 
-            netention.addTags(generalTags );
+            netention.addTags( generalTags );
+			
+			function indexPDF(name, path) {
+				var introPresentation = util.objNew(path , name);
+				introPresentation.add('PDF');
+				introPresentation.add('pdfURL', path);
+				introPresentation.add('slideNumber', 1);
+				netention.pub(introPresentation);
+			}
+			indexPDF('Spacetime-Tag Planning', 'doc/netention_spacetime_tag_planning.pdf');
+			indexPDF('Netention Theory', 'doc/seh_netention_intro.pdf');
+
         },
 		stop: function(netention) { }
 };

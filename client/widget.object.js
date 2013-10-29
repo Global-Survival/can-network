@@ -1059,8 +1059,8 @@ function renderTagSection(x, index, t, editable, whenSaved, onAdd, onRemove, onS
     return d;
 }
 
-function newPropertyView(vv) {
-
+function newPropertyView(x, vv) {
+		
     var p = self.getProperty(vv.id);
     if (!p)
         return ('<li>' + vv.id + ': ' + vv.value + '</li>');
@@ -1074,6 +1074,36 @@ function newPropertyView(vv) {
         var u = vv.value;
         return ('<li>' + p.name + ': <a target="_blank" href="' + u + '">' + u + '</a></li>');        
     }
+	else if ((p.type == 'integer') && (p.incremental)) {
+		function goprev() {
+			objSetFirstValue(x, vv.id, ii-1);
+			self.notice(x);				
+			self.pub(x);				
+		}
+		function gonext() {
+			objSetFirstValue(x, vv.id, ii+1);
+			self.notice(x);				
+			self.pub(x);				
+		}
+
+        var v = $('<li>' + p.name + ': ' + vv.value + '</li>');
+		var ii = vv.value;
+		if (p.min < vv.value) {
+			var prev = $('<button>&lt;</button>');
+			v.prepend(prev);
+			prev.click(function() {
+				later(goprev);
+			});
+		}
+		//TODO allow for max
+		var next = $('<button>&gt;</button>');
+		next.click(function() {
+			later(gonext);
+		});
+		v.append(next);
+		return v;
+		
+	}
     else {
         var v = $('<li>' + p.name + ': ' + vv.value + '</li>');
         
@@ -1431,12 +1461,19 @@ function newObjectSummary(x, onRemoved, r, depthRemaining, nameNotClickable) {
 					continue;
 				}
 				else if (vv.id == 'timerange') {					
-					ud.append(ISODateString(new Date(vv.value.start)) + ' '
-							 + ISODateString(new Date(vv.value.start)));
+					/*if (ISODateString) {
+						ud.append(ISODateString(new Date(vv.value.start)) + ' '
+								 + ISODateString(new Date(vv.value.start)));
+					}
+					else*/ {
+						//mozilla: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString
+						ud.append(new Date(vv.value.start).toISOString()  + ' '
+								 + new Date(vv.value.start).toISOString() );
+					}
 				}
 				
                 if (self.isProperty(vv.id))
-                    ud.append(newPropertyView(vv));
+                    ud.append(newPropertyView(x, vv));
                 }
         }
     }

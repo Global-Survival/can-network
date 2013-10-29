@@ -17,6 +17,8 @@ exports._n = _n;
     
 
 function objNew(id, name) {
+	if (!name)
+		name = id;
     if (!id)
         id = uuid();
         

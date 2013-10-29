@@ -30,6 +30,9 @@ function plugin(netention, kv) {
 
             var enabled = false;
 
+			if (!netention.server)
+				netention.server = { plugins: { } };
+
             if (!netention.server.plugins[kv]) {
                 netention.server.plugins[kv] = {
                     valid: true,
@@ -1633,7 +1636,7 @@ exports.start = function(host, port, dbURL, init) {
 
     //setInterval(attention.update, Server.memoryUpdatePeriodMS);
 
-    require('./general.js').plugin.start(that);
+    require('./general.js').plugin.start(that, util);
 
 
     that.permissions = Server.permissions;

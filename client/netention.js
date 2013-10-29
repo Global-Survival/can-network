@@ -622,7 +622,10 @@ function netention(f) {
 		            }, onSuccess);
 				}
 				else {
-					onErr('Not connected.');
+					if (onErr)
+						onErr('Not connected.');
+					else
+						console.log('Not connected.');
 				}
             },
             
