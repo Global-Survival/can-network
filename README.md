@@ -1,9 +1,11 @@
-![Netention logo](https://raw.github.com/automenta/netentionjs2/master/doc/netention_logo_6.png)
+![Netention logo](https://raw.github.com/automenta/netentionjs2/master/doc/netention_logo_6.small.png)
 
 Netention for Node.JS
 =====================
 
-Netention collects a community of peoples' stories, and interlinks them with automatically discovered opportunities that are mutually inter-satisfying - essentially suggesting to its participants how they could realize the desired futures they have described.
+Netention is SEMANTIC GROUPWARE that automatically organizes a community of peoples' realities.
+
+It can then interlink them with automatically discovered opportunities that are mutually inter-satisfying - essentially suggesting to its participants how they could realize the desired futures they have described.
 
 Netention is a tool for describing one's current life situation (“is”), and potential future situations (“will be”)  – as linked data objects. A semantic description of a human life can be considered to consist of a set of declarations representing aspects about which one is concerned or interested.  Link the current and desired states of real and imaginary concepts - including people, environments, objects, processes, knowledge, or time.
 
@@ -16,7 +18,7 @@ Netention is under development and is experimental.  Use at your own risk
 [User Guide](https://github.com/automenta/netentionjs2/blob/master/doc/netention_user_guide.md)
 *   What it does
 *   How to use it
-*   Netention Philosophy
+*   Netention Theory (philoso-ware)
 
 [System Guide](https://github.com/automenta/netentionjs2/blob/master/doc/netention_system_guide.md)
 *   System requirements
@@ -29,7 +31,7 @@ Netention is under development and is experimental.  Use at your own risk
 
 The term Netention is a portmanteau of the words Network, and Attention or Intention.  It refers to a community's collective abilities.
 
-Don't "search" - describe what you want. Edit it at any time to adjust or improve the description.
+Don't "search" - simply describe what you want. Edit it at any time later to adjust or improve the description.
 
 Netention works at the basic thought level, to elicit descriptions of "something" that you're thinking about.  Whether it describes a dream (something that you would like to happen), an object, or hypothetical object - it can be fully described and re-described.  
 
@@ -43,8 +45,13 @@ A general-purpose semantic-network computer system simulates “described experi
 
 A semantic concept represents each agent (ex: a human) participating in interaction processes that constitute awareness of and potential to operate upon arbitrary subsets of simulation content. Choice and configuration of interaction modalities may be customized according to a particular situation or adjusted to compensate for sensory, kinesthetic, or cognitive disabilities. 
 
-A Network is a community-managed web service to which clients connect.  Servers communicate with other servers in a P2P network.
+A network consists of a community-managed P2P decentralized web network to which clients may connect.  Servers could communicate with other servers in various P2P networks such as Telehash, Kademlia, Gnutella, BitTorrent, Yacy, GnuNET, etc...
 
-http://netention.org
+HOW TO HELP
+===========
+Join in the discussion, don't be afraid to ask questions, and THINK BIG!
+* Mailing list: https://groups.google.com/forum/#!forum/netention-dev
+* IRC Channel: freenode.net #netention
+* Blog: http://blog.automenta.com
 
 ![Netention logo](https://raw.github.com/automenta/netentionjs2/master/doc/netention_logo_1.png)
