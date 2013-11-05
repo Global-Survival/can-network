@@ -42,7 +42,7 @@ The system can then connect your descriptions to others - these are analogous to
 * participating in a community
 * curating knowledge
 
-Netention uses a variable-strength _tagging system_ for calculating approximate classification and correlation.  _Tags_ represent classes in a shared editable ontology.  Each tag may support zero or more _properties_ which provide a rich vocabulary of typed-metadata which one may add or remove from an object (within to certain limitations).  In other words, the system may prompt you for more data than you had originally considered, igniting creativity and improving thought clarity.
+Netention uses a variable-strength _tagging system_ for calculating approximate classification and correlation.  _Tags_ represent classes in a shared editable ontology.  Each tag may support zero or more _properties_ which provide a rich vocabulary of typed-metadata which one may add or remove from an object (within to certain limitations).  Netention may prompt you for more data than you had originally considered, igniting creativity and improving thought clarity.
 
 Netention is a system for describing _mental objects_: thoughts, places, concepts, times, etc... Create descriptions of reality that consist of data about the state in which something presently “is”, AND statements about your desired or anticipated state in which it “should be” - how you would like it to become - usually involving ranges of acceptable indeterminate values.
 
