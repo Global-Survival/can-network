@@ -7,7 +7,7 @@ Netention is SEMANTIC GROUPWARE that automatically organizes a community of peop
 
 It can then interlink them with automatically discovered opportunities that are mutually inter-satisfying - essentially suggesting to its participants how they could realize the desired futures they have described.
 
-Netention is a tool for describing one's current reality (“is”), and potential future realities (“should be be”) – as linked data objects. A semantic description of a life (human, animal, plant, or otherwise) can be considered to consist of a set of data declarations representing aspects about which one is concerned or interested.  Now we can _link_ the current and desired states of the real and imaginary concepts in our minds - including people, environments, objects, processes, knowledge, or time.
+Netention is a tool for describing one's current reality (“is”), and potential future realities (“should be”) – as linked data objects. A semantic description of a life (human, animal, plant, or otherwise) can be considered to consist of a set of data declarations representing aspects about which one is concerned or interested.  Now we can _link_ the current and desired states of the real and imaginary concepts in our minds - including people, environments, objects, processes, knowledge, or time.
 
 Netention realizes one’s goals based on their desires and translates them into tangible outcomes in one’s own growable network.
 
