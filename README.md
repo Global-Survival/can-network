@@ -7,9 +7,11 @@ Netention is SEMANTIC GROUPWARE that automatically organizes a community of peop
 
 It can then interlink them with automatically discovered opportunities that are mutually inter-satisfying - essentially suggesting to its participants how they could realize the desired futures they have described.
 
-Netention is a tool for describing one's current life situation (“is”), and potential future situations (“will be”)  – as linked data objects. A semantic description of a human life can be considered to consist of a set of declarations representing aspects about which one is concerned or interested.  Link the current and desired states of real and imaginary concepts - including people, environments, objects, processes, knowledge, or time.
+Netention is a tool for describing one's current reality (“is”), and potential future realities (“should be be”) – as linked data objects. A semantic description of a life (human, animal, plant, or otherwise) can be considered to consist of a set of data declarations representing aspects about which one is concerned or interested.  Now we can _link_ the current and desired states of the real and imaginary concepts in our minds - including people, environments, objects, processes, knowledge, or time.
 
-Netention realizes one’s goals based on their desires and translates them into tangible outcomes in one’s own network.
+Netention realizes one’s goals based on their desires and translates them into tangible outcomes in one’s own growable network.
+
+It can be used to organize a community, a business, a family, or a government in similar ways because it is designed to consider how the mind expresses thought (especially language) at a neural level.
 
 Netention aims to solve, in general, all resource management and planning issues that occur among communities of participants.  A complete system could conceivably eliminate the balkanization of various separate online services that presently serve relatively narrow subsets of the more general problem.
 
@@ -29,13 +31,17 @@ Netention is under development and is experimental.  Use at your own risk
 *   Features
 *   Planned improvements and fixes
 
+Documentation coming soon:
+* Translating
+* Security
+
 The term Netention is a portmanteau of the words Network, and Attention or Intention.  It refers to a community's collective abilities.
 
-Don't "search" - simply describe what you want. Edit it at any time later to adjust or improve the description.
+Don't "search" - simply describe what you want to happen.  Edit it at any time later to adjust or improve the description.
 
 Netention works at the thought level, to elicit descriptions of "something" that you're thinking about.  Whether it describes a dream (something that you would like to happen), an object, or hypothetical object - it can be fully described and re-described.  
 
-A hypothetical (desired) object can become an actual object, or an abstract concept can become an actual future event, etc.  Imagine this is like when ice undergoes a state change from solid to liquid, thus providing more flexibility and expressivity.  
+A hypothetical (desired) object can become an actual object, or an abstract concept can become an actual future event, etc.  Imagine this transformational process as like when ice undergoes a state change from solid to liquid, thus providing more flexibility and expressivity and freedom to each water atom in the system.
 
 The system can then connect your descriptions to others - these are analogous to hyperlinks in the [semantic web](en.wikipedia.org/wiki/Semantic_Web‎), representing possibilities that one may choose.  Possibilities suggest ways to achieve the implied intended state of something, whether one is interested in:
 * buying, selling, or trading something
