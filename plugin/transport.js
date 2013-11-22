@@ -29,4 +29,9 @@ https://www.biomimicrydesignchallenge.com/
 	As the mobility demands of people and freight have grown, so too has the need for products, systems, and services that will make the transportation sector more life-friendly, for both people and the planet.
 	Can biomimicry help us address the deeper needs around transportation? Let’s find out!
 
+http://511.org/about-511.asp
+
+SPACEFRAME Vehicles
+	http://www.n55.dk/MANUALS/SPACEFRAMEVEHICLES/spaceframevehicles.html
+
  */
