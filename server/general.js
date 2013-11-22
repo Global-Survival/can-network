@@ -240,6 +240,8 @@ exports.plugin = {
 		start: function(netention, util) { 
             netention.addTags( generalTags );
 			
+			
+			/*
 			function indexPDF(name, path) {
 				var introPresentation = util.objNew(path , name);
 				introPresentation.add('PDF');
@@ -249,7 +251,8 @@ exports.plugin = {
 			}
 			indexPDF('Spacetime-Tag Planning', 'doc/netention_spacetime_tag_planning.pdf');
 			indexPDF('Netention Theory', 'doc/seh_netention_intro.pdf');
-
+            */
+            
         },
 		stop: function(netention) { }
 };

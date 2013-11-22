@@ -4,7 +4,7 @@
  * Edit this to configure and customize your servers. 
  */
 require('./server/web.js').start(
-    'SITE_URL' /* include :port if necessary */,
+    'SITE_URL',
     8080, 
     'localhost/netention_db_0',
         

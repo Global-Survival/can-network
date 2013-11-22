@@ -11,7 +11,7 @@ var configuration = {
     showPlanOnSelfPage: true,
     defaultTheme: '_cybernetic',
 	requireIdentity: false,
-	maxStartupObjects: 8192,
+	maxStartupObjects: 16134,
 	defaultMapMode2D: true //true=2d, false=3d
 };
 

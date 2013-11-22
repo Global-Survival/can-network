@@ -3,3 +3,8 @@ node_modules/
 upload/*
 
 /nbproject/private/
+
+.c9revisions/
+.settings
+
+nohup.out
