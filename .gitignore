@@ -1,3 +1,4 @@
+web.start.js
 xyz.js
 node_modules/
 upload/*
@@ -8,3 +9,4 @@ upload/*
 .settings
 
 nohup.out
+node.log
