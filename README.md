@@ -1,4 +1,4 @@
-![Netention logo](https://raw.github.com/automenta/netentionjs2/master/doc/netention_logo_6.small.png)
+![Netention logo](doc/netention_logo_6.small.png)
 
 Netention for Node.JS
 =====================
@@ -17,17 +17,17 @@ Netention aims to solve, in general, all resource management and planning issues
 
 Netention is under development and is experimental.  Use at your own risk
 
-[User Guide](https://github.com/automenta/netentionjs2/blob/master/doc/netention_user_guide.md)
+[User Guide](doc/netention_user_guide.md)
 *   What it does
 *   How to use it
 *   Netention Theory (philoso-ware)
 
-[System Guide](https://github.com/automenta/netentionjs2/blob/master/doc/netention_system_guide.md)
+[System Guide](doc/netention_system_guide.md)
 *   System requirements
 *   How to install
 *   How to maintain and administer a Netention node
 
-[Development Plan](https://github.com/automenta/netentionjs2/blob/master/doc/netention_development_plan.md)
+[Development Plan](doc/netention_development_plan.md)
 *   Features
 *   Planned improvements and fixes
 
@@ -60,11 +60,4 @@ A semantic concept representing each agent (ex: a human or animal) can participa
 
 A network consists of a community-managed P2P decentralized web network to which clients may connect. Servers could communicate with other servers in various P2P networks such as Telehash, Kademlia, Gnutella, BitTorrent, Yacy, GnuNET, etc...
 
-HOW TO HELP
-===========
-Join in the discussion, don't be afraid to ask questions, and THINK BIG!
-* Mailing list: https://groups.google.com/forum/#!forum/netention-dev
-* IRC Channel: freenode.net #netention
-* Blog: http://blog.automenta.com
-
-![Netention logo](https://raw.github.com/automenta/netentionjs2/master/doc/netention_logo_1.png)
+![Netention logo](doc/netention_logo_1.png)
